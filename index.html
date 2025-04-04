@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>La Roue de la Vie</title>
+    <img src="logo.png" alt="Sieste FM" class="logo">
+	<style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+            touch-action: manipulation; /* Improves touch responsiveness */
+        }
+        h1, h2, h3 {
+            text-align: center;
+            color: #333;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        #globalScore {
+            font-size: 1.5em;
+            margin-bottom: 20px;
+            color: #2c3e50;
+        }
+        .pillar {
+            margin-bottom: 20px;
+        }
+        .sub-pillar {
+            margin: 10px 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .sub-pillar label {
+            flex: 1;
+            font-size: 1.1em;
+        }
+        input[type="range"] {
+            width: 60%;
+            margin-left: 10px;
+        }
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+        button {
+            background-color: #3498db;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+        }
+        button:disabled {
+            background-color: #bdc3c7;
+            cursor: not-allowed;
+        }
+        button:hover:not(:disabled) {
+            background-color: #2980b9;
+        }
+        canvas {
+            max-width: 100%;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>La Roue de la Vie</h1>
+        <div id="globalScore">Note globale : 10 / 20</div>
+        <div id="pillarDisplay"></div>
+        <div class="nav-buttons">
+            <button id="prevBtn" onclick="changePillar(-1)">Précédent</button>
+            <button id="nextBtn" onclick="changePillar(1)">Suivant</button>
+        </div>
+        <button onclick="showChart()" style="width: 100%; margin-top: 20px;">Afficher la Roue</button>
+        <canvas id="radarChart" style="display: none;"></canvas>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Default pillars and sub-pillars with initial scores
+        const defaultPillars = [
+            { name: "Santé", subPillars: ["Physique", "Mental", "Sommeil", "Nutrition", "Énergie"].map(n => ({ name: n, score: 5 })) },
+            { name: "Famille", subPillars: ["Proches", "Communication", "Temps passé", "Soutien", "Harmonie"].map(n => ({ name: n, score: 5 })) },
+            { name: "Finances", subPillars: ["Revenus", "Épargne", "Dépenses", "Investissements", "Sécurité"].map(n => ({ name: n, score: 5 })) },
+            { name: "Carrière", subPillars: ["Satisfaction", "Progression", "Équilibre", "Compétences", "Reconnaissance"].map(n => ({ name: n, score: 5 })) },
+            { name: "Loisirs", subPillars: ["Temps libre", "Passions", "Détente", "Créativité", "Social"].map(n => ({ name: n, score: 5 })) },
+            { name: "Développement personnel", subPillars: ["Apprentissage", "Objectifs", "Confiance", "Résilience", "Clarté"].map(n => ({ name: n, score: 5 })) },
+            { name: "Relations sociales", subPillars: ["Amis", "Réseau", "Écoute", "Partage", "Qualité"].map(n => ({ name: n, score: 5 })) },
+            { name: "Cadre de vie", subPillars: ["Logement", "Environnement", "Organisation", "Confort", "Esthétique"].map(n => ({ name: n, score: 5 })) }
+        ];
+
+        let pillars = JSON.parse(localStorage.getItem('pillars')) || defaultPillars;
+        let currentPillarIndex = 0;
+        let chartInstance = null;
+
+        // Render the current pillar
+        function renderPillar() {
+            const pillarDisplay = document.getElementById('pillarDisplay');
+            const pillar = pillars[currentPillarIndex];
+            pillarDisplay.innerHTML = `<h3>${pillar.name} (${currentPillarIndex + 1}/${pillars.length})</h3>`;
+            pillar.subPillars.forEach((subPillar, sIndex) => {
+                const subDiv = document.createElement('div');
+                subDiv.className = 'sub-pillar';
+                subDiv.innerHTML = `
+                    <label>${subPillar.name}: ${subPillar.score}</label>
+                    <input type="range" min="1" max="10" value="${subPillar.score}" 
+                           oninput="updateScore(${currentPillarIndex}, ${sIndex}, this.value)">
+                `;
+                pillarDisplay.appendChild(subDiv);
+            });
+            updateNavigationButtons();
+            updateGlobalScore();
+        }
+
+        // Update sub-pillar score and refresh display
+        function updateScore(pIndex, sIndex, value) {
+            pillars[pIndex].subPillars[sIndex].score = parseInt(value);
+            localStorage.setItem('pillars', JSON.stringify(pillars));
+            renderPillar(); // Refresh to show updated score
+        }
+
+        // Update global score
+        function updateGlobalScore() {
+            const pillarAverages = pillars.map(pillar => 
+                pillar.subPillars.reduce((sum, sub) => sum + sub.score, 0) / pillar.subPillars.length
+            );
+            const globalScore = (pillarAverages.reduce((sum, avg) => sum + avg, 0) / pillars.length) * 2; // Scale to 20
+            document.getElementById('globalScore').textContent = `Note globale : ${globalScore.toFixed(1)} / 20`;
+            return pillarAverages;
+        }
+
+        // Navigate between pillars
+        function changePillar(direction) {
+            currentPillarIndex += direction;
+            renderPillar();
+        }
+
+        // Enable/disable navigation buttons
+        function updateNavigationButtons() {
+            document.getElementById('prevBtn').disabled = currentPillarIndex === 0;
+            document.getElementById('nextBtn').disabled = currentPillarIndex === pillars.length - 1;
+        }
+
+        // Show radar chart
+        function showChart() {
+            const averages = updateGlobalScore();
+            const radarChart = document.getElementById('radarChart');
+            radarChart.style.display = 'block';
+            const ctx = radarChart.getContext('2d');
+            if (chartInstance) chartInstance.destroy();
+            chartInstance = new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: pillars.map(p => p.name),
+                    datasets: [{
+                        label: 'Évaluation',
+                        data: averages,
+                        backgroundColor: 'rgba(52, 152, 219, 0.2)',
+                        borderColor: '#3498db',
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    scales: {
+                        r: {
+                            min: 0,
+                            max: 10,
+                            ticks: { stepSize: 2 }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Initialize the app
+        renderPillar();
+    </script>
+</body>
+</html>
