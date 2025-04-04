@@ -1,66 +1,101 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>La Roue de la Vie</title>
-    <img src="logo.png" alt="Sieste FM" class="logo">
-	<style>
+    <style>
         body {
             font-family: 'Arial', sans-serif;
             margin: 0;
             padding: 20px;
             background-color: #f4f4f4;
-            touch-action: manipulation; /* Improves touch responsiveness */
+            touch-action: manipulation;
         }
         h1, h2, h3 {
             text-align: center;
-            color: #333;
-        }
-        .container {
-            max-width: 600px;
-            margin: 0 auto;
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        #globalScore {
-            font-size: 1.5em;
-            margin-bottom: 20px;
             color: #2c3e50;
         }
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin: 20px 0;
+        }
+        .container {
+            max-width: 700px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        .logo {
+            display: block;
+            margin: 0 auto 20px;
+            max-width: 150px; /* Adjusted size */
+            height: auto;
+        }
+        #globalScore {
+            font-size: 1.6rem;
+            font-weight: 600;
+            margin-bottom: 30px;
+            color: #2c3e50;
+            text-align: center;
+        }
         .pillar {
-            margin-bottom: 20px;
+            margin-bottom: 25px;
         }
         .sub-pillar {
-            margin: 10px 0;
+            margin: 15px 0;
             display: flex;
             align-items: center;
             justify-content: space-between;
+            gap: 15px;
         }
         .sub-pillar label {
             flex: 1;
-            font-size: 1.1em;
+            font-size: 1.2rem;
+            color: #34495e;
         }
         input[type="range"] {
             width: 60%;
             margin-left: 10px;
+            -webkit-appearance: none;
+            appearance: none;
+            height: 8px;
+            background: #dfe6e9;
+            border-radius: 5px;
+            outline: none;
+            transition: background 0.3s;
+        }
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            background: #3498db;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        input[type="range"]::-webkit-slider-thumb:hover {
+            background: #2980b9;
         }
         .nav-buttons {
             display: flex;
             justify-content: space-between;
-            margin-top: 20px;
+            margin-top: 30px;
+            gap: 15px;
         }
         button {
             background-color: #3498db;
             color: white;
-            padding: 10px 20px;
+            padding: 12px 25px;
             border: none;
-            border-radius: 5px;
+            border-radius: 8px;
             cursor: pointer;
-            font-size: 1em;
+            font-size: 1rem;
+            transition: background-color 0.3s, transform 0.1s;
         }
         button:disabled {
             background-color: #bdc3c7;
@@ -68,15 +103,45 @@
         }
         button:hover:not(:disabled) {
             background-color: #2980b9;
+            transform: translateY(-2px);
+        }
+        button:focus {
+            outline: 3px solid #74b9ff;
+            outline-offset: 2px;
         }
         canvas {
             max-width: 100%;
-            margin-top: 20px;
+            margin-top: 30px;
+        }
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+            }
+            h1 {
+                font-size: 2rem;
+            }
+            .sub-pillar {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            input[type="range"] {
+                width: 100%;
+                margin-left: 0;
+            }
+            .nav-buttons {
+                flex-direction: column;
+                gap: 10px;
+            }
+            button {
+                width: 100%;
+                padding: 12px;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
+        <img src="logo.png" alt="Sieste FM" class="logo">
         <h1>La Roue de la Vie</h1>
         <div id="globalScore">Note globale : 10 / 20</div>
         <div id="pillarDisplay"></div>
@@ -90,7 +155,6 @@
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
-        // Default pillars and sub-pillars with initial scores
         const defaultPillars = [
             { name: "Santé", subPillars: ["Physique", "Mental", "Sommeil", "Nutrition", "Énergie"].map(n => ({ name: n, score: 5 })) },
             { name: "Famille", subPillars: ["Proches", "Communication", "Temps passé", "Soutien", "Harmonie"].map(n => ({ name: n, score: 5 })) },
@@ -106,7 +170,6 @@
         let currentPillarIndex = 0;
         let chartInstance = null;
 
-        // Render the current pillar
         function renderPillar() {
             const pillarDisplay = document.getElementById('pillarDisplay');
             const pillar = pillars[currentPillarIndex];
@@ -125,36 +188,31 @@
             updateGlobalScore();
         }
 
-        // Update sub-pillar score and refresh display
         function updateScore(pIndex, sIndex, value) {
             pillars[pIndex].subPillars[sIndex].score = parseInt(value);
             localStorage.setItem('pillars', JSON.stringify(pillars));
-            renderPillar(); // Refresh to show updated score
+            renderPillar();
         }
 
-        // Update global score
         function updateGlobalScore() {
             const pillarAverages = pillars.map(pillar => 
                 pillar.subPillars.reduce((sum, sub) => sum + sub.score, 0) / pillar.subPillars.length
             );
-            const globalScore = (pillarAverages.reduce((sum, avg) => sum + avg, 0) / pillars.length) * 2; // Scale to 20
+            const globalScore = (pillarAverages.reduce((sum, avg) => sum + avg, 0) / pillars.length) * 2;
             document.getElementById('globalScore').textContent = `Note globale : ${globalScore.toFixed(1)} / 20`;
             return pillarAverages;
         }
 
-        // Navigate between pillars
         function changePillar(direction) {
             currentPillarIndex += direction;
             renderPillar();
         }
 
-        // Enable/disable navigation buttons
         function updateNavigationButtons() {
             document.getElementById('prevBtn').disabled = currentPillarIndex === 0;
             document.getElementById('nextBtn').disabled = currentPillarIndex === pillars.length - 1;
         }
 
-        // Show radar chart
         function showChart() {
             const averages = updateGlobalScore();
             const radarChart = document.getElementById('radarChart');
@@ -185,7 +243,6 @@
             });
         }
 
-        // Initialize the app
         renderPillar();
     </script>
 </body>
