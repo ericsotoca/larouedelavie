@@ -32,7 +32,7 @@
         .logo {
             display: block;
             margin: 0 auto 20px;
-            max-width: 250px; /* Adjusted size */
+            max-width: 250px;
             height: auto;
         }
         #globalScore {
@@ -113,6 +113,40 @@
             max-width: 100%;
             margin-top: 30px;
         }
+        #historyPopup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            max-width: 80%;
+            max-height: 80%;
+            overflow-y: auto;
+            z-index: 1000;
+        }
+        #historyPopup h3 {
+            margin-top: 0;
+        }
+        .popup-buttons {
+            margin-top: 20px;
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+        }
+        #overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
         @media (max-width: 600px) {
             .container {
                 padding: 20px;
@@ -128,7 +162,7 @@
                 width: 100%;
                 margin-left: 0;
             }
-            .nav-buttons {
+            .nav-buttons, .popup-buttons {
                 flex-direction: column;
                 gap: 10px;
             }
@@ -149,8 +183,19 @@
             <button id="prevBtn" onclick="changePillar(-1)">Précédent</button>
             <button id="nextBtn" onclick="changePillar(1)">Suivant</button>
         </div>
-        <button onclick="showChart()" style="width: 100%; margin-top: 20px;">Afficher la Roue</button>
+        <button onclick="showChartAndSave()" style="width: 100%; margin-top: 20px;">Afficher la Roue</button>
+        <button onclick="showHistory()" style="width: 100%; margin-top: 10px;">Historique</button>
         <canvas id="radarChart" style="display: none;"></canvas>
+    </div>
+    <div id="overlay"></div>
+    <div id="historyPopup">
+        <h3>Historique des évaluations</h3>
+        <div id="historyContent"></div>
+        <div class="popup-buttons">
+            <button onclick="copyHistory()">Copier (JSON)</button>
+            <button onclick="resetHistory()">Reset</button>
+            <button onclick="closeHistory()">Fermer</button>
+        </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -167,6 +212,7 @@
         ];
 
         let pillars = JSON.parse(localStorage.getItem('pillars')) || defaultPillars;
+        let history = JSON.parse(localStorage.getItem('history')) || [];
         let currentPillarIndex = 0;
         let chartInstance = null;
 
@@ -213,7 +259,7 @@
             document.getElementById('nextBtn').disabled = currentPillarIndex === pillars.length - 1;
         }
 
-        function showChart() {
+        function showChartAndSave() {
             const averages = updateGlobalScore();
             const radarChart = document.getElementById('radarChart');
             radarChart.style.display = 'block';
@@ -241,6 +287,64 @@
                     }
                 }
             });
+            saveToHistory(averages);
+        }
+
+        function saveToHistory(averages) {
+            const entry = {
+                date: new Date().toLocaleString('fr-FR'),
+                scores: pillars.map(p => ({
+                    name: p.name,
+                    average: averages[pillars.indexOf(p)],
+                    subPillars: p.subPillars.map(sp => ({ name: sp.name, score: sp.score }))
+                }))
+            };
+            history.push(entry);
+            localStorage.setItem('history', JSON.stringify(history));
+        }
+
+        function showHistory() {
+            const historyContent = document.getElementById('historyContent');
+            historyContent.innerHTML = '';
+            if (history.length === 0) {
+                historyContent.textContent = "Aucun historique disponible.";
+            } else {
+                history.forEach((entry, index) => {
+                    const entryDiv = document.createElement('div');
+                    entryDiv.innerHTML = `<strong>${entry.date}</strong><br>` + 
+                        entry.scores.map(s => `${s.name}: ${s.average.toFixed(1)}`).join('<br>') + '<hr>';
+                    historyContent.appendChild(entryDiv);
+                });
+            }
+            document.getElementById('historyPopup').style.display = 'block';
+            document.getElementById('overlay').style.display = 'block';
+        }
+
+        function closeHistory() {
+            document.getElementById('historyPopup').style.display = 'none';
+            document.getElementById('overlay').style.display = 'none';
+        }
+
+        function copyHistory() {
+            const coachingPrompt = "Voici mon historique d'évaluations de la Roue de la Vie en JSON. Peux-tu analyser ces données et me fournir un coaching personnalisé pour améliorer mes scores ?\n\n";
+            const historyJson = JSON.stringify(history, null, 2);
+            navigator.clipboard.writeText(coachingPrompt + historyJson).then(() => {
+                alert("Historique copié dans le presse-papiers avec un prompt pour le coaching !");
+            });
+        }
+
+        function resetHistory() {
+            if (confirm("Voulez-vous vraiment réinitialiser l'historique ?")) {
+                history = [];
+                localStorage.setItem('history', JSON.stringify(history));
+                pillars = defaultPillars.map(p => ({ ...p, subPillars: p.subPillars.map(sp => ({ ...sp })) }));
+                localStorage.setItem('pillars', JSON.stringify(pillars));
+                currentPillarIndex = 0;
+                renderPillar();
+                closeHistory();
+                if (chartInstance) chartInstance.destroy();
+                document.getElementById('radarChart').style.display = 'none';
+            }
         }
 
         renderPillar();
