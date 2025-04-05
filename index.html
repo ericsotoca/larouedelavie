@@ -7,6 +7,7 @@
     <style>
         /* --- Variables & Thème --- */
         :root {
+            /* ... (Variables CSS inchangées) ... */
             --bg-color: #f4f4f4;
             --container-bg: white;
             --text-color: #2c3e50;
@@ -26,243 +27,198 @@
             --focus-ring-color: #74b9ff;
             --grid-color: #dbe4e9;
             --tooltip-bg: rgba(255, 255, 255, 0.95);
-            --pillar-border-color: transparent; /* Variable pour la couleur du pilier */
-            --pillar-border-width: 10px; /* Largeur de la bordure colorée */
-
-             /* Couleurs spécifiques pour les 8 piliers */
-            --pillar-color-0: #e74c3c; /* Rouge */
-            --pillar-color-1: #e67e22; /* Orange */
-            --pillar-color-2: #f1c40f; /* Jaune */
-            --pillar-color-3: #2ecc71; /* Vert */
-            --pillar-color-4: #3498db; /* Bleu */
-            --pillar-color-5: #1abc9c; /* Turquoise */
-            --pillar-color-6: #9b59b6; /* Violet */
-            --pillar-color-7: #34495e; /* Bleu Foncé / Gris */
+            --pillar-border-color: transparent;
+            --pillar-border-width: 10px;
+            --pillar-color-0: #e74c3c; --pillar-color-1: #e67e22; --pillar-color-2: #f1c40f; --pillar-color-3: #2ecc71; --pillar-color-4: #3498db; --pillar-color-5: #1abc9c; --pillar-color-6: #9b59b6; --pillar-color-7: #34495e;
         }
 
         body.dark-theme {
-            --bg-color: #2c3e50;
-            --container-bg: #34495e;
-            --text-color: #ecf0f1;
-            --secondary-text-color: #bdc3c7;
-            --primary-color: #3498db;
-            --primary-hover-color: #5dade2;
-            --disabled-color: #7f8c8d;
-            --slider-track-color: #7f8c8d;
-            --slider-thumb-color: #3498db;
-            --chart-bg-color: rgba(52, 152, 219, 0.3);
-            --chart-border-color: #5dade2;
-            --goal-bg-color: rgba(241, 150, 138, 0.2);
-            --goal-border-color: #f1948a;
-            --danger-color: #e74c3c;
-            --danger-hover-color: #f1948a;
-            --shadow-color: rgba(0, 0, 0, 0.3);
-            --focus-ring-color: #a9cce3;
-            --grid-color: #566573;
-            --tooltip-bg: rgba(44, 62, 80, 0.95);
-
-             /* Couleurs piliers thème sombre (peuvent être les mêmes ou adaptées) */
-            --pillar-color-0: #c0392b;
-            --pillar-color-1: #d35400;
-            --pillar-color-2: #f39c12;
-            --pillar-color-3: #27ae60;
-            --pillar-color-4: #2980b9;
-            --pillar-color-5: #16a085;
-            --pillar-color-6: #8e44ad;
-            --pillar-color-7: #7f8c8d;
+            /* ... (Variables CSS dark-theme inchangées) ... */
+             --bg-color: #2c3e50; --container-bg: #34495e; --text-color: #ecf0f1; --secondary-text-color: #bdc3c7; --primary-color: #3498db; --primary-hover-color: #5dade2; --disabled-color: #7f8c8d; --slider-track-color: #7f8c8d; --slider-thumb-color: #3498db; --chart-bg-color: rgba(52, 152, 219, 0.3); --chart-border-color: #5dade2; --goal-bg-color: rgba(241, 150, 138, 0.2); --goal-border-color: #f1948a; --danger-color: #e74c3c; --danger-hover-color: #f1948a; --shadow-color: rgba(0, 0, 0, 0.3); --focus-ring-color: #a9cce3; --grid-color: #566573; --tooltip-bg: rgba(44, 62, 80, 0.95);
+             --pillar-color-0: #c0392b; --pillar-color-1: #d35400; --pillar-color-2: #f39c12; --pillar-color-3: #27ae60; --pillar-color-4: #2980b9; --pillar-color-5: #16a085; --pillar-color-6: #8e44ad; --pillar-color-7: #7f8c8d;
         }
 
         /* --- Styles Généraux --- */
-        body {
-            font-family: 'Arial', sans-serif;
-            margin: 0;
-            padding: 20px;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            transition: background-color 0.3s, color 0.3s;
-            touch-action: manipulation;
+        body { /* ... (inchangé) ... */ font-family: 'Arial', sans-serif; margin: 0; padding: 20px; background-color: var(--bg-color); color: var(--text-color); transition: background-color 0.3s, color 0.3s; touch-action: manipulation; }
+        .main-view { /* ... (inchangé) ... */ max-width: 700px; margin: 0 auto; background: var(--container-bg); color: var(--text-color); padding: 30px; border-radius: 12px; box-shadow: 0 4px 12px var(--shadow-color); transition: background-color 0.3s, color 0.3s, border-left-color 0.3s; }
+        #inputView { /* ... (inchangé) ... */ border-left: var(--pillar-border-width) solid var(--pillar-border-color); padding-left: calc(30px - var(--pillar-border-width)); }
+        #chartView { /* ... (inchangé) ... */ display: none; text-align: center; }
+        h1, h2, h3 { /* ... (inchangé) ... */ text-align: center; color: var(--text-color); }
+        h1 { /* ... (inchangé) ... */ font-size: 2.5rem; font-weight: 700; margin: 20px 0; }
+        h3 { /* ... (inchangé) ... */ font-size: 1.5rem; margin-bottom: 15px; display: flex; align-items: center; justify-content: center; gap: 10px;}
+        h4 { /* ... (inchangé) ... */ margin-top: 15px; margin-bottom: 5px; color: var(--secondary-text-color); font-size: 1.1rem;}
+        h5 { /* ... (inchangé) ... */ margin-top: 10px; margin-bottom: 5px; color: var(--secondary-text-color); font-size: 1rem;}
+        .logo { /* ... (inchangé) ... */ display: block; margin: 0 auto 20px; max-width: 250px; height: auto; }
+        #globalScore { /* ... (inchangé) ... */ font-size: 1.6rem; font-weight: 600; margin-bottom: 10px; text-align: center; }
+        #pillarAverageScore { /* ... (inchangé) ... */ font-size: 1.1rem; font-weight: 500; margin-bottom: 20px; text-align: center; color: var(--secondary-text-color); }
+        .pillar { /* ... (inchangé) ... */ margin-bottom: 25px; }
+        .sub-pillar { /* ... (inchangé) ... */ margin: 20px 0; padding: 15px; border: 1px solid var(--slider-track-color); border-radius: 8px; background-color: var(--bg-color); transition: background-color 0.3s; }
+        .sub-pillar-header { /* ... (inchangé) ... */ display: flex; align-items: center; justify-content: space-between; gap: 15px; margin-bottom: 10px; }
+        .sub-pillar label { /* ... (inchangé) ... */ flex-grow: 1; font-size: 1.1rem; color: var(--secondary-text-color); display: flex; align-items: center; gap: 8px; }
+        .sub-pillar-controls { /* ... (inchangé) ... */ display: flex; align-items: center; gap: 10px; width: 60%; }
+        input[type="range"] { /* ... (inchangé) ... */ flex-grow: 1; margin-left: 10px; -webkit-appearance: none; appearance: none; height: 8px; background: var(--slider-track-color); border-radius: 5px; outline: none; transition: background 0.3s; cursor: pointer; }
+        input[type="range"]::-webkit-slider-thumb { /* ... (inchangé) ... */ -webkit-appearance: none; appearance: none; width: 20px; height: 20px; background: var(--slider-thumb-color); border-radius: 50%; cursor: pointer; transition: background 0.3s; }
+        input[type="range"]::-moz-range-thumb { /* ... (inchangé) ... */ width: 20px; height: 20px; background: var(--slider-thumb-color); border-radius: 50%; cursor: pointer; border: none; transition: background 0.3s; }
+        input[type="range"]::-webkit-slider-thumb:hover { /* ... (inchangé) ... */ background: var(--primary-hover-color); }
+        input[type="range"]::-moz-range-thumb:hover { /* ... (inchangé) ... */ background: var(--primary-hover-color); }
+        .slider-value { /* ... (inchangé) ... */ font-size: 1.1rem; font-weight: bold; min-width: 25px; text-align: right; }
+        .sub-pillar-details { /* ... (inchangé) ... */ margin-top: 10px; display: flex; gap: 15px; flex-wrap: wrap; align-items: center; }
+        .detail-group { /* ... (inchangé) ... */ display: flex; align-items: center; gap: 5px; }
+        .detail-group label { /* ... (inchangé) ... */ font-size: 0.9rem; color: var(--secondary-text-color); flex-grow: 0; }
+        .detail-group input[type="number"] { /* ... (inchangé) ... */ padding: 5px 8px; border-radius: 4px; border: 1px solid var(--slider-track-color); background-color: var(--container-bg); color: var(--text-color); font-size: 0.9rem; width: 50px; }
+        .note-button { /* ... (inchangé) ... */ background: none; border: none; padding: 3px; margin-left: 5px; cursor: pointer; color: var(--secondary-text-color); line-height: 0; }
+        .note-button:hover { /* ... (inchangé) ... */ color: var(--primary-color); }
+        .note-button svg { /* ... (inchangé) ... */ width: 18px; height: 18px; vertical-align: middle; }
+        .nav-buttons { /* ... (inchangé) ... */ display: flex; justify-content: space-between; margin-top: 30px; gap: 15px; }
+        button, .button-like { /* ... (inchangé) ... */ background-color: var(--primary-color); color: white; padding: 12px 25px; border: none; border-radius: 8px; cursor: pointer; font-size: 1rem; text-align: center; transition: background-color 0.3s, transform 0.1s; text-decoration: none; display: inline-block; }
+        button:disabled { /* ... (inchangé) ... */ background-color: var(--disabled-color); cursor: not-allowed; transform: none; }
+        button:hover:not(:disabled), .button-like:hover { /* ... (inchangé) ... */ background-color: var(--primary-hover-color); transform: translateY(-2px); }
+        button:active:not(:disabled), .button-like:active { /* ... (inchangé) ... */ transform: translateY(0); }
+        button:focus-visible, .button-like:focus-visible { /* ... (inchangé) ... */ outline: 3px solid var(--focus-ring-color); outline-offset: 2px; }
+        .danger-button { /* ... (inchangé) ... */ background-color: var(--danger-color); }
+        .danger-button:hover:not(:disabled) { /* ... (inchangé) ... */ background-color: var(--danger-hover-color); }
+        .icon-button { /* ... (inchangé) ... */ background: none; border: none; padding: 2px; cursor: pointer; color: var(--secondary-text-color); }
+        .icon-button:hover { /* ... (inchangé) ... */ color: var(--primary-color); }
+        .icon-button svg { /* ... (inchangé) ... */ width: 16px; height: 16px; vertical-align: middle; }
+        .danger-button.icon-button:hover { /* ... (inchangé) ... */ color: var(--danger-color); }
+        #radarChart { /* ... (inchangé) ... */ max-width: 100%; margin-top: 10px; background-color: var(--container-bg); border-radius: 8px; display: block; }
+
+        /* --- Popups / Modals --- */
+        #overlay {
+            display: none; /* Caché par défaut */
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 999;
+            /* === NOUVEAU : Styles Flexbox pour centrer === */
+            display: flex; /* Changé pour flex quand visible */
+            align-items: center; /* Centre verticalement */
+            justify-content: center; /* Centre horizontalement */
+            padding: 20px; /* Ajoute un peu d'espace autour si le popup est grand */
+            box-sizing: border-box;
         }
-        /* Styles pour les conteneurs principaux (Input et Chart) */
-        .main-view {
-            max-width: 700px;
-            margin: 0 auto;
+
+        /* Enlever display: none initial sur l'overlay car géré par JS */
+        #overlay:not([style*="display: block"]) {
+             display: none; /* Assure qu'il est caché par défaut si JS échoue */
+        }
+
+
+        .popup {
+            /* display: none; // Géré par JS maintenant sur l'overlay */
+            /* === ANCIEN CENTRAGE SUPPRIMÉ ===
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            */
+            /* === NOUVEAU/CONSERVÉ === */
+            position: relative; /* Nécessaire pour .popup-close-btn */
             background: var(--container-bg);
-            color: var(--text-color);
             padding: 30px;
             border-radius: 12px;
             box-shadow: 0 4px 12px var(--shadow-color);
-            transition: background-color 0.3s, color 0.3s, border-left-color 0.3s; /* Ajout transition pour border */
+            max-width: 90%;
+            max-height: 85vh; /* Utiliser vh pour être relatif à la hauteur de la fenêtre */
+            overflow-y: auto; /* Important pour le scroll interne */
+            width: 600px; /* Conserve une largeur max souhaitée */
+            z-index: 1000;
+             /* Pour s'assurer qu'il ne prend pas toute la hauteur s'il est petit */
+             flex-shrink: 0; /* Empêche le popup de rétrécir si l'overlay manque de place */
         }
-        #inputView {
-            border-left: var(--pillar-border-width) solid var(--pillar-border-color); /* Bordure colorée */
-            padding-left: calc(30px - var(--pillar-border-width)); /* Ajustement padding pour compenser bordure */
-        }
-        #chartView {
-            display: none; /* Caché par défaut */
-            text-align: center; /* Centre le contenu */
-        }
-
-        h1, h2, h3 { text-align: center; color: var(--text-color); }
-        h1 { font-size: 2.5rem; font-weight: 700; margin: 20px 0; }
-        h3 { font-size: 1.5rem; margin-bottom: 15px; display: flex; align-items: center; justify-content: center; gap: 10px;}
-        h4 { margin-top: 15px; margin-bottom: 5px; color: var(--secondary-text-color); font-size: 1.1rem;}
-        h5 { margin-top: 10px; margin-bottom: 5px; color: var(--secondary-text-color); font-size: 1rem;}
-
-        /* --- Logo & Scores --- */
-        .logo { display: block; margin: 0 auto 20px; max-width: 250px; height: auto; }
-        #globalScore { font-size: 1.6rem; font-weight: 600; margin-bottom: 10px; text-align: center; }
-        #pillarAverageScore { font-size: 1.1rem; font-weight: 500; margin-bottom: 20px; text-align: center; color: var(--secondary-text-color); }
-
-        /* --- Piliers & Sous-Piliers --- */
-        .pillar { margin-bottom: 25px; }
-        .sub-pillar {
-            margin: 20px 0; padding: 15px; border: 1px solid var(--slider-track-color);
-            border-radius: 8px; background-color: var(--bg-color); transition: background-color 0.3s;
-        }
-        .sub-pillar-header { display: flex; align-items: center; justify-content: space-between; gap: 15px; margin-bottom: 10px; }
-        .sub-pillar label { flex-grow: 1; font-size: 1.1rem; color: var(--secondary-text-color); display: flex; align-items: center; gap: 8px; }
-        .sub-pillar-controls { display: flex; align-items: center; gap: 10px; width: 60%; }
-        input[type="range"] {
-            flex-grow: 1; margin-left: 10px; -webkit-appearance: none; appearance: none;
-            height: 8px; background: var(--slider-track-color); border-radius: 5px;
-            outline: none; transition: background 0.3s; cursor: pointer;
-        }
-        input[type="range"]::-webkit-slider-thumb {
-            -webkit-appearance: none; appearance: none; width: 20px; height: 20px;
-            background: var(--slider-thumb-color); border-radius: 50%; cursor: pointer; transition: background 0.3s;
-        }
-        input[type="range"]::-moz-range-thumb {
-             width: 20px; height: 20px; background: var(--slider-thumb-color);
-             border-radius: 50%; cursor: pointer; border: none; transition: background 0.3s;
-        }
-        input[type="range"]::-webkit-slider-thumb:hover { background: var(--primary-hover-color); }
-        input[type="range"]::-moz-range-thumb:hover { background: var(--primary-hover-color); }
-        .slider-value { font-size: 1.1rem; font-weight: bold; min-width: 25px; text-align: right; }
-
-        /* --- Notes & Objectifs --- */
-        .sub-pillar-details { margin-top: 10px; display: flex; gap: 15px; flex-wrap: wrap; align-items: center; } /* align-items: center */
-        .detail-group { display: flex; align-items: center; gap: 5px; }
-        .detail-group label { font-size: 0.9rem; color: var(--secondary-text-color); flex-grow: 0; }
-        /* Suppression de l'input texte pour la note ici */
-        .detail-group input[type="number"] {
-            padding: 5px 8px; border-radius: 4px; border: 1px solid var(--slider-track-color);
-            background-color: var(--container-bg); color: var(--text-color); font-size: 0.9rem;
-            width: 50px;
-        }
-        /* Style pour le bouton icône Note */
-        .note-button {
-            background: none; border: none; padding: 3px; margin-left: 5px; /* Espace à gauche */
-            cursor: pointer; color: var(--secondary-text-color); line-height: 0; /* Important pour alignement vertical */
-        }
-        .note-button:hover { color: var(--primary-color); }
-        .note-button svg { width: 18px; height: 18px; vertical-align: middle; }
-
-        /* --- Boutons --- */
-        .nav-buttons { display: flex; justify-content: space-between; margin-top: 30px; gap: 15px; }
-        button, .button-like {
-            background-color: var(--primary-color); color: white; padding: 12px 25px;
-            border: none; border-radius: 8px; cursor: pointer; font-size: 1rem; text-align: center;
-            transition: background-color 0.3s, transform 0.1s; text-decoration: none; display: inline-block;
-        }
-        button:disabled { background-color: var(--disabled-color); cursor: not-allowed; transform: none; }
-        button:hover:not(:disabled), .button-like:hover { background-color: var(--primary-hover-color); transform: translateY(-2px); }
-        button:active:not(:disabled), .button-like:active { transform: translateY(0); }
-        button:focus-visible, .button-like:focus-visible { outline: 3px solid var(--focus-ring-color); outline-offset: 2px; }
-        .danger-button { background-color: var(--danger-color); }
-        .danger-button:hover:not(:disabled) { background-color: var(--danger-hover-color); }
-        .icon-button { background: none; border: none; padding: 2px; cursor: pointer; color: var(--secondary-text-color); }
-        .icon-button:hover { color: var(--primary-color); }
-        .icon-button svg { width: 16px; height: 16px; vertical-align: middle; }
-        .danger-button.icon-button:hover { color: var(--danger-color); }
-
-        /* --- Graphique --- */
-        /* Déplacé dans #chartView */
-        #radarChart { max-width: 100%; margin-top: 10px; background-color: var(--container-bg); border-radius: 8px; display: block; }
-
-        /* --- Popups / Modals --- */
-        .popup {
-            display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            background: var(--container-bg); padding: 30px; border-radius: 12px;
-            box-shadow: 0 4px 12px var(--shadow-color); max-width: 90%; max-height: 85%;
-            overflow-y: auto; z-index: 1000; width: 600px; /* Largeur popup standard */
-        }
-        .popup h3, .popup h4 { margin-top: 0; text-align: center; }
-        .popup-buttons { margin-top: 20px; display: flex; justify-content: flex-end; gap: 10px; flex-wrap: wrap; }
-        #overlay {
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.6); z-index: 999;
-        }
-        /* Styles spécifiques Popup Note */
-        #notePopup textarea {
-             width: 100%; min-height: 150px; margin-top: 15px; padding: 10px;
-             border: 1px solid var(--slider-track-color); border-radius: 4px;
-             background-color: var(--bg-color); color: var(--text-color); font-size: 1rem;
-             resize: vertical; /* Permet redimensionnement vertical */
-             box-sizing: border-box; /* Inclut padding/border dans la largeur */
-        }
-        #notePopup #notePopupSubPillarName { font-weight: bold; color: var(--primary-color); }
+        .popup h3, .popup h4 { /* ... (inchangé) ... */ margin-top: 0; text-align: center; padding-right: 35px; min-height: 1.5em; margin-right: 5px; }
+        .popup-buttons { /* ... (inchangé) ... */ margin-top: 20px; display: flex; justify-content: flex-end; gap: 10px; flex-wrap: wrap; }
+        #notePopup textarea { /* ... (inchangé) ... */ width: 100%; min-height: 150px; margin-top: 15px; padding: 10px; border: 1px solid var(--slider-track-color); border-radius: 4px; background-color: var(--bg-color); color: var(--text-color); font-size: 1rem; resize: vertical; box-sizing: border-box; }
+        #notePopup #notePopupSubPillarName { /* ... (inchangé) ... */ font-weight: bold; color: var(--primary-color); }
 
         /* --- Historique (dans popup) --- */
-        #historyContent ul { list-style: none; padding: 0; }
-        #historyContent li { margin-bottom: 15px; padding-bottom: 15px; border-bottom: 1px solid var(--slider-track-color); }
-        #historyContent li:last-child { border-bottom: none; }
-        .history-entry strong { font-size: 1.1em; }
-        .history-scores { margin-top: 5px; font-size: 0.9em; }
-        .score-diff { margin-left: 5px; font-size: 0.8em; }
-        .score-diff.positive { color: #2ecc71; font-weight: bold;}
-        .score-diff.negative { color: var(--danger-color); font-weight: bold; }
+        .popup-close-btn { /* ... (inchangé) ... */ position: absolute; top: 10px; right: 15px; background: none; border: none; font-size: 1.8rem; line-height: 1; padding: 0 5px; color: var(--secondary-text-color); cursor: pointer; transition: color 0.2s; z-index: 1001; }
+        .popup-close-btn:hover { /* ... (inchangé) ... */ color: var(--danger-color); }
+        #historyContent { /* ... (inchangé) ... */ margin-top: 15px; }
+        #historyContent ul { /* ... (inchangé) ... */ list-style: none; padding: 0; }
+        #historyContent li { /* ... (inchangé) ... */ margin-bottom: 15px; padding-bottom: 15px; border-bottom: 1px solid var(--slider-track-color); }
+        #historyContent li:last-child { /* ... (inchangé) ... */ border-bottom: none; }
+        .history-entry strong { /* ... (inchangé) ... */ font-size: 1.1em; }
+        .history-scores { /* ... (inchangé) ... */ margin-top: 5px; font-size: 0.9em; }
+        .score-diff { /* ... (inchangé) ... */ margin-left: 5px; font-size: 0.8em; }
+        .score-diff.positive { /* ... (inchangé) ... */ color: #2ecc71; font-weight: bold;}
+        .score-diff.negative { /* ... (inchangé) ... */ color: var(--danger-color); font-weight: bold; }
+        .history-scroll-container { /* ... (inchangé) ... */ margin-bottom: 10px; }
+        #historyScrollToBottomBtn svg { /* ... (inchangé) ... */ width: 24px; height: 24px; vertical-align: middle; }
+        #historyScrollToBottomBtn:hover { /* ... (inchangé) ... */ color: var(--primary-hover-color); background-color: var(--slider-track-color); border-radius: 50%; padding: 4px; }
+        #historyPopup .popup-buttons { /* ... (inchangé) ... */ flex-wrap: nowrap; overflow-x: auto; }
 
         /* --- Personnalisation (dans popup) --- */
-        .customization-section { margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px dashed var(--slider-track-color); }
-        .customization-item { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
-        .customization-item input[type="text"] { flex-grow: 1; padding: 8px; border: 1px solid var(--slider-track-color); border-radius: 4px; background-color: var(--bg-color); color: var(--text-color); }
+        .customization-section { /* ... (inchangé) ... */ margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px dashed var(--slider-track-color); }
+        .customization-item { /* ... (inchangé) ... */ display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+        .customization-item input[type="text"] { /* ... (inchangé) ... */ flex-grow: 1; padding: 8px; border: 1px solid var(--slider-track-color); border-radius: 4px; background-color: var(--bg-color); color: var(--text-color); }
 
         /* --- Theme Toggle --- */
-        .theme-switch-wrapper { display: flex; align-items: center; gap: 10px; position: absolute; top: 15px; right: 15px; z-index: 5; } /* z-index ajouté */
-        .theme-switch { display: inline-block; height: 24px; position: relative; width: 50px; }
-        .theme-switch input { display:none; }
-        .slider { background-color: #ccc; bottom: 0; cursor: pointer; left: 0; position: absolute; right: 0; top: 0; transition: .4s; border-radius: 34px; }
-        .slider:before { background-color: #fff; bottom: 4px; content: ""; height: 16px; left: 4px; position: absolute; transition: .4s; width: 16px; border-radius: 50%; }
-        input:checked + .slider { background-color: var(--primary-color); }
-        input:checked + .slider:before { transform: translateX(26px); }
+        .theme-switch-wrapper { /* ... (inchangé) ... */ display: flex; align-items: center; gap: 10px; position: absolute; top: 15px; right: 15px; z-index: 5; }
+        .theme-switch { /* ... (inchangé) ... */ display: inline-block; height: 24px; position: relative; width: 50px; }
+        .theme-switch input { /* ... (inchangé) ... */ display:none; }
+        .slider { /* ... (inchangé) ... */ background-color: #ccc; bottom: 0; cursor: pointer; left: 0; position: absolute; right: 0; top: 0; transition: .4s; border-radius: 34px; }
+        .slider:before { /* ... (inchangé) ... */ background-color: #fff; bottom: 4px; content: ""; height: 16px; left: 4px; position: absolute; transition: .4s; width: 16px; border-radius: 50%; }
+        input:checked + .slider { /* ... (inchangé) ... */ background-color: var(--primary-color); }
+        input:checked + .slider:before { /* ... (inchangé) ... */ transform: translateX(26px); }
 
         /* --- Aide (dans popup) --- */
-        #helpPopup ul { margin-top: 15px; padding-left: 20px; }
-        #helpPopup li { margin-bottom: 8px; }
+        #helpPopup ul { /* ... (inchangé) ... */ margin-top: 15px; padding-left: 20px; }
+        #helpPopup li { /* ... (inchangé) ... */ margin-bottom: 8px; }
 
         /* --- Utilitaires --- */
-        .hidden { display: none; }
-        .text-center { text-align: center; }
-        .mt-1 { margin-top: 10px; }
-        .mt-2 { margin-top: 20px; }
-        .mb-2 { margin-bottom: 20px; }
-        .w-100 { width: 100%; }
+        .hidden { /* ... (inchangé) ... */ display: none; }
+        .text-center { /* ... (inchangé) ... */ text-align: center; }
+        .mt-1 { /* ... (inchangé) ... */ margin-top: 10px; }
+        .mt-2 { /* ... (inchangé) ... */ margin-top: 20px; }
+        .mb-2 { /* ... (inchangé) ... */ margin-bottom: 20px; }
+        .w-100 { /* ... (inchangé) ... */ width: 100%; }
 
         /* --- Responsive --- */
         @media (max-width: 768px) {
-            body { padding: 10px; }
-            .main-view { padding: 15px; }
-             #inputView {
-                 padding-left: calc(15px - var(--pillar-border-width)); /* Ajustement padding responsive */
+            body { /* ... (inchangé) ... */ padding: 10px; }
+            .main-view { /* ... (inchangé) ... */ padding: 15px; }
+            #inputView { /* ... (inchangé) ... */ padding-left: calc(15px - var(--pillar-border-width)); }
+            h1 { /* ... (inchangé) ... */ font-size: 1.8rem; }
+            .sub-pillar-header { /* ... (inchangé) ... */ flex-direction: column; align-items: stretch; gap: 8px; }
+            .sub-pillar-controls { /* ... (inchangé) ... */ width: 100%; margin-top: 5px;}
+            input[type="range"] { /* ... (inchangé) ... */ margin-left: 0; width: 100%; }
+            .sub-pillar label { /* ... (inchangé) ... */ font-size: 1rem; }
+             /* Ajustement pour les boutons de popup sur mobile */
+             .popup-buttons {
+                 /* Conserver flex-direction: column; pour la plupart des popups sur mobile */
+                 flex-direction: column;
+                 gap: 10px;
              }
-            h1 { font-size: 1.8rem; }
-            .sub-pillar-header { flex-direction: column; align-items: stretch; gap: 8px; }
-            .sub-pillar-controls { width: 100%; margin-top: 5px;}
-            input[type="range"] { margin-left: 0; width: 100%; }
-            .sub-pillar label { font-size: 1rem; }
-            .nav-buttons, .popup-buttons { flex-direction: column; gap: 10px; }
-            button, .button-like { width: 100%; }
-            .popup { width: 90%; padding: 20px; }
-            .theme-switch-wrapper { position: static; justify-content: center; margin: 15px 0 5px; order: -1; /* Met le switch en haut sur mobile */ }
-            .detail-group { flex-basis: calc(50% - 8px); } /* Deux par ligne si possible */
-            .detail-group:has(.note-button) { flex-basis: auto; } /* Le groupe note prend moins de place */
-            h3 { font-size: 1.3rem; }
-             #notePopup textarea { min-height: 100px; }
+            button, .button-like { /* ... (inchangé) ... */ width: 100%; }
+
+             /* Surcharge pour les boutons d'historique sur mobile */
+            #historyPopup .popup-buttons {
+                 flex-direction: row;
+                 justify-content: center;
+                 flex-wrap: wrap;
+             }
+             #historyPopup .popup-buttons button,
+             #historyPopup .popup-buttons .button-like {
+                 width: auto;
+                 flex-grow: 0;
+                 flex-shrink: 0;
+                 margin-bottom: 5px;
+             }
+
+            .popup { /* ... (inchangé) ... */ width: 90%; padding: 20px; }
+            .theme-switch-wrapper { /* ... (inchangé) ... */ position: static; justify-content: center; margin: 15px 0 5px; order: -1; }
+            .detail-group { /* ... (inchangé) ... */ flex-basis: calc(50% - 8px); }
+            .detail-group:has(.note-button) { /* ... (inchangé) ... */ flex-basis: auto; }
+            h3 { /* ... (inchangé) ... */ font-size: 1.3rem; }
+             #notePopup textarea { /* ... (inchangé) ... */ min-height: 100px; }
+             .popup-close-btn { /* ... (inchangé) ... */ font-size: 1.6rem; top: 8px; right: 10px; }
+             .popup h3, .popup h4 { /* ... (inchangé) ... */ padding-right: 30px; }
         }
          @media (max-width: 480px) {
-             .detail-group { flex-basis: 100%; } /* Une par ligne sur très petit écran */
-             h1 { font-size: 1.6rem; }
-             h3 { flex-direction: column; gap: 5px; } /* Titre pilier sur 2 lignes si besoin */
+             .detail-group { /* ... (inchangé) ... */ flex-basis: 100%; }
+             h1 { /* ... (inchangé) ... */ font-size: 1.6rem; }
+             h3 { /* ... (inchangé) ... */ flex-direction: column; gap: 5px; }
          }
 
     </style>
@@ -283,958 +239,259 @@
         <img src="logo.png" alt="" class="logo" onerror="this.style.display='none'; this.alt='Logo indisponible'">
         <h1>La Roue de la Vie</h1>
         <div id="globalScore">Note globale : - / 20</div>
-        <div id="pillarDisplay">
-            <!-- Contenu du pilier actuel injecté par JS -->
-        </div>
-         <div id="pillarAverageScore">Moyenne Pilier : - / 10</div>
-
+        <div id="pillarDisplay"></div>
+        <div id="pillarAverageScore">Moyenne Pilier : - / 10</div>
         <div class="nav-buttons">
             <button id="prevBtn" onclick="changePillar(-1)" aria-label="Pilier précédent">Précédent</button>
             <button id="nextBtn" onclick="changePillar(1)" aria-label="Pilier suivant">Suivant</button>
         </div>
-
-        <!-- Boutons d'action principaux -->
         <button id="showChartBtn" onclick="showChartAndSave()" class="w-100 mt-2" aria-label="Afficher le graphique et sauvegarder l'évaluation">Afficher la Roue & Sauvegarder</button>
-
         <div class="mt-2 text-center" style="display: flex; gap: 10px; flex-wrap: wrap; justify-content: center;">
             <button onclick="openModal('historyPopup')" aria-label="Ouvrir l'historique des évaluations">Historique</button>
             <button onclick="openModal('customizationPopup')" aria-label="Ouvrir les options de personnalisation">Personnaliser</button>
             <button onclick="openModal('helpPopup')" aria-label="Ouvrir l'aide">Aide</button>
-             <!-- Input caché pour l'import -->
-             <input type="file" id="importFile" accept=".json" style="display: none;" onchange="importData(event)">
-             <button onclick="document.getElementById('importFile').click()" aria-label="Importer des données depuis un fichier JSON">Importer</button>
+            <input type="file" id="importFile" accept=".json" style="display: none;" onchange="importData(event)">
+            <button onclick="document.getElementById('importFile').click()" aria-label="Importer des données depuis un fichier JSON">Importer</button>
         </div>
-    </div>
+    </div> <!-- Fin #inputView -->
 
     <!-- === Vue Graphique === -->
     <div id="chartView" class="main-view">
          <h2>Votre Roue de la Vie</h2>
          <canvas id="radarChart" aria-label="Graphique radar des scores de la roue de la vie"></canvas>
          <button onclick="showInputView()" class="w-100 mt-2 mb-2" aria-label="Revenir à la saisie des notes">Retour au Menu</button>
-     </div>
+     </div> <!-- Fin #chartView -->
 
-    <!-- Overlay pour les popups -->
-    <div id="overlay" onclick="closeAllModals()"></div>
+    <!-- Overlay pour les popups (maintenant conteneur Flexbox) -->
+    <div id="overlay" onclick="closeAllModals()">
+        <!-- Les popups sont maintenant des enfants directs de l'overlay pour le centrage Flexbox -->
 
-    <!-- === Popups === -->
+        <!-- Popup Historique -->
+        <div id="historyPopup" class="popup" role="dialog" aria-labelledby="historyTitle" aria-modal="true" onclick="event.stopPropagation()"> <!-- Stop propagation pour éviter fermeture overlay -->
+            <button onclick="closeModal('historyPopup')" class="popup-close-btn" aria-label="Fermer">×</button>
+            <h3 id="historyTitle">Historique des évaluations</h3>
+            <div class="history-scroll-container text-center">
+                <button id="historyScrollToBottomBtn" class="icon-button" onclick="historyScrollToBottom()" aria-label="Aller aux boutons en bas" title="Aller aux boutons en bas" style="display: none;">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="24" height="24"><path d="M11,4H13V16L18.5,10.5L19.92,11.92L12,19.84L4.08,11.92L5.5,10.5L11,16V4Z" /></svg>
+                </button>
+            </div>
+            <div id="historyContent"></div>
+            <div class="popup-buttons">
+                <button onclick="exportData()" class="button-like" style="display: none;">Exporter Tout (JSON)</button>
+                <button onclick="copyHistory()" aria-label="Copier l'historique et prompt pour analyse IA">Copier pour IA</button>
+                <button onclick="resetApp()" class="danger-button" aria-label="Réinitialiser toutes les données de l'application">Tout Réinitialiser</button>
+                <button onclick="closeModal('historyPopup')" aria-label="Fermer la fenêtre d'historique">Fermer</button>
+            </div>
+        </div> <!-- Fin #historyPopup -->
 
-    <!-- Popup Historique -->
-    <div id="historyPopup" class="popup" role="dialog" aria-labelledby="historyTitle" aria-modal="true">
-        <h3 id="historyTitle">Historique des évaluations</h3>
-        <div id="historyContent"></div>
-        <div class="popup-buttons">
-            <button onclick="exportData()" class="button-like">Exporter Tout (JSON)</button>
-            <button onclick="copyHistory()" aria-label="Copier l'historique au format JSON avec prompt de coaching">Copier (JSON+Prompt)</button>
-            <button onclick="resetApp()" class="danger-button" aria-label="Réinitialiser toutes les données de l'application">Tout Réinitialiser</button>
-            <button onclick="closeModal('historyPopup')" aria-label="Fermer la fenêtre d'historique">Fermer</button>
-        </div>
-    </div>
+         <!-- Popup Personnalisation -->
+        <div id="customizationPopup" class="popup" role="dialog" aria-labelledby="customizationTitle" aria-modal="true" onclick="event.stopPropagation()">
+            <button onclick="closeModal('customizationPopup')" class="popup-close-btn" aria-label="Fermer">×</button>
+            <h3 id="customizationTitle">Personnaliser les Piliers</h3>
+            <div id="customizationContent"></div>
+            <p style="font-size: 0.9em; color: var(--secondary-text-color);">Note: L'ajout de nouveaux piliers/sous-piliers n'est pas supporté. La suppression est définitive pour la session (sauvegardée ensuite).</p>
+            <div class="popup-buttons">
+                <button onclick="saveCustomization()" aria-label="Sauvegarder les changements de personnalisation">Sauvegarder & Fermer</button>
+                <button onclick="closeModal('customizationPopup')" aria-label="Annuler et fermer la personnalisation">Annuler</button>
+            </div>
+        </div> <!-- Fin #customizationPopup -->
 
-     <!-- Popup Personnalisation -->
-    <div id="customizationPopup" class="popup" role="dialog" aria-labelledby="customizationTitle" aria-modal="true">
-        <h3 id="customizationTitle">Personnaliser les Piliers</h3>
-        <div id="customizationContent">
-            <!-- Contenu généré par JS -->
-        </div>
-         <p style="font-size: 0.9em; color: var(--secondary-text-color);">Note: L'ajout de nouveaux piliers/sous-piliers n'est pas supporté. La suppression est définitive pour la session (sauvegardée ensuite).</p>
-        <div class="popup-buttons">
-            <button onclick="saveCustomization()" aria-label="Sauvegarder les changements de personnalisation">Sauvegarder & Fermer</button>
-            <button onclick="closeModal('customizationPopup')" aria-label="Annuler et fermer la personnalisation">Annuler</button>
-        </div>
-    </div>
+        <!-- Popup Aide -->
+        <div id="helpPopup" class="popup" role="dialog" aria-labelledby="helpTitle" aria-modal="true" onclick="event.stopPropagation()">
+            <button onclick="closeModal('helpPopup')" class="popup-close-btn" aria-label="Fermer">×</button>
+            <h3 id="helpTitle">Aide - La Roue de la Vie</h3>
+            <p>La Roue de la Vie est un outil pour évaluer votre satisfaction dans différents domaines clés.</p>
+            <ul>
+                <li>Naviguez entre les "Piliers" avec "Précédent" / "Suivant". La couleur de la marge gauche indique le pilier actuel.</li>
+                <li>Notez chaque "Sous-Pilier" de 1 (bas) à 10 (haut) avec le curseur.</li>
+                <li>Cliquez sur l'icône <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" style="width:1em; height:1em; vertical-align: -0.125em;"><path d="M20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18,2.9 17.35,2.9 16.96,3.29L15.12,5.12L18.87,8.87M3,17.25V21H6.75L17.81,9.93L14.06,6.18L3,17.25Z" /></svg> à côté de "Objectif" pour ajouter une note détaillée dans une fenêtre dédiée.</li>
+                <li>Définissez un objectif optionnel (1-10) pour chaque sous-pilier.</li>
+                <li>Cliquez sur "Afficher la Roue & Sauvegarder" pour voir le graphique sur une nouvelle page et enregistrer l'évaluation.</li>
+                <li>Depuis la page du graphique, cliquez sur "Retour au Menu" pour revenir à la saisie.</li>
+                <li>Dans la fenêtre "Historique", si la liste est longue, utilisez le bouton <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" style="width:1em; height:1em; vertical-align: -0.125em;"><path d="M11,4H13V16L18.5,10.5L19.92,11.92L12,19.84L4.08,11.92L5.5,10.5L11,16V4Z" /></svg> en haut pour descendre rapidement vers les boutons d'action.</li>
+                <li>"Historique" montre les évaluations passées et leur évolution. Vous pouvez fermer les fenêtres popup avec le bouton 'Fermer' ou la croix (×) en haut à droite.</li>
+                <li>"Personnaliser" permet de renommer ou supprimer des piliers/sous-piliers.</li>
+                <li>Utilisez l'interrupteur (☀️/🌙) pour changer de thème.</li>
+                <li>Exportez/Importez vos données via l'Historique ou les boutons principaux.</li>
+            </ul>
+            <div class="popup-buttons">
+                <button onclick="closeModal('helpPopup')" aria-label="Fermer la fenêtre d'aide">Fermer</button>
+            </div>
+        </div> <!-- Fin #helpPopup -->
 
-    <!-- Popup Aide -->
-    <div id="helpPopup" class="popup" role="dialog" aria-labelledby="helpTitle" aria-modal="true">
-        <h3 id="helpTitle">Aide - La Roue de la Vie</h3>
-        <p>La Roue de la Vie est un outil pour évaluer votre satisfaction dans différents domaines clés.</p>
-        <ul>
-            <li>Naviguez entre les "Piliers" avec "Précédent" / "Suivant". La couleur de la marge gauche indique le pilier actuel.</li>
-            <li>Notez chaque "Sous-Pilier" de 1 (bas) à 10 (haut) avec le curseur.</li>
-            <li>Cliquez sur l'icône <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" style="width:1em; height:1em; vertical-align: -0.125em;"><path d="M20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18,2.9 17.35,2.9 16.96,3.29L15.12,5.12L18.87,8.87M3,17.25V21H6.75L17.81,9.93L14.06,6.18L3,17.25Z" /></svg> à côté de "Objectif" pour ajouter une note détaillée dans une fenêtre dédiée.</li>
-            <li>Définissez un objectif optionnel (1-10) pour chaque sous-pilier.</li>
-            <li>Cliquez sur "Afficher la Roue & Sauvegarder" pour voir le graphique sur une nouvelle page et enregistrer l'évaluation.</li>
-            <li>Depuis la page du graphique, cliquez sur "Retour au Menu" pour revenir à la saisie.</li>
-            <li>"Historique" montre les évaluations passées et leur évolution.</li>
-            <li>"Personnaliser" permet de renommer ou supprimer des piliers/sous-piliers.</li>
-            <li>Utilisez l'interrupteur (☀️/🌙) pour changer de thème.</li>
-            <li>Exportez/Importez vos données via l'Historique ou les boutons principaux.</li>
-        </ul>
-        <div class="popup-buttons">
-            <button onclick="closeModal('helpPopup')" aria-label="Fermer la fenêtre d'aide">Fermer</button>
-        </div>
-    </div>
+        <!-- Popup pour la Note -->
+        <div id="notePopup" class="popup" role="dialog" aria-labelledby="notePopupTitle" aria-modal="true" onclick="event.stopPropagation()">
+            <button onclick="closeModal('notePopup')" class="popup-close-btn" aria-label="Fermer">×</button>
+            <h4 id="notePopupTitle">Ajouter/Modifier une Note pour <span id="notePopupSubPillarName"></span></h4>
+            <textarea id="notePopupTextarea" placeholder="Écrivez vos réflexions, détails, contexte ici..."></textarea>
+            <div class="popup-buttons">
+                <button id="saveNoteBtn" onclick="saveNoteFromPopup()" aria-label="Sauvegarder la note">Sauvegarder</button>
+                <button onclick="closeModal('notePopup')" aria-label="Annuler et fermer sans sauvegarder la note">Annuler</button>
+            </div>
+        </div> <!-- Fin #notePopup -->
 
-    <!-- Popup pour la Note -->
-    <div id="notePopup" class="popup" role="dialog" aria-labelledby="notePopupTitle" aria-modal="true">
-        <h4 id="notePopupTitle">Ajouter/Modifier une Note pour <span id="notePopupSubPillarName"></span></h4>
-        <textarea id="notePopupTextarea" placeholder="Écrivez vos réflexions, détails, contexte ici..."></textarea>
-        <div class="popup-buttons">
-            <button id="saveNoteBtn" onclick="saveNoteFromPopup()" aria-label="Sauvegarder la note">Sauvegarder</button>
-            <button onclick="closeModal('notePopup')" aria-label="Annuler et fermer sans sauvegarder la note">Annuler</button>
-        </div>
-    </div>
+    </div> <!-- Fin #overlay -->
+
 
     <!-- Librairie Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+
+    <!-- Début du Script Principal -->
     <script>
-        // --- SVG Icons ---
+        // --- SECTION: CONSTANTES & VARIABLES GLOBALES ---
         const deleteIcon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z" /></svg>`;
-        const noteIcon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18,2.9 17.35,2.9 16.96,3.29L15.12,5.12L18.87,8.87M3,17.25V21H6.75L17.81,9.93L14.06,6.18L3,17.25Z" /></svg>`; // Pencil Icon
-
-        // --- Default Structure ---
-        const defaultPillarsData = [
-             { id: "sante", name: "Santé", subPillars: [
-                { id: "sante-phy", name: "Physique", score: 5, note: "", goal: 8 }, { id: "sante-men", name: "Mental", score: 5, note: "", goal: 8 },
-                { id: "sante-som", name: "Sommeil", score: 5, note: "", goal: 7 }, { id: "sante-nut", name: "Nutrition", score: 5, note: "", goal: 7 },
-                { id: "sante-ene", name: "Énergie", score: 5, note: "", goal: 8 } ]},
-             { id: "famille", name: "Famille", subPillars: [
-                { id: "fam-pro", name: "Proches", score: 5, note: "", goal: 8 }, { id: "fam-com", name: "Communication", score: 5, note: "", goal: 7 },
-                { id: "fam-tmp", name: "Temps passé", score: 5, note: "", goal: 7 }, { id: "fam-sou", name: "Soutien", score: 5, note: "", goal: 8 },
-                { id: "fam-har", name: "Harmonie", score: 5, note: "", goal: 8 } ]},
-            { id: "finances", name: "Finances", subPillars: ["Revenus", "Épargne", "Dépenses", "Investissements", "Sécurité"].map((n, i) => ({ id: `fin-${i}`, name: n, score: 5, note: "", goal: 7 })) },
-            { id: "carriere", name: "Carrière", subPillars: ["Satisfaction", "Progression", "Équilibre", "Compétences", "Reconnaissance"].map((n, i) => ({ id: `car-${i}`, name: n, score: 5, note: "", goal: 8 })) },
-            { id: "loisirs", name: "Loisirs", subPillars: ["Temps libre", "Passions", "Détente", "Créativité", "Social"].map((n, i) => ({ id: `loi-${i}`, name: n, score: 5, note: "", goal: 7 })) },
-            { id: "devperso", name: "Développement perso", subPillars: ["Apprentissage", "Objectifs", "Confiance", "Résilience", "Clarté"].map((n, i) => ({ id: `dev-${i}`, name: n, score: 5, note: "", goal: 9 })) },
-            { id: "relations", name: "Relations sociales", subPillars: ["Amis", "Réseau", "Écoute", "Partage", "Qualité"].map((n, i) => ({ id: `rel-${i}`, name: n, score: 5, note: "", goal: 7 })) },
-            { id: "cadrevie", name: "Cadre de vie", subPillars: ["Logement", "Environnement", "Organisation", "Confort", "Esthétique"].map((n, i) => ({ id: `cad-${i}`, name: n, score: 5, note: "", goal: 8 })) }
-        ];
-
-        // --- State Variables ---
-        let pillars = [];
-        let history = [];
-        let currentPillarIndex = 0;
-        let chartInstance = null;
-        let tempCustomPillars = [];
-
-        // --- Pillar Colors ---
-        // Doit correspondre aux variables CSS --pillar-color-X
-        const pillarColors = [
-            'var(--pillar-color-0)', 'var(--pillar-color-1)', 'var(--pillar-color-2)', 'var(--pillar-color-3)',
-            'var(--pillar-color-4)', 'var(--pillar-color-5)', 'var(--pillar-color-6)', 'var(--pillar-color-7)'
-        ];
-
-        // --- DOM Elements ---
-        const inputView = document.getElementById('inputView');
-        const chartView = document.getElementById('chartView');
-        const pillarDisplay = document.getElementById('pillarDisplay');
-        const globalScoreDisplay = document.getElementById('globalScore');
-        const pillarAverageScoreDisplay = document.getElementById('pillarAverageScore');
-        const prevBtn = document.getElementById('prevBtn');
-        const nextBtn = document.getElementById('nextBtn');
-        const radarChartCanvas = document.getElementById('radarChart');
-        const historyContent = document.getElementById('historyContent');
-        const overlay = document.getElementById('overlay');
-        const themeCheckbox = document.getElementById('theme-checkbox');
-        const customizationContent = document.getElementById('customizationContent');
-        const showChartBtn = document.getElementById('showChartBtn');
-        // Note Popup Elements
-        const notePopup = document.getElementById('notePopup');
-        const notePopupSubPillarName = document.getElementById('notePopupSubPillarName');
-        const notePopupTextarea = document.getElementById('notePopupTextarea');
-        const saveNoteBtn = document.getElementById('saveNoteBtn');
-
-
-        // --- Helper Functions ---
-        function getCssVar(varName) {
-            return getComputedStyle(document.documentElement).getPropertyValue(varName).trim();
-        }
-
-        function generateId(prefix = 'item') {
-            return `${prefix.toLowerCase().replace(/[^a-z0-9]+/g, '-')}-${Date.now().toString(36)}-${Math.random().toString(36).substr(2, 5)}`;
-        }
-
-        // --- Initialization ---
-        function initializeApp() {
-            loadData();
-            setupTheme(); // Applique le thème initial AVANT le premier rendu
-            if (pillars.length > 0) {
-                 renderPillar(); // Affiche le premier pilier
-                 showInputView(); // Assure que la vue input est visible
-            } else {
-                 handleNoPillars();
-            }
-            addEventListeners();
-        }
-
-        function handleNoPillars() {
-             inputView.style.display = 'block'; // Assure que l'input view est visible même si vide
-             chartView.style.display = 'none';
-             pillarDisplay.innerHTML = "<p class='text-center'>Aucun pilier défini. Veuillez réinitialiser l'application ou importer des données.</p>";
-             globalScoreDisplay.textContent = `Note globale : - / 20`;
-             pillarAverageScoreDisplay.textContent = `Moyenne Pilier : - / 10`;
-             prevBtn.disabled = true;
-             nextBtn.disabled = true;
-             showChartBtn.disabled = true;
-             inputView.style.setProperty('--pillar-border-color', 'transparent'); // Reset border color
-             if (chartInstance) { chartInstance.destroy(); chartInstance = null; }
-             // radarChartCanvas.style.display = 'none'; // Déjà dans chartView qui est cachée
-        }
-
-
-        // --- Data Management (LocalStorage) ---
-        function loadData() {
-            const storedPillars = localStorage.getItem('wheelOfLife_pillars');
-            const storedHistory = localStorage.getItem('wheelOfLife_history');
-
-            try {
-                const parsedPillars = storedPillars ? JSON.parse(storedPillars) : null;
-                // Utilise defaultPillarsData si storage vide, invalide OU si le tableau chargé est vide
-                 pillars = parsedPillars && Array.isArray(parsedPillars) && parsedPillars.length > 0
-                            ? migrateDataStructure(parsedPillars)
-                            : JSON.parse(JSON.stringify(defaultPillarsData)); // Deep copy defaults
-            } catch (e) {
-                console.error("Erreur chargement piliers, fallback aux défauts.", e);
-                pillars = JSON.parse(JSON.stringify(defaultPillarsData));
-            }
-
-             try {
-                 const parsedHistory = storedHistory ? JSON.parse(storedHistory) : [];
-                 history = Array.isArray(parsedHistory) ? parsedHistory : [];
-                 history.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
-             } catch (e) {
-                 console.error("Erreur chargement historique, réinitialisation.", e);
-                 history = [];
-             }
-
-            // Re-vérification / Nettoyage final
-             if (!Array.isArray(pillars) || pillars.length === 0) {
-                 console.warn("Pillars array invalid or empty after load attempt, resetting to defaults.");
-                 pillars = JSON.parse(JSON.stringify(defaultPillarsData));
-            } else {
-                pillars = migrateDataStructure(pillars); // Assure que la structure est toujours correcte
-            }
-
-            currentPillarIndex = 0;
-        }
-
-        function migrateDataStructure(loadedPillars) {
-            if (!Array.isArray(loadedPillars)) return []; // Retourne tableau vide si l'entrée n'est pas un tableau
-
-            return loadedPillars.map((p, pIdx) => {
-                const pillarBase = p || {}; // Gère le cas où p est null/undefined
-                return {
-                    id: pillarBase.id || generateId(pillarBase.name || `pillar-${pIdx}`),
-                    name: pillarBase.name || `Pilier ${pIdx + 1}`,
-                    subPillars: Array.isArray(pillarBase.subPillars) ? pillarBase.subPillars.map((sp, spIdx) => {
-                        const subPillarBase = typeof sp === 'string' ? { name: sp } : (sp || {}); // Gère string ou objet null/undefined
-                        return {
-                            id: subPillarBase.id || generateId((pillarBase.id || `p${pIdx}`) + '-' + (subPillarBase.name || `sub-${spIdx}`)),
-                            name: subPillarBase.name || `Sous-pilier ${spIdx + 1}`,
-                            score: (subPillarBase.score !== undefined && !isNaN(parseInt(subPillarBase.score))) ? parseInt(subPillarBase.score) : 5,
-                            note: subPillarBase.note || "", // Assure que 'note' existe
-                            goal: (subPillarBase.goal !== undefined && !isNaN(parseInt(subPillarBase.goal))) ? parseInt(subPillarBase.goal) : 7
-                        };
-                    }) : [] // Retourne un tableau vide si subPillars n'est pas un tableau
-                };
-            }).filter(p => p.name && p.id); // Filtre les piliers potentiellement invalides
-        }
-
-
-        function saveData() {
-            try {
-                localStorage.setItem('wheelOfLife_pillars', JSON.stringify(pillars));
-                localStorage.setItem('wheelOfLife_history', JSON.stringify(history));
-            } catch (e) {
-                 console.error("Erreur lors de la sauvegarde des données:", e);
-                 alert("Erreur: Impossible de sauvegarder les données. Le stockage local est peut-être plein ou indisponible.");
-            }
-        }
-
-        // --- Rendering ---
-        function renderPillar() {
-             if (!pillars || pillars.length === 0) {
-                 handleNoPillars();
-                 return;
-             }
-             if (currentPillarIndex < 0 || currentPillarIndex >= pillars.length) {
-                 currentPillarIndex = 0;
-             }
-
-            const pillar = pillars[currentPillarIndex];
-            if (!pillar) {
-                console.error("Pilier introuvable à l'index", currentPillarIndex);
-                handleNoPillars(); return;
-            }
-
-            // --- MAJ Couleur Marge ---
-            const pillarColor = pillarColors[currentPillarIndex % pillarColors.length]; // Utilise modulo pour cycler les couleurs si plus de 8 piliers
-             inputView.style.setProperty('--pillar-border-color', pillarColor);
-             // --- Fin MAJ Couleur ---
-
-            let pillarHTML = `
-                <h3 id="pillar-title">
-                    <span>${pillar.name}</span>
-                    (${currentPillarIndex + 1}/${pillars.length})
-                </h3>`;
-
-            if (!pillar.subPillars || pillar.subPillars.length === 0) {
-                 pillarHTML += "<p class='text-center'>Ce pilier n'a pas de sous-piliers définis.</p>";
-            } else {
-                pillar.subPillars.forEach((subPillar) => {
-                    const displayScore = (subPillar.score !== undefined && !isNaN(subPillar.score)) ? subPillar.score : 5;
-                    const displayGoal = (subPillar.goal !== undefined && !isNaN(subPillar.goal)) ? subPillar.goal : 7;
-                    // Note n'est plus affichée directement ici
-
-                    pillarHTML += `
-                        <div class="sub-pillar" id="subpillar-div-${subPillar.id}">
-                            <div class="sub-pillar-header">
-                                <label for="range-${subPillar.id}" id="label-${subPillar.id}">
-                                    <span>${subPillar.name}</span>
-                                </label>
-                                <div class="sub-pillar-controls">
-                                    <input type="range" id="range-${subPillar.id}" min="1" max="10" value="${displayScore}"
-                                        oninput="updateScore('${pillar.id}', '${subPillar.id}', this.value, true)"
-                                        aria-labelledby="label-${subPillar.id}"
-                                        aria-valuemin="1" aria-valuemax="10" aria-valuenow="${displayScore}">
-                                    <output class="slider-value" for="range-${subPillar.id}">${displayScore}</output>
-                                </div>
-                            </div>
-                            <div class="sub-pillar-details">
-                                 <div class="detail-group">
-                                    <label for="goal-${subPillar.id}">Objectif:</label>
-                                    <input type="number" id="goal-${subPillar.id}" min="1" max="10" value="${displayGoal}"
-                                           onchange="updateGoal('${pillar.id}', '${subPillar.id}', this.value)">
-                                    </div>
-                                <div class="detail-group">
-                                    <button class="note-button" onclick="openNotePopup('${pillar.id}', '${subPillar.id}')" aria-label="Ajouter ou modifier une note pour ${subPillar.name}">
-                                         ${noteIcon}
-                                     </button>
-                                 </div>
-                                <!-- L'ancien input 'note' est supprimé -->
-                            </div>
-                        </div>`;
-                });
-            }
-            pillarDisplay.innerHTML = pillarHTML;
-
-            updateNavigationButtons();
-            updateScoresDisplay();
-            showChartBtn.disabled = false;
-        }
-
-        // --- Updates & Calculations ---
-        function findSubPillar(pillarId, subPillarId) {
-            const pillar = pillars.find(p => p.id === pillarId);
-            if (!pillar || !Array.isArray(pillar.subPillars)) return null;
-            return pillar.subPillars.find(sp => sp.id === subPillarId);
-        }
-
-        function updateScore(pillarId, subPillarId, value, fromInput = false) {
-            const score = parseInt(value);
-            if (isNaN(score)) return;
-
-            const subPillar = findSubPillar(pillarId, subPillarId);
-            if (subPillar) {
-                 subPillar.score = score;
-                 if (fromInput) {
-                    const output = document.querySelector(`output[for='range-${subPillarId}']`);
-                    if (output) output.textContent = score;
-                    const rangeInput = document.getElementById(`range-${subPillarId}`);
-                    if (rangeInput) rangeInput.setAttribute('aria-valuenow', score);
-                 }
-                 updateScoresDisplay();
-                 saveData();
-            }
-        }
-
-         // Fonction updateNote modifiée pour être appelée depuis la popup
-         function updateNote(pillarId, subPillarId, value) {
-             const subPillar = findSubPillar(pillarId, subPillarId);
-             if (subPillar) {
-                 subPillar.note = value.trim(); // Toujours trimmer la valeur
-                 saveData();
-                 console.log(`Note pour ${subPillar.name} mise à jour.`);
-             } else {
-                 console.error("Impossible de trouver le sous-pilier pour mettre à jour la note:", pillarId, subPillarId);
-             }
-         }
-
-
-        function updateGoal(pillarId, subPillarId, value) {
-            const goal = parseInt(value);
-             const input = document.getElementById(`goal-${subPillarId}`);
-
-             const subPillar = findSubPillar(pillarId, subPillarId);
-             if (subPillar) {
-                 if (!isNaN(goal) && goal >= 1 && goal <= 10) {
-                     subPillar.goal = goal;
-                     saveData();
-                 } else {
-                     if(input) input.value = subPillar.goal !== undefined ? subPillar.goal : 7;
-                     console.warn("Objectif invalide, remis à la valeur précédente:", subPillar.goal);
-                     alert("L'objectif doit être un nombre entre 1 et 10.");
-                 }
-             }
-         }
-
-        function calculateAverages() {
-            const pillarAverages = pillars.map(pillar => {
-                 if (!pillar.subPillars || pillar.subPillars.length === 0) return 0;
-                 const sum = pillar.subPillars.reduce((acc, sub) => acc + (sub.score || 0), 0);
-                 return sum / pillar.subPillars.length;
-            });
-            const validAverages = pillarAverages.filter(avg => !isNaN(avg));
-            const globalAverage = validAverages.length > 0 ? validAverages.reduce((sum, avg) => sum + avg, 0) / validAverages.length : 0;
-            const globalScore = globalAverage * 2;
-            return { pillarAverages, globalScore };
-        }
-
-        function updateScoresDisplay() {
-            if (!pillars || pillars.length === 0) return;
-
-            const { pillarAverages, globalScore } = calculateAverages();
-            globalScoreDisplay.textContent = `Note globale : ${globalScore.toFixed(1)} / 20`;
-
-            const currentPillarAverage = pillarAverages[currentPillarIndex];
-            pillarAverageScoreDisplay.textContent = `Moyenne Pilier : ${currentPillarAverage !== undefined && !isNaN(currentPillarAverage) ? currentPillarAverage.toFixed(1) : '-'} / 10`;
-        }
-
-        // --- Navigation ---
-        function changePillar(direction) {
-            if (!pillars || pillars.length === 0) return;
-            currentPillarIndex += direction;
-            // Boucle si on dépasse les limites
-            if (currentPillarIndex < 0) {
-                 currentPillarIndex = pillars.length - 1;
-             } else if (currentPillarIndex >= pillars.length) {
-                 currentPillarIndex = 0;
-             }
-            renderPillar();
-        }
-
-        function updateNavigationButtons() {
-            const numPillars = pillars ? pillars.length : 0;
-             // Les boutons sont toujours actifs s'il y a plus d'un pilier, car on boucle maintenant
-            prevBtn.disabled = numPillars <= 1;
-            nextBtn.disabled = numPillars <= 1;
-        }
-
-         // --- View Management ---
-         function showInputView() {
-             inputView.style.display = 'block';
-             chartView.style.display = 'none';
-             // S'assurer que la couleur de bordure est correcte au retour
-             if (pillars.length > 0 && currentPillarIndex >= 0 && currentPillarIndex < pillars.length) {
-                 const pillarColor = pillarColors[currentPillarIndex % pillarColors.length];
-                 inputView.style.setProperty('--pillar-border-color', pillarColor);
-             }
-             // Redonne le focus à un élément pertinent si possible
-              const focusableElement = inputView.querySelector('button:not(:disabled), input[type=range]');
-              if (focusableElement) {
-                  focusableElement.focus();
-              }
-         }
-
-         function showChartView() {
-             inputView.style.display = 'none';
-             chartView.style.display = 'block';
-             window.scrollTo({ top: 0, behavior: 'smooth' }); // Remonte en haut de la page pour voir le titre
-             // Focus sur le bouton retour
-             const returnBtn = chartView.querySelector('button');
-             if(returnBtn) returnBtn.focus();
-         }
-
-        // --- Chart ---
-        function renderChart() {
-            if (!pillars || pillars.length === 0) {
-                 if (chartInstance) { chartInstance.destroy(); chartInstance = null; }
-                 // radarChartCanvas.style.display = 'none'; // Inclus dans chartView cachée
-                 return;
-             }
-
-            const { pillarAverages } = calculateAverages();
-            const pillarGoalsAverages = pillars.map(pillar => {
-                 if (!pillar.subPillars || pillar.subPillars.length === 0) return 0;
-                 const sum = pillar.subPillars.reduce((acc, sub) => acc + (sub.goal || 0), 0);
-                 return sum / pillar.subPillars.length;
-            });
-            const labels = pillars.map(p => p.name);
-
-            // Récupération explicite des couleurs JUSTE AVANT le rendu
-            const scoreBgColor = getCssVar('--chart-bg-color');
-            const scoreBorderColor = getCssVar('--chart-border-color');
-            const goalBgColor = getCssVar('--goal-bg-color');
-            const goalBorderColor = getCssVar('--goal-border-color');
-            const textColor = getCssVar('--text-color');
-            const secondaryTextColor = getCssVar('--secondary-text-color');
-            const gridColor = getCssVar('--grid-color');
-            const containerBgColor = getCssVar('--container-bg');
-            const tooltipBgColor = getCssVar('--tooltip-bg');
-
-            const chartData = {
-                labels: labels,
-                datasets: [
-                    {
-                        label: 'Score Actuel', data: pillarAverages,
-                        backgroundColor: scoreBgColor, borderColor: scoreBorderColor,
-                        borderWidth: 2.5, pointBackgroundColor: scoreBorderColor, pointBorderColor: '#fff',
-                        pointHoverBackgroundColor: '#fff', pointHoverBorderColor: scoreBorderColor,
-                        pointRadius: 4, pointHoverRadius: 6
-                    },
-                     {
-                        label: 'Objectif Moyen', data: pillarGoalsAverages,
-                        backgroundColor: goalBgColor, borderColor: goalBorderColor,
-                        borderWidth: 1.5, borderDash: [6, 3], pointBackgroundColor: goalBorderColor, pointBorderColor: '#fff',
-                        pointHoverBackgroundColor: '#fff', pointHoverBorderColor: goalBorderColor,
-                        pointRadius: 4, pointHoverRadius: 6
-                    }
-                ]
-            };
-
-            const chartOptions = {
-                responsive: true, maintainAspectRatio: true,
-                 scales: {
-                    r: {
-                        min: 0, max: 10,
-                        ticks: { stepSize: 2, backdropColor: containerBgColor, color: secondaryTextColor },
-                         pointLabels: { color: textColor, font: { size: 12 } },
-                        grid: { color: gridColor }, angleLines: { color: gridColor }
-                    }
-                },
-                plugins: {
-                    legend: {
-                        position: 'top', labels: { color: textColor, usePointStyle: false, boxWidth: 20, padding: 20 }
-                    },
-                    tooltip: {
-                        enabled: true, backgroundColor: tooltipBgColor, titleColor: textColor, bodyColor: textColor,
-                        borderColor: gridColor, borderWidth: 1, padding: 10, cornerRadius: 4, usePointStyle: true,
-                        callbacks: {
-                            label: function(context) {
-                                let label = context.dataset.label || '';
-                                if (label) { label += ': '; }
-                                if (context.parsed.r !== null) { label += context.parsed.r.toFixed(1); }
-                                return label;
-                            }
-                        }
-                    }
-                },
-            };
-
-            // radarChartCanvas.style.display = 'block'; // Géré par showChartView()
-            const ctx = radarChartCanvas.getContext('2d');
-
-            if (chartInstance) {
-                chartInstance.data = chartData;
-                chartInstance.options = chartOptions;
-                chartInstance.update();
-            } else {
-                chartInstance = new Chart(ctx, { type: 'radar', data: chartData, options: chartOptions });
-            }
-        }
-
-        // Fonction modifiée : calcule, rend chart, sauvegarde, PUIS change de vue
-        function showChartAndSave() {
-            if (!pillars || pillars.length === 0) {
-                alert("Aucun pilier à afficher ou sauvegarder.");
-                return;
-            }
-            // 1. Rendre/Mettre à jour le graphique (cela calcule aussi les moyennes)
-            renderChart();
-
-            // 2. Sauvegarder dans l'historique
-            const { pillarAverages } = calculateAverages(); // Re-calculer juste pour la sauvegarde si besoin
-            saveToHistory(pillarAverages);
-
-            // 3. Changer de vue pour afficher le graphique
-            showChartView();
-        }
-
-
-        // --- History Management ---
-        function saveToHistory(averages) {
-             const timestamp = Date.now();
-             const entry = {
-                id: `hist-${timestamp}-${Math.random().toString(36).substr(2, 5)}`,
-                date: new Date(timestamp).toLocaleString('fr-FR', { dateStyle: 'short', timeStyle: 'short' }),
-                timestamp: timestamp,
-                scores: pillars.map((p, index) => ({
-                    pillarId: p.id, pillarName: p.name,
-                    average: (!isNaN(averages[index]) ? averages[index] : 0),
-                    subPillars: (p.subPillars || []).map(sp => ({
-                        subPillarId: sp.id, name: sp.name,
-                        score: sp.score, note: sp.note, goal: sp.goal
-                    }))
-                }))
-            };
-            history.push(entry);
-            history.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
-            saveData();
-            console.log("Évaluation sauvegardée:", entry.date);
-        }
-
-        function showHistory() {
-            historyContent.innerHTML = '';
-             if (history.length === 0) {
-                historyContent.innerHTML = "<p>Aucun historique disponible.</p>";
-                return;
-            }
-
-            const ul = document.createElement('ul');
-            history.forEach((entry, index) => {
-                if (!entry || !entry.scores) return;
-
-                const li = document.createElement('li');
-                li.className = 'history-entry';
-                 const entryAverages = entry.scores.map(s => s.average);
-                 const validEntryAverages = entryAverages.filter(avg => !isNaN(avg));
-                 const entryGlobalScore = validEntryAverages.length > 0
-                                        ? (validEntryAverages.reduce((sum, avg) => sum + avg, 0) / validEntryAverages.length * 2)
-                                        : 0;
-
-                let entryHTML = `<strong>${entry.date || 'Date inconnue'}</strong> (Score Global: ${entryGlobalScore.toFixed(1)}/20)<br>`;
-                const prevEntry = history[index + 1];
-
-                entryHTML += '<div class="history-scores">';
-                entry.scores.forEach(currentScore => {
-                    entryHTML += `${currentScore.pillarName || 'Pilier inconnu'}: ${currentScore.average !== undefined ? currentScore.average.toFixed(1) : '-'}`;
-                     if (prevEntry && prevEntry.scores) {
-                        const prevPillarScore = prevEntry.scores.find(ps => ps.pillarId === currentScore.pillarId);
-                        if (prevPillarScore && prevPillarScore.average !== undefined && currentScore.average !== undefined) {
-                            const diff = currentScore.average - prevPillarScore.average;
-                            if (Math.abs(diff) > 0.01) {
-                                const diffClass = diff > 0 ? 'positive' : 'negative';
-                                const diffSign = diff > 0 ? '+' : '';
-                                entryHTML += ` <span class="score-diff ${diffClass}" title="vs ${prevPillarScore.average.toFixed(1)} le ${prevEntry.date || ''}">(${diffSign}${diff.toFixed(1)})</span>`;
-                            }
-                        }
-                    }
-                    entryHTML += '<br>';
-                });
-                 entryHTML += '</div>';
-                li.innerHTML = entryHTML;
-                ul.appendChild(li);
-            });
-            historyContent.appendChild(ul);
-        }
-
-        function copyHistory() {
-             if (history.length === 0) {
-                 alert("L'historique est vide. Aucune donnée à copier.");
-                 return;
-             }
-             const historyJson = JSON.stringify(history, null, 2);
-             const coachingPrompt = `
-Prompt pour l'IA de Coaching :
-
-"Je te fournis l'historique (${history.length} ${history.length > 1 ? 'entrées' : 'entrée'}) des auto-évaluations d'un utilisateur via l'outil 'Roue de la Vie'. Chaque entrée contient la date, les scores moyens par pilier, et potentiellement des détails (score individuel, note, objectif) pour chaque sous-pilier à ce moment-là. Les données sont triées de la plus récente à la plus ancienne et sont fournies plus bas au format JSON.
-
-Sur la base de ces données, je souhaite que tu :
-
-1.  **Analyses les Tendances :** Identifie les tendances dans les scores moyens au fil du temps pour chaque pilier de vie. Note les améliorations ou les déclins significatifs, indépendamment de la fréquence des évaluations. Mets en évidence les piliers les plus dynamiques (en positif ou négatif).
-
-2.  **Fournisse des Insights :** Donne des insights sur les domaines où l'utilisateur progresse bien (scores élevés, en hausse constante, ou atteignant/dépassant les objectifs fixés 'goal') et ceux qui nécessitent plus d'attention (scores bas, en baisse, ou loin des objectifs), en tenant compte de la fréquence variable des évaluations. Utilise les 'notes' si présentes pour affiner l'analyse.
-
-3.  **Propose des Conseils Personnalisés :** En fonction des tendances, des écarts par rapport aux objectifs et des éventuelles notes, propose des conseils et des stratégies concrètes et personnalisées pour aider l'utilisateur à atteindre ses objectifs ou à améliorer sa satisfaction globale.
-
-4.  **Suggère des Actions Concrètes :** Recommande 2-3 actions spécifiques et réalisables que l'utilisateur peut entreprendre avant sa prochaine évaluation pour améliorer ses scores dans les domaines identifiés comme prioritaires (ceux qui sont loin des objectifs ou en déclin).
-
-5.  **Prépare un Résumé pour la Prochaine Évaluation :** Rédige un paragraphe court résumant les progrès clés (ou points de vigilance) depuis la *dernière* évaluation enregistrée (la plus récente dans les données fournies). Ce résumé doit être un encouragement et un point de focus pour sa prochaine auto-évaluation, quelle que soit la date à laquelle elle aura lieu.
-
-Merci de fournir une analyse détaillée et des recommandations actionnables basées sur ces données pour aider l'utilisateur dans son parcours de développement personnel."
-
---- DONNÉES JSON DE L'HISTORIQUE ---
-`;
-             const textToCopy = coachingPrompt + historyJson;
-             navigator.clipboard.writeText(textToCopy).then(() => {
-                 alert(`Prompt de coaching détaillé et historique (${history.length} ${history.length > 1 ? 'entrées' : 'entrée'}) copiés dans le presse-papiers ! Collez-le dans votre IA favorite.`);
-             }).catch(err => {
-                 console.error("Erreur de copie automatique dans le presse-papiers: ", err);
-                  alert("Erreur lors de la copie automatique. L'historique et le prompt ont été affichés dans la console (F12) pour que vous puissiez les copier manuellement.");
-                  console.warn("--- Début du contenu à copier manuellement ---");
-                  console.log(textToCopy);
-                  console.warn("--- Fin du contenu à copier manuellement ---");
-             });
-        }
-
-        function resetApp() {
-            if (confirm("VRAIMENT réinitialiser TOUTE l'application ?\nConfiguration ET historique seront perdus.")) {
-                 pillars = JSON.parse(JSON.stringify(defaultPillarsData));
-                 history = [];
-                 currentPillarIndex = 0;
-                 if (chartInstance) { chartInstance.destroy(); chartInstance = null; }
-                 localStorage.removeItem('wheelOfLife_pillars');
-                 localStorage.removeItem('wheelOfLife_history');
-                 renderPillar();
-                 showInputView(); // Assure qu'on retourne à la vue input
-                 closeAllModals();
-                 alert("Application réinitialisée.");
-            }
-        }
-
-        // --- Modals (Générique & Note) ---
+        const noteIcon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18,2.9 17.35,2.9 16.96,3.29L15.12,5.12L18.87,8.87M3,17.25V21H6.75L17.81,9.93L14.06,6.18L3,17.25Z" /></svg>`;
+        const defaultPillarsData = [ { id: "sante", name: "Santé", subPillars: [ { id: "sante-phy", name: "Physique", score: 5, note: "", goal: 8 }, { id: "sante-men", name: "Mental", score: 5, note: "", goal: 8 }, { id: "sante-som", name: "Sommeil", score: 5, note: "", goal: 7 }, { id: "sante-nut", name: "Nutrition", score: 5, note: "", goal: 7 }, { id: "sante-ene", name: "Énergie", score: 5, note: "", goal: 8 } ]}, { id: "famille", name: "Famille", subPillars: [ { id: "fam-pro", name: "Proches", score: 5, note: "", goal: 8 }, { id: "fam-com", name: "Communication", score: 5, note: "", goal: 7 }, { id: "fam-tmp", name: "Temps passé", score: 5, note: "", goal: 7 }, { id: "fam-sou", name: "Soutien", score: 5, note: "", goal: 8 }, { id: "fam-har", name: "Harmonie", score: 5, note: "", goal: 8 } ]}, { id: "finances", name: "Finances", subPillars: ["Revenus", "Épargne", "Dépenses", "Investissements", "Sécurité"].map((n, i) => ({ id: `fin-${i}`, name: n, score: 5, note: "", goal: 7 })) }, { id: "carriere", name: "Carrière", subPillars: ["Satisfaction", "Progression", "Équilibre", "Compétences", "Reconnaissance"].map((n, i) => ({ id: `car-${i}`, name: n, score: 5, note: "", goal: 8 })) }, { id: "loisirs", name: "Loisirs", subPillars: ["Temps libre", "Passions", "Détente", "Créativité", "Social"].map((n, i) => ({ id: `loi-${i}`, name: n, score: 5, note: "", goal: 7 })) }, { id: "devperso", name: "Développement perso", subPillars: ["Apprentissage", "Objectifs", "Confiance", "Résilience", "Clarté"].map((n, i) => ({ id: `dev-${i}`, name: n, score: 5, note: "", goal: 9 })) }, { id: "relations", name: "Relations sociales", subPillars: ["Amis", "Réseau", "Écoute", "Partage", "Qualité"].map((n, i) => ({ id: `rel-${i}`, name: n, score: 5, note: "", goal: 7 })) }, { id: "cadrevie", name: "Cadre de vie", subPillars: ["Logement", "Environnement", "Organisation", "Confort", "Esthétique"].map((n, i) => ({ id: `cad-${i}`, name: n, score: 5, note: "", goal: 8 })) } ];
+        let pillars = []; let history = []; let currentPillarIndex = 0; let chartInstance = null; let tempCustomPillars = [];
+        const pillarColors = [ 'var(--pillar-color-0)', 'var(--pillar-color-1)', 'var(--pillar-color-2)', 'var(--pillar-color-3)', 'var(--pillar-color-4)', 'var(--pillar-color-5)', 'var(--pillar-color-6)', 'var(--pillar-color-7)' ];
+        const inputView = document.getElementById('inputView'); const chartView = document.getElementById('chartView'); const pillarDisplay = document.getElementById('pillarDisplay'); const globalScoreDisplay = document.getElementById('globalScore'); const pillarAverageScoreDisplay = document.getElementById('pillarAverageScore'); const prevBtn = document.getElementById('prevBtn'); const nextBtn = document.getElementById('nextBtn'); const radarChartCanvas = document.getElementById('radarChart'); const historyContent = document.getElementById('historyContent'); const overlay = document.getElementById('overlay'); const themeCheckbox = document.getElementById('theme-checkbox'); const customizationContent = document.getElementById('customizationContent'); const showChartBtn = document.getElementById('showChartBtn'); const notePopup = document.getElementById('notePopup'); const notePopupSubPillarName = document.getElementById('notePopupSubPillarName'); const notePopupTextarea = document.getElementById('notePopupTextarea'); const saveNoteBtn = document.getElementById('saveNoteBtn'); const historyPopup = document.getElementById('historyPopup'); const historyScrollBtn = document.getElementById('historyScrollToBottomBtn');
+        // --- FIN SECTION: CONSTANTES & VARIABLES GLOBALES ---
+
+        // --- SECTION: FONCTIONS UTILITAIRES ---
+        function getCssVar(varName) { return getComputedStyle(document.documentElement).getPropertyValue(varName).trim(); }
+        function generateId(prefix = 'item') { return `${prefix.toLowerCase().replace(/[^a-z0-9]+/g, '-')}-${Date.now().toString(36)}-${Math.random().toString(36).substr(2, 5)}`; }
+        // --- FIN SECTION: FONCTIONS UTILITAIRES ---
+
+        // --- SECTION: INITIALISATION & GESTION DES DONNÉES ---
+        function initializeApp() { loadData(); setupTheme(); if (pillars.length > 0) { renderPillar(); showInputView(); } else { handleNoPillars(); } addEventListeners(); }
+        function handleNoPillars() { inputView.style.display = 'block'; chartView.style.display = 'none'; pillarDisplay.innerHTML = "<p class='text-center'>Aucun pilier défini...</p>"; globalScoreDisplay.textContent = `Note globale : - / 20`; pillarAverageScoreDisplay.textContent = `Moyenne Pilier : - / 10`; prevBtn.disabled = true; nextBtn.disabled = true; showChartBtn.disabled = true; inputView.style.setProperty('--pillar-border-color', 'transparent'); if (chartInstance) { chartInstance.destroy(); chartInstance = null; } }
+        function loadData() { const storedPillars = localStorage.getItem('wheelOfLife_pillars'); const storedHistory = localStorage.getItem('wheelOfLife_history'); try { const parsedPillars = storedPillars ? JSON.parse(storedPillars) : null; pillars = parsedPillars && Array.isArray(parsedPillars) && parsedPillars.length > 0 ? migrateDataStructure(parsedPillars) : JSON.parse(JSON.stringify(defaultPillarsData)); } catch (e) { console.error("Erreur chargement piliers", e); pillars = JSON.parse(JSON.stringify(defaultPillarsData)); } try { const parsedHistory = storedHistory ? JSON.parse(storedHistory) : []; history = Array.isArray(parsedHistory) ? parsedHistory : []; history.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0)); } catch (e) { console.error("Erreur chargement historique", e); history = []; } if (!Array.isArray(pillars) || pillars.length === 0) { console.warn("Piliers invalides, reset défauts."); pillars = JSON.parse(JSON.stringify(defaultPillarsData)); } else { pillars = migrateDataStructure(pillars); } currentPillarIndex = 0; }
+        function migrateDataStructure(loadedPillars) { if (!Array.isArray(loadedPillars)) return []; return loadedPillars.map((p, pIdx) => { const pillarBase = p || {}; return { id: pillarBase.id || generateId(pillarBase.name || `pillar-${pIdx}`), name: pillarBase.name || `Pilier ${pIdx + 1}`, subPillars: Array.isArray(pillarBase.subPillars) ? pillarBase.subPillars.map((sp, spIdx) => { const subPillarBase = typeof sp === 'string' ? { name: sp } : (sp || {}); return { id: subPillarBase.id || generateId((pillarBase.id || `p${pIdx}`) + '-' + (subPillarBase.name || `sub-${spIdx}`)), name: subPillarBase.name || `Sous-pilier ${spIdx + 1}`, score: (subPillarBase.score !== undefined && !isNaN(parseInt(subPillarBase.score))) ? parseInt(subPillarBase.score) : 5, note: subPillarBase.note || "", goal: (subPillarBase.goal !== undefined && !isNaN(parseInt(subPillarBase.goal))) ? parseInt(subPillarBase.goal) : 7 }; }) : [] }; }).filter(p => p.name && p.id); }
+        function saveData() { try { localStorage.setItem('wheelOfLife_pillars', JSON.stringify(pillars)); localStorage.setItem('wheelOfLife_history', JSON.stringify(history)); } catch (e) { console.error("Erreur sauvegarde:", e); alert("Erreur: Impossible de sauvegarder les données."); } }
+        // --- FIN SECTION: INITIALISATION & GESTION DES DONNÉES ---
+
+        // --- SECTION: AFFICHAGE & MISE À JOUR UI ---
+        function renderPillar() { if (!pillars || pillars.length === 0) { handleNoPillars(); return; } if (currentPillarIndex < 0 || currentPillarIndex >= pillars.length) { currentPillarIndex = 0; } const pillar = pillars[currentPillarIndex]; if (!pillar) { console.error("Pilier introuvable", currentPillarIndex); handleNoPillars(); return; } const pillarColor = pillarColors[currentPillarIndex % pillarColors.length]; inputView.style.setProperty('--pillar-border-color', pillarColor); let pillarHTML = `<h3 id="pillar-title"><span>${pillar.name}</span> (${currentPillarIndex + 1}/${pillars.length})</h3>`; if (!pillar.subPillars || pillar.subPillars.length === 0) { pillarHTML += "<p class='text-center'>Ce pilier n'a pas de sous-piliers.</p>"; } else { pillar.subPillars.forEach((subPillar) => { const displayScore = (subPillar.score !== undefined && !isNaN(subPillar.score)) ? subPillar.score : 5; const displayGoal = (subPillar.goal !== undefined && !isNaN(subPillar.goal)) ? subPillar.goal : 7; pillarHTML += `<div class="sub-pillar" id="subpillar-div-${subPillar.id}"><div class="sub-pillar-header"> <label for="range-${subPillar.id}" id="label-${subPillar.id}"><span>${subPillar.name}</span></label><div class="sub-pillar-controls"> <input type="range" id="range-${subPillar.id}" min="1" max="10" value="${displayScore}" oninput="updateScore('${pillar.id}', '${subPillar.id}', this.value, true)" aria-labelledby="label-${subPillar.id}" aria-valuemin="1" aria-valuemax="10" aria-valuenow="${displayScore}"> <output class="slider-value" for="range-${subPillar.id}">${displayScore}</output> </div></div><div class="sub-pillar-details"> <div class="detail-group"> <label for="goal-${subPillar.id}">Objectif:</label> <input type="number" id="goal-${subPillar.id}" min="1" max="10" value="${displayGoal}" onchange="updateGoal('${pillar.id}', '${subPillar.id}', this.value)"> </div> <div class="detail-group"> <button class="note-button" onclick="openNotePopup('${pillar.id}', '${subPillar.id}')" aria-label="Ajouter ou modifier une note pour ${subPillar.name}">${noteIcon}</button> </div> </div></div>`; }); } pillarDisplay.innerHTML = pillarHTML; updateNavigationButtons(); updateScoresDisplay(); showChartBtn.disabled = false; }
+        function findSubPillar(pillarId, subPillarId) { const pillar = pillars.find(p => p.id === pillarId); if (!pillar || !Array.isArray(pillar.subPillars)) return null; return pillar.subPillars.find(sp => sp.id === subPillarId); }
+        function updateScore(pillarId, subPillarId, value, fromInput = false) { const score = parseInt(value); if (isNaN(score)) return; const subPillar = findSubPillar(pillarId, subPillarId); if (subPillar) { subPillar.score = score; if (fromInput) { const output = document.querySelector(`output[for='range-${subPillarId}']`); if (output) output.textContent = score; const rangeInput = document.getElementById(`range-${subPillarId}`); if (rangeInput) rangeInput.setAttribute('aria-valuenow', score); } updateScoresDisplay(); saveData(); } }
+        function updateNote(pillarId, subPillarId, value) { const subPillar = findSubPillar(pillarId, subPillarId); if (subPillar) { subPillar.note = value.trim(); saveData(); console.log(`Note pour ${subPillar.name} màj.`); } else { console.error("Sous-pilier non trouvé pour note:", pillarId, subPillarId); } }
+        function updateGoal(pillarId, subPillarId, value) { const goal = parseInt(value); const input = document.getElementById(`goal-${subPillarId}`); const subPillar = findSubPillar(pillarId, subPillarId); if (subPillar) { if (!isNaN(goal) && goal >= 1 && goal <= 10) { subPillar.goal = goal; saveData(); } else { if(input) input.value = subPillar.goal !== undefined ? subPillar.goal : 7; console.warn("Objectif invalide:", subPillar.goal); alert("L'objectif doit être entre 1 et 10."); } } }
+        function calculateAverages() { const pillarAverages = pillars.map(pillar => { if (!pillar.subPillars || pillar.subPillars.length === 0) return 0; const sum = pillar.subPillars.reduce((acc, sub) => acc + (sub.score || 0), 0); return sum / pillar.subPillars.length; }); const validAverages = pillarAverages.filter(avg => !isNaN(avg)); const globalAverage = validAverages.length > 0 ? validAverages.reduce((sum, avg) => sum + avg, 0) / validAverages.length : 0; const globalScore = globalAverage * 2; return { pillarAverages, globalScore }; }
+        function updateScoresDisplay() { if (!pillars || pillars.length === 0) return; const { pillarAverages, globalScore } = calculateAverages(); globalScoreDisplay.textContent = `Note globale : ${globalScore.toFixed(1)} / 20`; const currentPillarAverage = pillarAverages[currentPillarIndex]; pillarAverageScoreDisplay.textContent = `Moyenne Pilier : ${currentPillarAverage !== undefined && !isNaN(currentPillarAverage) ? currentPillarAverage.toFixed(1) : '-'} / 10`; }
+        // --- FIN SECTION: AFFICHAGE & MISE À JOUR UI ---
+
+        // --- SECTION: NAVIGATION & GESTION DES VUES ---
+        function changePillar(direction) { if (!pillars || pillars.length === 0) return; currentPillarIndex += direction; if (currentPillarIndex < 0) { currentPillarIndex = pillars.length - 1; } else if (currentPillarIndex >= pillars.length) { currentPillarIndex = 0; } renderPillar(); window.scrollTo({ top: 0, behavior: 'smooth' }); }
+        function updateNavigationButtons() { const numPillars = pillars ? pillars.length : 0; prevBtn.disabled = numPillars <= 1; nextBtn.disabled = numPillars <= 1; }
+        function historyScrollToBottom() { if (historyPopup) { historyPopup.scrollTo({ top: historyPopup.scrollHeight, behavior: 'smooth' }); } }
+        function showInputView() { inputView.style.display = 'block'; chartView.style.display = 'none'; if (pillars.length > 0 && currentPillarIndex >= 0 && currentPillarIndex < pillars.length) { const pillarColor = pillarColors[currentPillarIndex % pillarColors.length]; inputView.style.setProperty('--pillar-border-color', pillarColor); } else { inputView.style.setProperty('--pillar-border-color', 'transparent'); } }
+        function showChartView() { inputView.style.display = 'none'; chartView.style.display = 'block'; window.scrollTo({ top: 0, behavior: 'smooth' }); const returnBtn = chartView.querySelector('button'); if(returnBtn) returnBtn.focus(); }
+        // --- FIN SECTION: NAVIGATION & GESTION DES VUES ---
+
+        // --- SECTION: GRAPHIQUE (CHART.JS) ---
+        function renderChart() { if (!pillars || pillars.length === 0) { if (chartInstance) { chartInstance.destroy(); chartInstance = null; } return; } const { pillarAverages } = calculateAverages(); const pillarGoalsAverages = pillars.map(pillar => { if (!pillar.subPillars || pillar.subPillars.length === 0) return 0; const sum = pillar.subPillars.reduce((acc, sub) => acc + (sub.goal || 0), 0); return sum / pillar.subPillars.length; }); const labels = pillars.map(p => p.name); const scoreBgColor = getCssVar('--chart-bg-color'); const scoreBorderColor = getCssVar('--chart-border-color'); const goalBgColor = getCssVar('--goal-bg-color'); const goalBorderColor = getCssVar('--goal-border-color'); const textColor = getCssVar('--text-color'); const secondaryTextColor = getCssVar('--secondary-text-color'); const gridColor = getCssVar('--grid-color'); const containerBgColor = getCssVar('--container-bg'); const tooltipBgColor = getCssVar('--tooltip-bg'); const chartData = { labels: labels, datasets: [ { label: 'Score Actuel', data: pillarAverages, backgroundColor: scoreBgColor, borderColor: scoreBorderColor, borderWidth: 2.5, pointBackgroundColor: scoreBorderColor, pointBorderColor: '#fff', pointHoverBackgroundColor: '#fff', pointHoverBorderColor: scoreBorderColor, pointRadius: 4, pointHoverRadius: 6 }, { label: 'Objectif Moyen', data: pillarGoalsAverages, backgroundColor: goalBgColor, borderColor: goalBorderColor, borderWidth: 1.5, borderDash: [6, 3], pointBackgroundColor: goalBorderColor, pointBorderColor: '#fff', pointHoverBackgroundColor: '#fff', pointHoverBorderColor: goalBorderColor, pointRadius: 4, pointHoverRadius: 6 } ] }; const chartOptions = { responsive: true, maintainAspectRatio: true, scales: { r: { min: 0, max: 10, ticks: { stepSize: 2, backdropColor: containerBgColor, color: secondaryTextColor }, pointLabels: { color: textColor, font: { size: 12 } }, grid: { color: gridColor }, angleLines: { color: gridColor } } }, plugins: { legend: { position: 'top', labels: { color: textColor, usePointStyle: false, boxWidth: 20, padding: 20 } }, tooltip: { enabled: true, backgroundColor: tooltipBgColor, titleColor: textColor, bodyColor: textColor, borderColor: gridColor, borderWidth: 1, padding: 10, cornerRadius: 4, usePointStyle: true, callbacks: { label: function(context) { let label = context.dataset.label || ''; if (label) { label += ': '; } if (context.parsed.r !== null) { label += context.parsed.r.toFixed(1); } return label; } } } }, animation: { duration: 0 } }; const ctx = radarChartCanvas.getContext('2d'); if (chartInstance) { chartInstance.data = chartData; chartInstance.options = chartOptions; chartInstance.update(); } else { chartInstance = new Chart(ctx, { type: 'radar', data: chartData, options: chartOptions }); } }
+        function showChartAndSave() { if (!pillars || pillars.length === 0) { alert("Aucun pilier à afficher/sauvegarder."); return; } renderChart(); const { pillarAverages } = calculateAverages(); saveToHistory(pillarAverages); showChartView(); }
+        // --- FIN SECTION: GRAPHIQUE (CHART.JS) ---
+
+        // --- SECTION: GESTION DE L'HISTORIQUE ---
+        function saveToHistory(averages) { const timestamp = Date.now(); const entry = { id: `hist-${timestamp}-${Math.random().toString(36).substr(2, 5)}`, date: new Date(timestamp).toLocaleString('fr-FR', { dateStyle: 'short', timeStyle: 'short' }), timestamp: timestamp, scores: pillars.map((p, index) => ({ pillarId: p.id, pillarName: p.name, average: (!isNaN(averages[index]) ? averages[index] : 0), subPillars: (p.subPillars || []).map(sp => ({ subPillarId: sp.id, name: sp.name, score: sp.score, note: sp.note, goal: sp.goal })) })) }; history.push(entry); history.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0)); saveData(); console.log("Évaluation sauvegardée:", entry.date); }
+        function showHistory() { historyContent.innerHTML = ''; if (history.length === 0) { historyContent.innerHTML = "<p>Aucun historique disponible.</p>"; if (historyScrollBtn) historyScrollBtn.style.display = 'none'; return; } const ul = document.createElement('ul'); history.forEach((entry, index) => { if (!entry || !entry.scores) return; const li = document.createElement('li'); li.className = 'history-entry'; const entryAverages = entry.scores.map(s => s.average); const validEntryAverages = entryAverages.filter(avg => !isNaN(avg)); const entryGlobalScore = validEntryAverages.length > 0 ? (validEntryAverages.reduce((sum, avg) => sum + avg, 0) / validEntryAverages.length * 2) : 0; let entryHTML = `<strong>${entry.date || 'Date inconnue'}</strong> (Score Global: ${entryGlobalScore.toFixed(1)}/20)<br>`; const prevEntry = history[index + 1]; entryHTML += '<div class="history-scores">'; entry.scores.forEach(currentScore => { entryHTML += `${currentScore.pillarName || 'Pilier inconnu'}: ${currentScore.average !== undefined ? currentScore.average.toFixed(1) : '-'}`; if (prevEntry && prevEntry.scores) { const prevPillarScore = prevEntry.scores.find(ps => ps.pillarId === currentScore.pillarId); if (prevPillarScore && prevPillarScore.average !== undefined && currentScore.average !== undefined) { const diff = currentScore.average - prevPillarScore.average; if (Math.abs(diff) > 0.01) { const diffClass = diff > 0 ? 'positive' : 'negative'; const diffSign = diff > 0 ? '+' : ''; entryHTML += ` <span class="score-diff ${diffClass}" title="vs ${prevPillarScore.average.toFixed(1)} le ${prevEntry.date || ''}">(${diffSign}${diff.toFixed(1)})</span>`; } } } entryHTML += '<br>'; }); entryHTML += '</div>'; li.innerHTML = entryHTML; ul.appendChild(li); }); historyContent.appendChild(ul); if (historyPopup && historyScrollBtn) { setTimeout(() => { if (document.getElementById('historyPopup')) { if (historyPopup.scrollHeight > historyPopup.clientHeight) { historyScrollBtn.style.display = 'inline-block'; } else { historyScrollBtn.style.display = 'none'; } } }, 100); } }
+        function copyHistory() { if (history.length === 0) { alert("L'historique est vide."); return; } const historyJson = JSON.stringify(history, null, 2); const coachingPrompt = `\nPrompt pour l'IA de Coaching :\n\n"Je te fournis l'historique... [PROMPT COMPLET OMIS] ...\n\n--- DONNÉES JSON DE L'HISTORIQUE ---\n`; const textToCopy = coachingPrompt + historyJson; navigator.clipboard.writeText(textToCopy).then(() => { alert(`Prompt de coaching et historique copiés ! Collez-le dans votre IA favorite.`); }).catch(err => { console.error("Erreur copie:", err); alert("Erreur copie auto. Voir console (F12) pour copier manuellement."); console.warn("--- Copier manuellement ---"); console.log(textToCopy); console.warn("--- Fin copie ---"); }); }
+        function resetApp() { if (confirm("VRAIMENT réinitialiser TOUTE l'application ?\nConfiguration ET historique seront perdus.")) { pillars = JSON.parse(JSON.stringify(defaultPillarsData)); history = []; currentPillarIndex = 0; if (chartInstance) { chartInstance.destroy(); chartInstance = null; } localStorage.removeItem('wheelOfLife_pillars'); localStorage.removeItem('wheelOfLife_history'); closeModal('historyPopup'); showInputView(); alert("Application réinitialisée."); } }
+        // --- FIN SECTION: GESTION DE L'HISTORIQUE ---
+
+        // --- SECTION: GESTION DES POPUPS (MODALS) ---
         function openModal(modalId) {
-            if (modalId === 'historyPopup') { showHistory(); }
-            else if (modalId === 'customizationPopup') { renderCustomizationForm(); }
-            // Ne gère pas 'notePopup' ici, car il est spécifique
-
             const modalElement = document.getElementById(modalId);
-            if(modalElement) {
-                modalElement.style.display = 'block';
-                overlay.style.display = 'block';
-                 // Focus sur le premier élément focusable ou le bouton fermer
-                const focusable = modalElement.querySelector('button, input:not([type=hidden]), textarea, select, [tabindex]:not([tabindex="-1"])');
-                const closeButton = modalElement.querySelector('.popup-buttons button:last-of-type'); // Cibler le bouton Fermer/Annuler
-                 if (focusable) focusable.focus();
-                 else if (closeButton) closeButton.focus();
-            } else {
-                console.error("Modal non trouvée:", modalId);
-            }
-        }
+            const overlayElement = document.getElementById('overlay'); // Référence à l'overlay
+            if(modalElement && overlayElement) {
+                // Préparation spécifique avant affichage
+                if (modalId === 'historyPopup') {
+                    if (historyScrollBtn) historyScrollBtn.style.display = 'none';
+                    showHistory();
+                } else if (modalId === 'customizationPopup') {
+                    renderCustomizationForm();
+                }
+
+                // Affichage de l'overlay (qui contient maintenant le popup)
+                overlayElement.style.display = 'flex'; // Utiliser flex pour activer le centrage
+
+                // Assurer que le popup spécifique est visible (si plusieurs popups étaient dans l'overlay)
+                 // On cache d'abord tous les popups DANS l'overlay
+                 overlayElement.querySelectorAll('.popup').forEach(p => p.style.display = 'none');
+                 // Puis on affiche celui qu'on veut ouvrir
+                 modalElement.style.display = 'block'; // ou 'flex'/'grid' si besoin, mais block est standard
+
+                // === Scroll en haut APRÈS affichage ===
+                setTimeout(() => {
+                     if (modalElement) {
+                         modalElement.scrollTop = 0;
+                     }
+                }, 0);
+
+                // Focus management
+                const focusable = modalElement.querySelector('button:not(.popup-close-btn), input:not([type=hidden]), textarea, select, [tabindex]:not([tabindex="-1"])');
+                const closeButton = modalElement.querySelector('.popup-buttons button:last-of-type');
+                const xButton = modalElement.querySelector('.popup-close-btn');
+                if (xButton) xButton.focus(); else if (focusable) focusable.focus(); else if (closeButton) closeButton.focus();
+
+            } else { console.error("Modal ou Overlay non trouvé:", modalId); }
+        } // Fin openModal
 
         function closeModal(modalId) {
             const modalElement = document.getElementById(modalId);
+             const overlayElement = document.getElementById('overlay'); // Référence à l'overlay
+
+            // Cache le popup spécifique
             if(modalElement) modalElement.style.display = 'none';
 
-             // Si on ferme la popup de note, nettoie ses data-attributes
-             if (modalId === 'notePopup') {
-                 saveNoteBtn.removeAttribute('data-pillar-id');
-                 saveNoteBtn.removeAttribute('data-subpillar-id');
+            // Nettoyage spécifique
+             if (modalId === 'notePopup') { saveNoteBtn.removeAttribute('data-pillar-id'); saveNoteBtn.removeAttribute('data-subpillar-id'); }
+
+            // Cache l'overlay SEULEMENT si PLUS AUCUN popup n'est visible DANS l'overlay
+             // (Cette logique est un peu simplifiée car on cache le popup avant de vérifier,
+             // mais elle devrait marcher si on ouvre qu'un popup à la fois)
+             let anyModalVisible = false;
+             if (overlayElement) {
+                const popupsInsideOverlay = overlayElement.querySelectorAll('.popup');
+                anyModalVisible = Array.from(popupsInsideOverlay).some(p => p.style.display === 'block');
              }
 
-            const anyModalOpen = Array.from(document.querySelectorAll('.popup')).some(m => m.style.display === 'block');
-            if (!anyModalOpen) {
-                 overlay.style.display = 'none';
+            if (!anyModalVisible && overlayElement) {
+                 overlayElement.style.display = 'none'; // Cache l'overlay
             }
-        }
+         } // Fin closeModal
 
-         function closeAllModals() {
-             document.querySelectorAll('.popup').forEach(modal => closeModal(modal.id)); // Utilise closeModal pour gérer le nettoyage éventuel
-             // overlay.style.display = 'none'; // Géré par closeModal
-         }
-
-         // --- Note Popup Functions ---
-         function openNotePopup(pillarId, subPillarId) {
-             const subPillar = findSubPillar(pillarId, subPillarId);
-             if (!subPillar) {
-                 console.error("Sous-pilier non trouvé pour la note:", pillarId, subPillarId);
-                 alert("Erreur : Impossible d'ouvrir la note pour ce sous-pilier.");
-                 return;
-             }
-
-             notePopupSubPillarName.textContent = subPillar.name;
-             notePopupTextarea.value = subPillar.note || ""; // Charge la note existante
-
-             // Stocke les IDs pour la sauvegarde
-             saveNoteBtn.setAttribute('data-pillar-id', pillarId);
-             saveNoteBtn.setAttribute('data-subpillar-id', subPillarId);
-
-             notePopup.style.display = 'block';
-             overlay.style.display = 'block';
-             notePopupTextarea.focus(); // Focus sur le textarea
-         }
-
-         function saveNoteFromPopup() {
-             const pillarId = saveNoteBtn.getAttribute('data-pillar-id');
-             const subPillarId = saveNoteBtn.getAttribute('data-subpillar-id');
-             const newNote = notePopupTextarea.value;
-
-             if (pillarId && subPillarId) {
-                 updateNote(pillarId, subPillarId, newNote); // Appelle la fonction de mise à jour existante
-                 closeModal('notePopup');
-             } else {
-                 console.error("IDs manquants pour la sauvegarde de la note.");
-                 alert("Erreur lors de la sauvegarde de la note.");
-             }
-         }
-
-        // --- Customization ---
-         function renderCustomizationForm() {
-             tempCustomPillars = JSON.parse(JSON.stringify(pillars));
-             customizationContent.innerHTML = '';
-
-             if (!tempCustomPillars || tempCustomPillars.length === 0) {
-                customizationContent.innerHTML = "<p>Aucun pilier à personnaliser.</p>";
-                return;
-             }
-
-             tempCustomPillars.forEach((pillar) => {
-                 const pillarSection = document.createElement('div');
-                 pillarSection.className = 'customization-section';
-                 pillarSection.innerHTML = `
-                    <h4>Pilier:</h4>
-                    <div class="customization-item">
-                        <input type="text" value="${pillar.name || ''}" id="edit-pillar-${pillar.id}" aria-label="Nom du pilier ${pillar.name || ''}">
-                        <button class="icon-button danger-button" onclick="deletePillarTemp('${pillar.id}')" aria-label="Supprimer le pilier ${pillar.name || ''}">${deleteIcon}</button>
-                    </div>
-                    <h5>Sous-piliers :</h5>`;
-                const subPillarList = document.createElement('div');
-                if (pillar.subPillars && pillar.subPillars.length > 0) {
-                    pillar.subPillars.forEach((subPillar) => {
-                         const subPillarItem = document.createElement('div');
-                         subPillarItem.className = 'customization-item';
-                         subPillarItem.innerHTML = `
-                            <input type="text" value="${subPillar.name || ''}" id="edit-subpillar-${subPillar.id}" aria-label="Nom du sous-pilier ${subPillar.name || ''}">
-                            <button class="icon-button danger-button" onclick="deleteSubPillarTemp('${pillar.id}', '${subPillar.id}')" aria-label="Supprimer le sous-pilier ${subPillar.name || ''}">${deleteIcon}</button>
-                         `;
-                         subPillarList.appendChild(subPillarItem);
-                     });
-                } else {
-                     subPillarList.innerHTML = "<p style='font-size:0.9em; font-style:italic;'>Aucun sous-pilier.</p>";
-                }
-                 pillarSection.appendChild(subPillarList);
-                 customizationContent.appendChild(pillarSection);
-             });
-         }
-
-        function saveCustomization() {
-             let structureChanged = false;
-             const originalPillarsString = JSON.stringify(pillars);
-
-             tempCustomPillars.forEach(pillar => {
-                 const nameInput = document.getElementById(`edit-pillar-${pillar.id}`);
-                 if (nameInput && pillar.name !== nameInput.value.trim() && nameInput.value.trim() !== "") {
-                    pillar.name = nameInput.value.trim();
-                 }
-                 if (pillar.subPillars) {
-                     pillar.subPillars.forEach(subPillar => {
-                         const subNameInput = document.getElementById(`edit-subpillar-${subPillar.id}`);
-                          if (subNameInput && subPillar.name !== subNameInput.value.trim() && subNameInput.value.trim() !== "") {
-                             subPillar.name = subNameInput.value.trim();
-                         }
-                     });
-                     // Filtre les sous-piliers sans nom (probablement supprimés ou vidés)
-                     pillar.subPillars = pillar.subPillars.filter(sp => sp.name && sp.name.trim() !== "");
-                 }
-             });
-
-             // Filtre les piliers sans nom OU sans sous-piliers
-              tempCustomPillars = tempCustomPillars.filter(p => p.name && p.name.trim() !== "" && p.subPillars && p.subPillars.length > 0);
-
-             const tempPillarsString = JSON.stringify(tempCustomPillars);
-             if (originalPillarsString !== tempPillarsString) {
-                 pillars = JSON.parse(tempPillarsString); // Applique la structure filtrée et renommée
-                 structureChanged = true;
-                 saveData();
-                 if (currentPillarIndex >= pillars.length) {
-                     currentPillarIndex = Math.max(0, pillars.length - 1);
-                 }
-                 renderPillar();
-                 // Si le chart view est actif, le mettre à jour aussi (au cas où on y retourne)
-                  if (chartView.style.display === 'block') {
-                     renderChart();
-                  }
-                  console.log("Personnalisation sauvegardée.");
-             } else {
-                 console.log("Aucun changement détecté dans la personnalisation.");
-             }
-
-             closeModal('customizationPopup');
-         }
-
-         function deletePillarTemp(pillarId) {
-             const pillarName = tempCustomPillars.find(p=>p.id === pillarId)?.name || 'ce pilier';
-             if (confirm(`Supprimer "${pillarName}" et ses sous-piliers de la personnalisation en cours ?`)) {
-                 tempCustomPillars = tempCustomPillars.filter(p => p.id !== pillarId);
-                 renderCustomizationForm(); // Re-render la popup
-             }
-         }
-
-         function deleteSubPillarTemp(pillarId, subPillarId) {
-              const pillar = tempCustomPillars.find(p => p.id === pillarId);
-              const subPillarName = pillar?.subPillars?.find(sp => sp.id === subPillarId)?.name || 'ce sous-pilier';
-              if (confirm(`Supprimer "${subPillarName}" de la personnalisation en cours ?`)) {
-                 if (pillar && pillar.subPillars) {
-                     pillar.subPillars = pillar.subPillars.filter(sp => sp.id !== subPillarId);
-                 }
-                 renderCustomizationForm(); // Re-render la popup
-              }
-         }
-
-        // --- Theme ---
-        function setupTheme() {
-            const currentTheme = localStorage.getItem('wheelOfLife_theme') || 'light';
-            if (currentTheme === 'dark') {
-                document.body.classList.add('dark-theme');
-                themeCheckbox.checked = true;
-            } else {
-                document.body.classList.remove('dark-theme');
-                 themeCheckbox.checked = false;
+        function closeAllModals() {
+            // Cache tous les popups
+            document.querySelectorAll('.popup').forEach(modal => modal.style.display = 'none');
+             // Cache l'overlay
+             const overlayElement = document.getElementById('overlay');
+            if (overlayElement) {
+                overlayElement.style.display = 'none';
             }
-             // Met à jour le graphique s'il est visible (dans chartView)
-              if (chartInstance && chartView.style.display === 'block') {
-                 setTimeout(() => { renderChart(); }, 50);
-             }
-        }
+            // Nettoyage spécifique si la popup note était ouverte (au cas où)
+             saveNoteBtn.removeAttribute('data-pillar-id'); saveNoteBtn.removeAttribute('data-subpillar-id');
+        } // Fin closeAllModals
+        // --- FIN SECTION: GESTION DES POPUPS (MODALS) ---
 
-        function toggleTheme() {
-            const isDark = themeCheckbox.checked;
-            localStorage.setItem('wheelOfLife_theme', isDark ? 'dark' : 'light');
-            setupTheme();
-        }
+        // --- SECTION: POPUP DE NOTE SPÉCIFIQUE ---
+        function openNotePopup(pillarId, subPillarId) { const subPillar = findSubPillar(pillarId, subPillarId); if (!subPillar) { console.error("Sous-pilier non trouvé pour note:", pillarId, subPillarId); alert("Erreur : Impossible d'ouvrir la note."); return; } notePopupSubPillarName.textContent = subPillar.name; notePopupTextarea.value = subPillar.note || ""; saveNoteBtn.setAttribute('data-pillar-id', pillarId); saveNoteBtn.setAttribute('data-subpillar-id', subPillarId); openModal('notePopup'); /* Utilise openModal maintenant */ notePopupTextarea.focus(); /* Garder le focus spécifique ici */ }
+        function saveNoteFromPopup() { const pillarId = saveNoteBtn.getAttribute('data-pillar-id'); const subPillarId = saveNoteBtn.getAttribute('data-subpillar-id'); const newNote = notePopupTextarea.value; if (pillarId && subPillarId) { updateNote(pillarId, subPillarId, newNote); closeModal('notePopup'); } else { console.error("IDs manquants sauvegarde note."); alert("Erreur sauvegarde note."); } }
+        // --- FIN SECTION: POPUP DE NOTE SPÉCIFIQUE ---
 
-        // --- Export / Import ---
-        function exportData() {
-             const dataToExport = { pillars: pillars, history: history };
-             const dataStr = JSON.stringify(dataToExport, null, 2);
-             const dataBlob = new Blob([dataStr], { type: 'application/json' });
-             const url = URL.createObjectURL(dataBlob);
-             const link = document.createElement('a');
-             link.href = url;
-             const timestamp = new Date().toISOString().slice(0, 10);
-             link.download = `roue-de-la-vie-export-${timestamp}.json`;
-             document.body.appendChild(link); link.click(); document.body.removeChild(link);
-             URL.revokeObjectURL(url);
-             alert("Données exportées.");
-        }
+        // --- SECTION: PERSONNALISATION ---
+        function renderCustomizationForm() { tempCustomPillars = JSON.parse(JSON.stringify(pillars)); customizationContent.innerHTML = ''; if (!tempCustomPillars || tempCustomPillars.length === 0) { customizationContent.innerHTML = "<p>Aucun pilier à personnaliser.</p>"; return; } tempCustomPillars.forEach((pillar) => { const pillarSection = document.createElement('div'); pillarSection.className = 'customization-section'; pillarSection.innerHTML = `<h4>Pilier:</h4> <div class="customization-item"> <input type="text" value="${pillar.name || ''}" id="edit-pillar-${pillar.id}" aria-label="Nom du pilier ${pillar.name || ''}"> <button class="icon-button danger-button" onclick="deletePillarTemp('${pillar.id}')" aria-label="Supprimer le pilier ${pillar.name || ''}">${deleteIcon}</button> </div> <h5>Sous-piliers :</h5>`; const subPillarList = document.createElement('div'); if (pillar.subPillars && pillar.subPillars.length > 0) { pillar.subPillars.forEach((subPillar) => { const subPillarItem = document.createElement('div'); subPillarItem.className = 'customization-item'; subPillarItem.innerHTML = `<input type="text" value="${subPillar.name || ''}" id="edit-subpillar-${subPillar.id}" aria-label="Nom du sous-pilier ${subPillar.name || ''}"> <button class="icon-button danger-button" onclick="deleteSubPillarTemp('${pillar.id}', '${subPillar.id}')" aria-label="Supprimer le sous-pilier ${subPillar.name || ''}">${deleteIcon}</button>`; subPillarList.appendChild(subPillarItem); }); } else { subPillarList.innerHTML = "<p style='font-size:0.9em; font-style:italic;'>Aucun sous-pilier.</p>"; } pillarSection.appendChild(subPillarList); customizationContent.appendChild(pillarSection); }); }
+        function saveCustomization() { let structureChanged = false; const originalPillarsString = JSON.stringify(pillars); tempCustomPillars.forEach(pillar => { const nameInput = document.getElementById(`edit-pillar-${pillar.id}`); if (nameInput && pillar.name !== nameInput.value.trim() && nameInput.value.trim() !== "") { pillar.name = nameInput.value.trim(); } if (pillar.subPillars) { pillar.subPillars.forEach(subPillar => { const subNameInput = document.getElementById(`edit-subpillar-${subPillar.id}`); if (subNameInput && subPillar.name !== subNameInput.value.trim() && subNameInput.value.trim() !== "") { subPillar.name = subNameInput.value.trim(); } }); pillar.subPillars = pillar.subPillars.filter(sp => sp.name && sp.name.trim() !== ""); } }); tempCustomPillars = tempCustomPillars.filter(p => p.name && p.name.trim() !== "" && p.subPillars && p.subPillars.length > 0); const tempPillarsString = JSON.stringify(tempCustomPillars); if (originalPillarsString !== tempPillarsString) { pillars = JSON.parse(tempPillarsString); structureChanged = true; if (currentPillarIndex >= pillars.length) { currentPillarIndex = Math.max(0, pillars.length - 1); } saveData(); if (pillars.length === 0) { handleNoPillars(); } else { renderPillar(); } if (chartView.style.display === 'block') { if (pillars.length > 0) { renderChart(); } else { showInputView(); } } console.log("Personnalisation sauvegardée."); } else { console.log("Aucun changement personnalisation."); } closeModal('customizationPopup'); }
+        function deletePillarTemp(pillarId) { const pillarName = tempCustomPillars.find(p=>p.id === pillarId)?.name || 'ce pilier'; if (confirm(`Supprimer "${pillarName}" et ses sous-piliers (temporairement) ?`)) { tempCustomPillars = tempCustomPillars.filter(p => p.id !== pillarId); renderCustomizationForm(); } }
+        function deleteSubPillarTemp(pillarId, subPillarId) { const pillar = tempCustomPillars.find(p => p.id === pillarId); const subPillarName = pillar?.subPillars?.find(sp => sp.id === subPillarId)?.name || 'ce sous-pilier'; if (confirm(`Supprimer "${subPillarName}" (temporairement) ?`)) { if (pillar && pillar.subPillars) { pillar.subPillars = pillar.subPillars.filter(sp => sp.id !== subPillarId); } renderCustomizationForm(); } }
+        // --- FIN SECTION: PERSONNALISATION ---
 
-        function importData(event) {
-             const file = event.target.files[0];
-             if (!file || !file.name.endsWith('.json')) { alert("Veuillez sélectionner un fichier .json valide."); event.target.value = null; return; }
-             const reader = new FileReader();
-             reader.onload = function(e) {
-                 try {
-                     const importedData = JSON.parse(e.target.result);
-                     // Validation plus souple : vérifie juste si pillars existe, même s'il est vide. History est optionnel.
-                      if (!importedData || !importedData.hasOwnProperty('pillars')) { throw new Error("Format de fichier invalide. La clé 'pillars' est manquante."); }
-                     if (!confirm("Importer ce fichier écrasera les données actuelles. Continuer ?")) { event.target.value = null; return; }
+        // --- SECTION: THÈME ---
+        function setupTheme() { const currentTheme = localStorage.getItem('wheelOfLife_theme') || 'light'; if (currentTheme === 'dark') { document.body.classList.add('dark-theme'); themeCheckbox.checked = true; } else { document.body.classList.remove('dark-theme'); themeCheckbox.checked = false; } if (chartInstance && chartView.style.display === 'block') { setTimeout(() => { renderChart(); }, 50); } }
+        function toggleTheme() { const isDark = themeCheckbox.checked; localStorage.setItem('wheelOfLife_theme', isDark ? 'dark' : 'light'); setupTheme(); }
+        // --- FIN SECTION: THÈME ---
 
-                     // Migre/valide les piliers importés. Utilise un tableau vide si pillars est null/undefined
-                     pillars = migrateDataStructure(importedData.pillars || []);
-                     // Valide l'historique. Utilise un tableau vide si history est manquant ou invalide.
-                     history = Array.isArray(importedData.history) ? importedData.history : [];
-                     history.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
+        // --- SECTION: EXPORT / IMPORT ---
+        function exportData() { const dataToExport = { pillars: pillars, history: history }; const dataStr = JSON.stringify(dataToExport, null, 2); const dataBlob = new Blob([dataStr], { type: 'application/json' }); const url = URL.createObjectURL(dataBlob); const link = document.createElement('a'); link.href = url; const timestamp = new Date().toISOString().slice(0, 19).replace('T', '_').replace(/:/g, '-'); link.download = `roue-de-la-vie-export-${timestamp}.json`; document.body.appendChild(link); link.click(); document.body.removeChild(link); URL.revokeObjectURL(url); alert("Données exportées."); }
+        function importData(event) { const file = event.target.files[0]; if (!file || !file.name.endsWith('.json')) { alert("Sélectionner un fichier .json valide."); event.target.value = null; return; } const reader = new FileReader(); reader.onload = function(e) { try { const importedData = JSON.parse(e.target.result); if (!importedData || !importedData.hasOwnProperty('pillars')) { throw new Error("Format invalide. Clé 'pillars' manquante."); } if (!confirm("Importer écrasera les données actuelles (config & historique). Continuer ?")) { event.target.value = null; return; } pillars = migrateDataStructure(importedData.pillars || []); history = Array.isArray(importedData.history) ? importedData.history : []; history.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0)); if (!Array.isArray(pillars) || pillars.length === 0) { alert("Attention: Fichier sans piliers valides. Reset aux défauts."); pillars = JSON.parse(JSON.stringify(defaultPillarsData)); } currentPillarIndex = 0; saveData(); closeAllModals(); event.target.value = null; if (chartInstance) { chartInstance.destroy(); chartInstance = null; } showInputView(); alert("Données importées avec succès !"); } catch (error) { console.error("Erreur importation:", error); alert(`Erreur importation: ${error.message}`); event.target.value = null; } }; reader.onerror = function() { alert("Erreur lecture fichier."); event.target.value = null; }; reader.readAsText(file); }
+        // --- FIN SECTION: EXPORT / IMPORT ---
 
-                     // Vérifie si des piliers valides existent après l'import/migration
-                      if (!Array.isArray(pillars) || pillars.length === 0) {
-                          alert("Attention: Le fichier importé ne contenait aucun pilier valide ou la structure était incorrecte. Réinitialisation aux piliers par défaut.");
-                          pillars = JSON.parse(JSON.stringify(defaultPillarsData)); // Fallback aux défauts si l'import ne donne rien de valide
-                      }
-
-                     currentPillarIndex = 0;
-                     saveData();
-                     closeAllModals();
-                     event.target.value = null;
-                     if (chartInstance) { chartInstance.destroy(); chartInstance = null; }
-                     renderPillar(); // Re-render l'UI principale avec les nouvelles données
-                     showInputView(); // Assure qu'on est sur la vue input
-                     alert("Données importées avec succès !");
-                 } catch (error) {
-                     console.error("Erreur importation:", error); alert(`Erreur importation: ${error.message}`); event.target.value = null;
-                 }
-             };
-             reader.onerror = function() { alert("Erreur lecture fichier."); event.target.value = null; };
-             reader.readAsText(file);
-        }
-
-        // --- Event Listeners ---
-        function addEventListeners() {
-            themeCheckbox.addEventListener('change', toggleTheme);
-             document.addEventListener('keydown', function(event) {
-                 if (event.key === 'Escape') {
-                      // Priorité : fermer la popup de note si elle est ouverte
-                      if (notePopup.style.display === 'block') {
-                          closeModal('notePopup');
-                      } else { // Sinon, fermer les autres popups
-                          closeAllModals();
-                      }
-                 }
-             });
-             // Ajouter d'autres listeners si besoin
-        }
-
-        // --- Start the app ---
+        // --- SECTION: ÉCOUTEURS D'ÉVÉNEMENTS & DÉMARRAGE ---
+        function addEventListeners() { themeCheckbox.addEventListener('change', toggleTheme); document.addEventListener('keydown', function(event) { if (event.key === 'Escape') { if (notePopup.style.display === 'block') { closeModal('notePopup'); } else { closeAllModals(); } } }); }
         document.addEventListener('DOMContentLoaded', initializeApp);
+        // --- FIN SECTION: ÉCOUTEURS D'ÉVÉNEMENTS & DÉMARRAGE ---
 
-    </script>
+    </script> <!-- Fin du Script Principal -->
 </body>
 </html>
