@@ -251,8 +251,8 @@
         <div id="historyContent"></div>
         <div class="popup-buttons">
             <button onclick="exportData()" class="button-like">Exporter Tout (JSON)</button>
-            <label class="button-like"> Importer <input type="file" id="importFile" accept=".json" onchange="importData(event)" class="hidden"></label>
-             <button onclick="copyHistory()" aria-label="Copier l'historique au format JSON avec prompt de coaching">Copier (JSON+Prompt)</button>
+            
+            <button onclick="copyHistory()" aria-label="Copier l'historique au format JSON avec prompt de coaching">Copier (JSON+Prompt)</button>
             <button onclick="resetApp()" class="danger-button" aria-label="Réinitialiser toutes les données de l'application">Tout Réinitialiser</button>
             <button onclick="closeModal('historyPopup')" aria-label="Fermer la fenêtre d'historique">Fermer</button>
         </div>
@@ -783,15 +783,53 @@
         }
 
         function copyHistory() {
-             if (history.length === 0) { alert("L'historique est vide."); return; }
-             // ... (le reste de la fonction copyHistory reste identique)
-              const coachingPrompt = `Voici mon historique (${history.length} ${history.length > 1 ? 'entrées' : 'entrée'}) ... (Identique à avant)`;
-              const historyJson = JSON.stringify(history, null, 2);
-              navigator.clipboard.writeText(coachingPrompt + historyJson).then(() => {
-                  alert(`Historique (${history.length} ${history.length > 1 ? 'entrées' : 'entrée'}) copié ... (Identique à avant)`);
-              }).catch(err => {
-                  console.error("Erreur copie: ", err); alert("Erreur copie..."); console.log(coachingPrompt + historyJson);
-              });
+            if (history.length === 0) {
+                 alert("L'historique est vide. Aucune donnée à copier.");
+                 return;
+            }
+
+            // 1. Prépare les données JSON formatées
+            const historyJson = JSON.stringify(history, null, 2); // null, 2 pour l'indentation (lisibilité)
+
+            // 2. Définit le nouveau prompt détaillé (basé sur votre demande)
+            const coachingPrompt = `
+Prompt pour l'IA de Coaching :
+
+"Je te fournis l'historique (${history.length} ${history.length > 1 ? 'entrées' : 'entrée'}) des auto-évaluations d'un utilisateur via l'outil 'Roue de la Vie'. Chaque entrée contient la date, les scores moyens par pilier, et potentiellement des détails (score individuel, note, objectif) pour chaque sous-pilier à ce moment-là. Les données sont triées de la plus récente à la plus ancienne et sont fournies plus bas au format JSON.
+
+Sur la base de ces données, je souhaite que tu :
+
+1.  **Analyses les Tendances :** Identifie les tendances dans les scores moyens au fil du temps pour chaque pilier de vie. Note les améliorations ou les déclins significatifs, indépendamment de la fréquence des évaluations. Mets en évidence les piliers les plus dynamiques (en positif ou négatif).
+
+2.  **Fournisse des Insights :** Donne des insights sur les domaines où l'utilisateur progresse bien (scores élevés, en hausse constante, ou atteignant/dépassant les objectifs fixés 'goal') et ceux qui nécessitent plus d'attention (scores bas, en baisse, ou loin des objectifs), en tenant compte de la fréquence variable des évaluations. Utilise les 'notes' si présentes pour affiner l'analyse.
+
+3.  **Propose des Conseils Personnalisés :** En fonction des tendances, des écarts par rapport aux objectifs et des éventuelles notes, propose des conseils et des stratégies concrètes et personnalisées pour aider l'utilisateur à atteindre ses objectifs ou à améliorer sa satisfaction globale.
+
+4.  **Suggère des Actions Concrètes :** Recommande 2-3 actions spécifiques et réalisables que l'utilisateur peut entreprendre avant sa prochaine évaluation pour améliorer ses scores dans les domaines identifiés comme prioritaires (ceux qui sont loin des objectifs ou en déclin).
+
+5.  **Prépare un Résumé pour la Prochaine Évaluation :** Rédige un paragraphe court résumant les progrès clés (ou points de vigilance) depuis la *dernière* évaluation enregistrée (la plus récente dans les données fournies). Ce résumé doit être un encouragement et un point de focus pour sa prochaine auto-évaluation, quelle que soit la date à laquelle elle aura lieu.
+
+Merci de fournir une analyse détaillée et des recommandations actionnables basées sur ces données pour aider l'utilisateur dans son parcours de développement personnel."
+
+--- DONNÉES JSON DE L'HISTORIQUE ---
+`;
+
+            // 3. Combine le prompt et les données JSON
+            const textToCopy = coachingPrompt + historyJson;
+
+            // 4. Tente de copier dans le presse-papiers
+            navigator.clipboard.writeText(textToCopy).then(() => {
+                // Message de succès plus informatif
+                alert(`Prompt de coaching détaillé et historique (${history.length} ${history.length > 1 ? 'entrées' : 'entrée'}) copiés dans le presse-papiers ! Collez-le dans votre IA favorite.`);
+            }).catch(err => {
+                // Gestion de l'erreur améliorée
+                console.error("Erreur de copie automatique dans le presse-papiers: ", err);
+                 alert("Erreur lors de la copie automatique. L'historique et le prompt ont été affichés dans la console (F12) pour que vous puissiez les copier manuellement.");
+                 // Log en fallback pour permettre une copie manuelle facile
+                 console.warn("--- Début du contenu à copier manuellement ---");
+                 console.log(textToCopy);
+                 console.warn("--- Fin du contenu à copier manuellement ---");
+            });
         }
 
         function resetApp() {
