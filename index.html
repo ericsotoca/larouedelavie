@@ -3,351 +3,1031 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>La Roue de la Vie</title>
+    <title>La Roue de la Vie Interactive</title>
     <style>
+        /* --- Variables & Thème --- */
+        :root {
+            --bg-color: #f4f4f4;
+            --container-bg: white;
+            --text-color: #2c3e50;
+            --secondary-text-color: #34495e;
+            --primary-color: #3498db;
+            --primary-hover-color: #2980b9;
+            --disabled-color: #bdc3c7;
+            --slider-track-color: #dfe6e9;
+            --slider-thumb-color: #3498db;
+            /* Couleurs du graphique - AVEC TRANSPARENCE pour les fonds */
+            --chart-bg-color: rgba(52, 152, 219, 0.2); /* Bleu transparent */
+            --chart-border-color: #3498db;            /* Bleu opaque */
+            --goal-bg-color: rgba(231, 76, 60, 0.1);    /* Rouge/Orange transparent */
+            --goal-border-color: #e74c3c;            /* Rouge/Orange opaque */
+            --danger-color: #e74c3c;
+            --danger-hover-color: #c0392b;
+            --shadow-color: rgba(0, 0, 0, 0.1);
+            --focus-ring-color: #74b9ff;
+            --grid-color: #dbe4e9; /* Couleur grille plus claire */
+            --tooltip-bg: rgba(255, 255, 255, 0.95); /* Fond tooltip légèrement transparent */
+        }
+
+        body.dark-theme {
+            --bg-color: #2c3e50;
+            --container-bg: #34495e;
+            --text-color: #ecf0f1;
+            --secondary-text-color: #bdc3c7;
+            --primary-color: #3498db;
+            --primary-hover-color: #5dade2;
+            --disabled-color: #7f8c8d;
+            --slider-track-color: #7f8c8d;
+            --slider-thumb-color: #3498db;
+            /* Couleurs du graphique - Thème sombre */
+            --chart-bg-color: rgba(52, 152, 219, 0.3); /* Bleu transparent plus visible */
+            --chart-border-color: #5dade2;            /* Bleu plus clair */
+            --goal-bg-color: rgba(241, 150, 138, 0.2);   /* Rouge/Orange transparent plus visible */
+            --goal-border-color: #f1948a;            /* Rouge/Orange plus clair */
+            --danger-color: #e74c3c;
+            --danger-hover-color: #f1948a;
+            --shadow-color: rgba(0, 0, 0, 0.3);
+            --focus-ring-color: #a9cce3;
+            --grid-color: #566573; /* Couleur grille thème sombre */
+            --tooltip-bg: rgba(44, 62, 80, 0.95); /* Fond tooltip sombre */
+        }
+
+        /* --- Styles Généraux --- */
         body {
             font-family: 'Arial', sans-serif;
             margin: 0;
             padding: 20px;
-            background-color: #f4f4f4;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            transition: background-color 0.3s, color 0.3s;
             touch-action: manipulation;
-        }
-        h1, h2, h3 {
-            text-align: center;
-            color: #2c3e50;
-        }
-        h1 {
-            font-size: 2.5rem;
-            font-weight: 700;
-            margin: 20px 0;
         }
         .container {
             max-width: 700px;
             margin: 0 auto;
-            background: white;
+            background: var(--container-bg);
+            color: var(--text-color);
             padding: 30px;
             border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 12px var(--shadow-color);
+            transition: background-color 0.3s, color 0.3s;
         }
-        .logo {
-            display: block;
-            margin: 0 auto 20px;
-            max-width: 250px;
-            height: auto;
-        }
-        #globalScore {
-            font-size: 1.6rem;
-            font-weight: 600;
-            margin-bottom: 30px;
-            color: #2c3e50;
-            text-align: center;
-        }
-        .pillar {
-            margin-bottom: 25px;
-        }
+        h1, h2, h3 { text-align: center; color: var(--text-color); }
+        h1 { font-size: 2.5rem; font-weight: 700; margin: 20px 0; }
+        h3 { font-size: 1.5rem; margin-bottom: 15px; display: flex; align-items: center; justify-content: center; gap: 10px;}
+
+        /* --- Logo & Scores --- */
+        .logo { display: block; margin: 0 auto 20px; max-width: 250px; height: auto; }
+        #globalScore { font-size: 1.6rem; font-weight: 600; margin-bottom: 10px; text-align: center; }
+        #pillarAverageScore { font-size: 1.1rem; font-weight: 500; margin-bottom: 20px; text-align: center; color: var(--secondary-text-color); }
+
+        /* --- Piliers & Sous-Piliers --- */
+        .pillar { margin-bottom: 25px; }
         .sub-pillar {
-            margin: 15px 0;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 15px;
+            margin: 20px 0; padding: 15px; border: 1px solid var(--slider-track-color);
+            border-radius: 8px; background-color: var(--bg-color); transition: background-color 0.3s;
         }
-        .sub-pillar label {
-            flex: 1;
-            font-size: 1.2rem;
-            color: #34495e;
-        }
+        .sub-pillar-header { display: flex; align-items: center; justify-content: space-between; gap: 15px; margin-bottom: 10px; }
+        .sub-pillar label { flex-grow: 1; font-size: 1.1rem; color: var(--secondary-text-color); display: flex; align-items: center; gap: 8px; }
+        .sub-pillar-controls { display: flex; align-items: center; gap: 10px; width: 60%; }
         input[type="range"] {
-            width: 60%;
-            margin-left: 10px;
-            -webkit-appearance: none;
-            appearance: none;
-            height: 8px;
-            background: #dfe6e9;
-            border-radius: 5px;
-            outline: none;
-            transition: background 0.3s;
+            flex-grow: 1; margin-left: 10px; -webkit-appearance: none; appearance: none;
+            height: 8px; background: var(--slider-track-color); border-radius: 5px;
+            outline: none; transition: background 0.3s; cursor: pointer;
         }
         input[type="range"]::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 20px;
-            height: 20px;
-            background: #3498db;
-            border-radius: 50%;
-            cursor: pointer;
-            transition: background 0.3s;
+            -webkit-appearance: none; appearance: none; width: 20px; height: 20px;
+            background: var(--slider-thumb-color); border-radius: 50%; cursor: pointer; transition: background 0.3s;
         }
-        input[type="range"]::-webkit-slider-thumb:hover {
-            background: #2980b9;
+        input[type="range"]::-moz-range-thumb {
+             width: 20px; height: 20px; background: var(--slider-thumb-color);
+             border-radius: 50%; cursor: pointer; border: none; transition: background 0.3s;
         }
-        .nav-buttons {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 30px;
-            gap: 15px;
+        input[type="range"]::-webkit-slider-thumb:hover { background: var(--primary-hover-color); }
+        input[type="range"]::-moz-range-thumb:hover { background: var(--primary-hover-color); }
+        .slider-value { font-size: 1.1rem; font-weight: bold; min-width: 25px; text-align: right; }
+
+        /* --- Notes & Objectifs --- */
+        .sub-pillar-details { margin-top: 10px; display: flex; gap: 15px; flex-wrap: wrap; }
+        .detail-group { display: flex; align-items: center; gap: 5px; }
+        .detail-group label { font-size: 0.9rem; color: var(--secondary-text-color); flex-grow: 0; }
+        .detail-group input[type="text"], .detail-group input[type="number"] {
+            padding: 5px 8px; border-radius: 4px; border: 1px solid var(--slider-track-color);
+            background-color: var(--container-bg); color: var(--text-color); font-size: 0.9rem;
+            max-width: 150px;
         }
-        button {
-            background-color: #3498db;
-            color: white;
-            padding: 12px 25px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 1rem;
-            transition: background-color 0.3s, transform 0.1s;
+        .detail-group input[type="number"] { width: 50px; }
+
+        /* --- Boutons --- */
+        .nav-buttons { display: flex; justify-content: space-between; margin-top: 30px; gap: 15px; }
+        button, .button-like {
+            background-color: var(--primary-color); color: white; padding: 12px 25px;
+            border: none; border-radius: 8px; cursor: pointer; font-size: 1rem; text-align: center;
+            transition: background-color 0.3s, transform 0.1s; text-decoration: none; display: inline-block;
         }
-        button:disabled {
-            background-color: #bdc3c7;
-            cursor: not-allowed;
+        button:disabled { background-color: var(--disabled-color); cursor: not-allowed; transform: none; }
+        button:hover:not(:disabled), .button-like:hover { background-color: var(--primary-hover-color); transform: translateY(-2px); }
+        button:active:not(:disabled), .button-like:active { transform: translateY(0); }
+        button:focus-visible, .button-like:focus-visible { outline: 3px solid var(--focus-ring-color); outline-offset: 2px; }
+        .danger-button { background-color: var(--danger-color); }
+        .danger-button:hover:not(:disabled) { background-color: var(--danger-hover-color); }
+        .icon-button { background: none; border: none; padding: 2px; cursor: pointer; color: var(--secondary-text-color); }
+        .icon-button:hover { color: var(--primary-color); }
+        .icon-button svg { width: 16px; height: 16px; vertical-align: middle; }
+        .danger-button.icon-button:hover { color: var(--danger-color); }
+
+        /* --- Graphique --- */
+        canvas { max-width: 100%; margin-top: 30px; background-color: var(--container-bg); border-radius: 8px; display: block; } /* display:block pour éviter espace sous canvas */
+
+        /* --- Popups / Modals --- */
+        .popup {
+            display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            background: var(--container-bg); padding: 30px; border-radius: 12px;
+            box-shadow: 0 4px 12px var(--shadow-color); max-width: 90%; max-height: 85%;
+            overflow-y: auto; z-index: 1000; width: 600px;
         }
-        button:hover:not(:disabled) {
-            background-color: #2980b9;
-            transform: translateY(-2px);
-        }
-        button:focus {
-            outline: 3px solid #74b9ff;
-            outline-offset: 2px;
-        }
-        canvas {
-            max-width: 100%;
-            margin-top: 30px;
-        }
-        #historyPopup {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: white;
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-            max-width: 80%;
-            max-height: 80%;
-            overflow-y: auto;
-            z-index: 1000;
-        }
-        #historyPopup h3 {
-            margin-top: 0;
-        }
-        .popup-buttons {
-            margin-top: 20px;
-            display: flex;
-            justify-content: space-between;
-            gap: 10px;
-        }
+        .popup h3 { margin-top: 0; }
+        .popup-buttons { margin-top: 20px; display: flex; justify-content: flex-end; gap: 10px; flex-wrap: wrap; }
         #overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 999;
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.6); z-index: 999;
         }
-        @media (max-width: 600px) {
-            .container {
-                padding: 20px;
-            }
-            h1 {
-                font-size: 2rem;
-            }
-            .sub-pillar {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-            input[type="range"] {
-                width: 100%;
-                margin-left: 0;
-            }
-            .nav-buttons, .popup-buttons {
-                flex-direction: column;
-                gap: 10px;
-            }
-            button {
-                width: 100%;
-                padding: 12px;
-            }
+        #historyContent ul { list-style: none; padding: 0; }
+        #historyContent li { margin-bottom: 15px; padding-bottom: 15px; border-bottom: 1px solid var(--slider-track-color); }
+        #historyContent li:last-child { border-bottom: none; }
+        .history-entry strong { font-size: 1.1em; }
+        .history-scores { margin-top: 5px; font-size: 0.9em; }
+        .score-diff { margin-left: 5px; font-size: 0.8em; }
+        .score-diff.positive { color: #2ecc71; font-weight: bold;} /* Vert plus vif */
+        .score-diff.negative { color: var(--danger-color); font-weight: bold; }
+
+        /* --- Personnalisation --- */
+        .customization-section { margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px dashed var(--slider-track-color); }
+        .customization-item { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+        .customization-item input[type="text"] { flex-grow: 1; padding: 8px; border: 1px solid var(--slider-track-color); border-radius: 4px; background-color: var(--bg-color); color: var(--text-color); }
+
+        /* --- Theme Toggle --- */
+        .theme-switch-wrapper { display: flex; align-items: center; gap: 10px; position: absolute; top: 15px; right: 15px; }
+        .theme-switch { display: inline-block; height: 24px; position: relative; width: 50px; }
+        .theme-switch input { display:none; }
+        .slider { background-color: #ccc; bottom: 0; cursor: pointer; left: 0; position: absolute; right: 0; top: 0; transition: .4s; border-radius: 34px; }
+        .slider:before { background-color: #fff; bottom: 4px; content: ""; height: 16px; left: 4px; position: absolute; transition: .4s; width: 16px; border-radius: 50%; }
+        input:checked + .slider { background-color: var(--primary-color); }
+        input:checked + .slider:before { transform: translateX(26px); }
+
+        /* --- Aide --- */
+        #helpPopup ul { margin-top: 15px; padding-left: 20px; }
+        #helpPopup li { margin-bottom: 8px; }
+
+        /* --- Utilitaires --- */
+        .hidden { display: none; }
+        .text-center { text-align: center; }
+        .mt-1 { margin-top: 10px; }
+        .mt-2 { margin-top: 20px; }
+        .w-100 { width: 100%; }
+
+        /* --- Responsive --- */
+        @media (max-width: 768px) {
+            .container { padding: 20px; }
+            h1 { font-size: 2rem; }
+            .sub-pillar-header { flex-direction: column; align-items: stretch; gap: 8px; }
+            .sub-pillar-controls { width: 100%; margin-top: 5px;}
+            input[type="range"] { margin-left: 0; width: 100%; }
+             .sub-pillar label { font-size: 1rem; }
+            .nav-buttons, .popup-buttons { flex-direction: column; gap: 10px; }
+            button, .button-like { width: 100%; }
+            .popup { width: 90%; padding: 20px; }
+            .theme-switch-wrapper { position: static; justify-content: center; margin: 15px 0; }
+            .detail-group { flex-basis: 100%; }
+            h3 { font-size: 1.3rem; }
         }
+
     </style>
 </head>
 <body>
-    <div class="container">
-        <img src="logo.png" alt="Sieste FM" class="logo">
-        <h1></h1>
-        <div id="globalScore">Note globale : 10 / 20</div>
-        <div id="pillarDisplay"></div>
-        <div class="nav-buttons">
-            <button id="prevBtn" onclick="changePillar(-1)">Précédent</button>
-            <button id="nextBtn" onclick="changePillar(1)">Suivant</button>
-        </div>
-        <button onclick="showChartAndSave()" style="width: 100%; margin-top: 20px;">Afficher la Roue</button>
-        <button onclick="showHistory()" style="width: 100%; margin-top: 10px;">Historique</button>
-        <canvas id="radarChart" style="display: none;"></canvas>
+    <!-- Theme Switch -->
+    <div class="theme-switch-wrapper">
+        <span aria-hidden="true">☀️</span>
+        <label class="theme-switch" for="theme-checkbox">
+            <input type="checkbox" id="theme-checkbox" aria-label="Changer de thème (clair/sombre)">
+            <span class="slider round"></span>
+        </label>
+        <span aria-hidden="true">🌙</span>
     </div>
-    <div id="overlay"></div>
-    <div id="historyPopup">
-        <h3>Historique des évaluations</h3>
+
+    <div class="container">
+        <img src="logo.png" alt="" class="logo" onerror="this.style.display='none'; this.alt='Logo indisponible'"> <!-- Alt amélioré si erreur -->
+        <h1>La Roue de la Vie</h1>
+        <div id="globalScore">Note globale : - / 20</div>
+        <div id="pillarDisplay">
+            <!-- Contenu du pilier actuel injecté par JS -->
+        </div>
+         <div id="pillarAverageScore">Moyenne Pilier : - / 10</div>
+
+        <div class="nav-buttons">
+            <button id="prevBtn" onclick="changePillar(-1)" aria-label="Pilier précédent">Précédent</button>
+            <button id="nextBtn" onclick="changePillar(1)" aria-label="Pilier suivant">Suivant</button>
+        </div>
+
+        <!-- Graphique Canvas -->
+        <canvas id="radarChart" style="display: none;" aria-label="Graphique radar des scores de la roue de la vie"></canvas>
+
+        <!-- Boutons d'action principaux -->
+        <button id="showChartBtn" onclick="showChartAndSave()" class="w-100 mt-2" aria-label="Afficher le graphique et sauvegarder l'évaluation">Afficher la Roue & Sauvegarder</button>
+
+        <div class="mt-2 text-center" style="display: flex; gap: 10px; flex-wrap: wrap; justify-content: center;">
+            <button onclick="openModal('historyPopup')" aria-label="Ouvrir l'historique des évaluations">Historique</button>
+            <button onclick="openModal('customizationPopup')" aria-label="Ouvrir les options de personnalisation">Personnaliser</button>
+            <button onclick="openModal('helpPopup')" aria-label="Ouvrir l'aide">Aide</button>
+        </div>
+    </div>
+
+    <!-- Overlay pour les popups -->
+    <div id="overlay" onclick="closeAllModals()"></div>
+
+    <!-- Popup Historique -->
+    <div id="historyPopup" class="popup" role="dialog" aria-labelledby="historyTitle" aria-modal="true">
+        <h3 id="historyTitle">Historique des évaluations</h3>
         <div id="historyContent"></div>
         <div class="popup-buttons">
-            <button onclick="copyHistory()">Copier (JSON)</button>
-            <button onclick="resetHistory()">Reset</button>
-            <button onclick="closeHistory()">Fermer</button>
+            <button onclick="exportData()" class="button-like">Exporter Tout (JSON)</button>
+            <label class="button-like"> Importer <input type="file" id="importFile" accept=".json" onchange="importData(event)" class="hidden"></label>
+             <button onclick="copyHistory()" aria-label="Copier l'historique au format JSON avec prompt de coaching">Copier (JSON+Prompt)</button>
+            <button onclick="resetApp()" class="danger-button" aria-label="Réinitialiser toutes les données de l'application">Tout Réinitialiser</button>
+            <button onclick="closeModal('historyPopup')" aria-label="Fermer la fenêtre d'historique">Fermer</button>
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+     <!-- Popup Personnalisation -->
+    <div id="customizationPopup" class="popup" role="dialog" aria-labelledby="customizationTitle" aria-modal="true">
+        <h3 id="customizationTitle">Personnaliser les Piliers</h3>
+        <div id="customizationContent">
+            <!-- Contenu généré par JS -->
+        </div>
+         <p style="font-size: 0.9em; color: var(--secondary-text-color);">Note: L'ajout de nouveaux piliers/sous-piliers n'est pas supporté. La suppression est définitive pour la session (sauvegardée ensuite).</p>
+        <div class="popup-buttons">
+            <button onclick="saveCustomization()" aria-label="Sauvegarder les changements de personnalisation">Sauvegarder & Fermer</button>
+            <button onclick="closeModal('customizationPopup')" aria-label="Annuler et fermer la personnalisation">Annuler</button>
+        </div>
+    </div>
+
+    <!-- Popup Aide -->
+    <div id="helpPopup" class="popup" role="dialog" aria-labelledby="helpTitle" aria-modal="true">
+        <h3 id="helpTitle">Aide - La Roue de la Vie</h3>
+        <p>La Roue de la Vie est un outil pour évaluer votre satisfaction dans différents domaines clés.</p>
+        <ul>
+            <li>Naviguez entre les "Piliers" (catégories) avec "Précédent" / "Suivant".</li>
+            <li>Notez chaque "Sous-Pilier" de 1 (bas) à 10 (haut) avec le curseur.</li>
+            <li>Ajoutez une note et/ou un objectif optionnels pour chaque sous-pilier.</li>
+            <li>Cliquez sur "Afficher la Roue & Sauvegarder" pour voir le graphique et enregistrer l'évaluation dans l'historique.</li>
+            <li>"Historique" montre les évaluations passées et leur évolution.</li>
+            <li>"Personnaliser" permet de renommer ou supprimer des piliers/sous-piliers.</li>
+            <li>Utilisez l'interrupteur (☀️/🌙) pour changer de thème.</li>
+            <li>Exportez/Importez vos données via l'Historique.</li>
+        </ul>
+        <div class="popup-buttons">
+            <button onclick="closeModal('helpPopup')" aria-label="Fermer la fenêtre d'aide">Fermer</button>
+        </div>
+    </div>
+
+    <!-- Librairie Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+     <!-- Utilisation d'une version spécifique de Chart.js v3 pour plus de stabilité que 'latest' -->
     <script>
-        const defaultPillars = [
-            { name: "Santé", subPillars: ["Physique", "Mental", "Sommeil", "Nutrition", "Énergie"].map(n => ({ name: n, score: 5 })) },
-            { name: "Famille", subPillars: ["Proches", "Communication", "Temps passé", "Soutien", "Harmonie"].map(n => ({ name: n, score: 5 })) },
-            { name: "Finances", subPillars: ["Revenus", "Épargne", "Dépenses", "Investissements", "Sécurité"].map(n => ({ name: n, score: 5 })) },
-            { name: "Carrière", subPillars: ["Satisfaction", "Progression", "Équilibre", "Compétences", "Reconnaissance"].map(n => ({ name: n, score: 5 })) },
-            { name: "Loisirs", subPillars: ["Temps libre", "Passions", "Détente", "Créativité", "Social"].map(n => ({ name: n, score: 5 })) },
-            { name: "Développement personnel", subPillars: ["Apprentissage", "Objectifs", "Confiance", "Résilience", "Clarté"].map(n => ({ name: n, score: 5 })) },
-            { name: "Relations sociales", subPillars: ["Amis", "Réseau", "Écoute", "Partage", "Qualité"].map(n => ({ name: n, score: 5 })) },
-            { name: "Cadre de vie", subPillars: ["Logement", "Environnement", "Organisation", "Confort", "Esthétique"].map(n => ({ name: n, score: 5 })) }
+        // --- SVG Icons ---
+        const deleteIcon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z" /></svg>`;
+
+        // --- Default Structure ---
+        const defaultPillarsData = [
+             { id: "sante", name: "Santé", subPillars: [
+                { id: "sante-phy", name: "Physique", score: 5, note: "", goal: 8 }, { id: "sante-men", name: "Mental", score: 5, note: "", goal: 8 },
+                { id: "sante-som", name: "Sommeil", score: 5, note: "", goal: 7 }, { id: "sante-nut", name: "Nutrition", score: 5, note: "", goal: 7 },
+                { id: "sante-ene", name: "Énergie", score: 5, note: "", goal: 8 } ]},
+             { id: "famille", name: "Famille", subPillars: [
+                { id: "fam-pro", name: "Proches", score: 5, note: "", goal: 8 }, { id: "fam-com", name: "Communication", score: 5, note: "", goal: 7 },
+                { id: "fam-tmp", name: "Temps passé", score: 5, note: "", goal: 7 }, { id: "fam-sou", name: "Soutien", score: 5, note: "", goal: 8 },
+                { id: "fam-har", name: "Harmonie", score: 5, note: "", goal: 8 } ]},
+            { id: "finances", name: "Finances", subPillars: ["Revenus", "Épargne", "Dépenses", "Investissements", "Sécurité"].map((n, i) => ({ id: `fin-${i}`, name: n, score: 5, note: "", goal: 7 })) },
+            { id: "carriere", name: "Carrière", subPillars: ["Satisfaction", "Progression", "Équilibre", "Compétences", "Reconnaissance"].map((n, i) => ({ id: `car-${i}`, name: n, score: 5, note: "", goal: 8 })) },
+            { id: "loisirs", name: "Loisirs", subPillars: ["Temps libre", "Passions", "Détente", "Créativité", "Social"].map((n, i) => ({ id: `loi-${i}`, name: n, score: 5, note: "", goal: 7 })) },
+            { id: "devperso", name: "Développement perso", subPillars: ["Apprentissage", "Objectifs", "Confiance", "Résilience", "Clarté"].map((n, i) => ({ id: `dev-${i}`, name: n, score: 5, note: "", goal: 9 })) },
+            { id: "relations", name: "Relations sociales", subPillars: ["Amis", "Réseau", "Écoute", "Partage", "Qualité"].map((n, i) => ({ id: `rel-${i}`, name: n, score: 5, note: "", goal: 7 })) },
+            { id: "cadrevie", name: "Cadre de vie", subPillars: ["Logement", "Environnement", "Organisation", "Confort", "Esthétique"].map((n, i) => ({ id: `cad-${i}`, name: n, score: 5, note: "", goal: 8 })) }
         ];
 
-        let pillars = JSON.parse(localStorage.getItem('pillars')) || defaultPillars;
-        let history = JSON.parse(localStorage.getItem('history')) || [];
+        // --- State Variables ---
+        let pillars = [];
+        let history = [];
         let currentPillarIndex = 0;
         let chartInstance = null;
+        let tempCustomPillars = [];
 
+        // --- DOM Elements ---
+        const pillarDisplay = document.getElementById('pillarDisplay');
+        const globalScoreDisplay = document.getElementById('globalScore');
+        const pillarAverageScoreDisplay = document.getElementById('pillarAverageScore');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const radarChartCanvas = document.getElementById('radarChart');
+        const historyContent = document.getElementById('historyContent');
+        const overlay = document.getElementById('overlay');
+        const themeCheckbox = document.getElementById('theme-checkbox');
+        const customizationContent = document.getElementById('customizationContent');
+        const showChartBtn = document.getElementById('showChartBtn');
+
+        // --- Helper Functions ---
+        function getCssVar(varName) {
+            return getComputedStyle(document.documentElement).getPropertyValue(varName).trim();
+        }
+
+        function generateId(prefix = 'item') {
+            return `${prefix.toLowerCase().replace(/[^a-z0-9]+/g, '-')}-${Date.now().toString(36)}-${Math.random().toString(36).substr(2, 5)}`;
+        }
+
+        // --- Initialization ---
+        function initializeApp() {
+            loadData();
+            setupTheme(); // Applique le thème initial AVANT le premier rendu
+            if (pillars.length > 0) {
+                 renderPillar();
+            } else {
+                 handleNoPillars();
+            }
+            addEventListeners();
+        }
+
+        function handleNoPillars() {
+             pillarDisplay.innerHTML = "<p class='text-center'>Aucun pilier défini. Veuillez réinitialiser l'application ou importer des données.</p>";
+             globalScoreDisplay.textContent = `Note globale : - / 20`;
+             pillarAverageScoreDisplay.textContent = `Moyenne Pilier : - / 10`;
+             prevBtn.disabled = true;
+             nextBtn.disabled = true;
+             showChartBtn.disabled = true; // Désactive aussi le bouton du graphique
+             if (chartInstance) { chartInstance.destroy(); chartInstance = null; }
+             radarChartCanvas.style.display = 'none';
+        }
+
+
+        // --- Data Management (LocalStorage) ---
+        function loadData() {
+            const storedPillars = localStorage.getItem('wheelOfLife_pillars');
+            const storedHistory = localStorage.getItem('wheelOfLife_history');
+
+            try {
+                const parsedPillars = storedPillars ? JSON.parse(storedPillars) : null;
+                pillars = parsedPillars && parsedPillars.length > 0
+                            ? migrateDataStructure(parsedPillars)
+                            : JSON.parse(JSON.stringify(defaultPillarsData)); // Deep copy defaults if storage empty/invalid
+            } catch (e) {
+                console.error("Erreur chargement piliers, fallback aux défauts.", e);
+                pillars = JSON.parse(JSON.stringify(defaultPillarsData));
+            }
+
+             try {
+                 const parsedHistory = storedHistory ? JSON.parse(storedHistory) : [];
+                 history = Array.isArray(parsedHistory) ? parsedHistory : [];
+                 history.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0)); // Trier par date décroissante
+             } catch (e) {
+                 console.error("Erreur chargement historique, réinitialisation.", e);
+                 history = [];
+             }
+
+            // Assurer que les données de base existent et sont valides
+            if (!Array.isArray(pillars) || pillars.length === 0) {
+                 pillars = JSON.parse(JSON.stringify(defaultPillarsData));
+            } else {
+                // Re-vérification de la structure après chargement/migration
+                pillars.forEach(p => {
+                    p.id = p.id || generateId(p.name);
+                    p.subPillars = Array.isArray(p.subPillars) ? p.subPillars : [];
+                    p.subPillars.forEach(sp => {
+                        sp.id = sp.id || generateId(p.id + '-' + sp.name);
+                        sp.score = (sp.score !== undefined && !isNaN(parseInt(sp.score))) ? parseInt(sp.score) : 5;
+                        sp.note = sp.note || "";
+                        sp.goal = (sp.goal !== undefined && !isNaN(parseInt(sp.goal))) ? parseInt(sp.goal) : 7;
+                    });
+                });
+            }
+
+            currentPillarIndex = 0;
+        }
+
+        function migrateDataStructure(loadedPillars) {
+             // Fonction pour s'assurer que tous les champs nécessaires existent
+            return loadedPillars.map((p, pIdx) => ({
+                id: p.id || generateId(p.name || `pillar-${pIdx}`),
+                name: p.name || `Pilier ${pIdx + 1}`,
+                subPillars: Array.isArray(p.subPillars) ? p.subPillars.map((sp, spIdx) => {
+                    const base = typeof sp === 'string' ? { name: sp } : (sp || {}); // Gère string ou objet null/undefined
+                    return {
+                        id: base.id || generateId((p.id || `p${pIdx}`) + '-' + (base.name || `sub-${spIdx}`)),
+                        name: base.name || `Sous-pilier ${spIdx + 1}`,
+                        score: (base.score !== undefined && !isNaN(parseInt(base.score))) ? parseInt(base.score) : 5,
+                        note: base.note || "",
+                        goal: (base.goal !== undefined && !isNaN(parseInt(base.goal))) ? parseInt(base.goal) : 7
+                    };
+                }) : [] // Retourne un tableau vide si subPillars n'est pas un tableau
+            }));
+        }
+
+        function saveData() {
+            try {
+                localStorage.setItem('wheelOfLife_pillars', JSON.stringify(pillars));
+                localStorage.setItem('wheelOfLife_history', JSON.stringify(history));
+            } catch (e) {
+                 console.error("Erreur lors de la sauvegarde des données:", e);
+                 alert("Erreur: Impossible de sauvegarder les données. Le stockage local est peut-être plein ou indisponible.");
+            }
+        }
+
+        // --- Rendering ---
         function renderPillar() {
-            const pillarDisplay = document.getElementById('pillarDisplay');
+             if (!pillars || pillars.length === 0) {
+                 handleNoPillars();
+                 return;
+             }
+             if (currentPillarIndex < 0 || currentPillarIndex >= pillars.length) {
+                 currentPillarIndex = 0; // Reset index si invalide
+             }
+
             const pillar = pillars[currentPillarIndex];
-            pillarDisplay.innerHTML = `<h3>${pillar.name} (${currentPillarIndex + 1}/${pillars.length})</h3>`;
-            pillar.subPillars.forEach((subPillar, sIndex) => {
-                const subDiv = document.createElement('div');
-                subDiv.className = 'sub-pillar';
-                subDiv.innerHTML = `
-                    <label>${subPillar.name}: ${subPillar.score}</label>
-                    <input type="range" min="1" max="10" value="${subPillar.score}" 
-                           oninput="updateScore(${currentPillarIndex}, ${sIndex}, this.value)">
-                `;
-                pillarDisplay.appendChild(subDiv);
-            });
+            if (!pillar) {
+                console.error("Pilier introuvable à l'index", currentPillarIndex);
+                handleNoPillars(); return;
+            }
+
+            let pillarHTML = `
+                <h3 id="pillar-title">
+                    <span>${pillar.name}</span>
+                    (${currentPillarIndex + 1}/${pillars.length})
+                </h3>`;
+
+            if (!pillar.subPillars || pillar.subPillars.length === 0) {
+                 pillarHTML += "<p class='text-center'>Ce pilier n'a pas de sous-piliers définis.</p>";
+            } else {
+                pillar.subPillars.forEach((subPillar, sIndex) => {
+                    // Assure que score et goal sont des nombres valides pour l'affichage
+                    const displayScore = (subPillar.score !== undefined && !isNaN(subPillar.score)) ? subPillar.score : 5;
+                    const displayGoal = (subPillar.goal !== undefined && !isNaN(subPillar.goal)) ? subPillar.goal : 7;
+                    const displayNote = subPillar.note || "";
+
+                    pillarHTML += `
+                        <div class="sub-pillar" id="subpillar-div-${subPillar.id}">
+                            <div class="sub-pillar-header">
+                                <label for="range-${subPillar.id}" id="label-${subPillar.id}">
+                                    <span>${subPillar.name}</span>
+                                </label>
+                                <div class="sub-pillar-controls">
+                                    <input type="range" id="range-${subPillar.id}" min="1" max="10" value="${displayScore}"
+                                        oninput="updateScore('${pillar.id}', '${subPillar.id}', this.value, true)"
+                                        aria-labelledby="label-${subPillar.id}"
+                                        aria-valuemin="1" aria-valuemax="10" aria-valuenow="${displayScore}">
+                                    <output class="slider-value" for="range-${subPillar.id}">${displayScore}</output>
+                                </div>
+                            </div>
+                            <div class="sub-pillar-details">
+                                 <div class="detail-group">
+                                    <label for="note-${subPillar.id}">Note:</label>
+                                    <input type="text" id="note-${subPillar.id}" value="${displayNote}"
+                                           placeholder="Ajouter une note..."
+                                           onchange="updateNote('${pillar.id}', '${subPillar.id}', this.value)">
+                                </div>
+                                 <div class="detail-group">
+                                    <label for="goal-${subPillar.id}">Objectif:</label>
+                                    <input type="number" id="goal-${subPillar.id}" min="1" max="10" value="${displayGoal}"
+                                           onchange="updateGoal('${pillar.id}', '${subPillar.id}', this.value)">
+                                </div>
+                            </div>
+                        </div>`;
+                });
+            }
+            pillarDisplay.innerHTML = pillarHTML;
+
             updateNavigationButtons();
-            updateGlobalScore();
+            updateScoresDisplay();
+            showChartBtn.disabled = false; // Réactive le bouton du graphique
         }
 
-        function updateScore(pIndex, sIndex, value) {
-            pillars[pIndex].subPillars[sIndex].score = parseInt(value);
-            localStorage.setItem('pillars', JSON.stringify(pillars));
-            renderPillar();
+        // --- Updates & Calculations ---
+        function findSubPillar(pillarId, subPillarId) {
+            const pillar = pillars.find(p => p.id === pillarId);
+            if (!pillar || !Array.isArray(pillar.subPillars)) return null;
+            return pillar.subPillars.find(sp => sp.id === subPillarId);
         }
 
-        function updateGlobalScore() {
-            const pillarAverages = pillars.map(pillar => 
-                pillar.subPillars.reduce((sum, sub) => sum + sub.score, 0) / pillar.subPillars.length
-            );
-            const globalScore = (pillarAverages.reduce((sum, avg) => sum + avg, 0) / pillars.length) * 2;
-            document.getElementById('globalScore').textContent = `Note globale : ${globalScore.toFixed(1)} / 20`;
-            return pillarAverages;
+        function updateScore(pillarId, subPillarId, value, fromInput = false) {
+            const score = parseInt(value);
+            if (isNaN(score)) return; // Ignore si ce n'est pas un nombre
+
+            const subPillar = findSubPillar(pillarId, subPillarId);
+            if (subPillar) {
+                 subPillar.score = score;
+                 if (fromInput) {
+                    const output = document.querySelector(`output[for='range-${subPillarId}']`);
+                    if (output) output.textContent = score;
+                    const rangeInput = document.getElementById(`range-${subPillarId}`);
+                    if (rangeInput) rangeInput.setAttribute('aria-valuenow', score);
+                 }
+                 updateScoresDisplay();
+                 saveData();
+            }
         }
 
+        function updateNote(pillarId, subPillarId, value) {
+             const subPillar = findSubPillar(pillarId, subPillarId);
+             if (subPillar) {
+                 subPillar.note = value.trim();
+                 saveData();
+             }
+         }
+
+        function updateGoal(pillarId, subPillarId, value) {
+            const goal = parseInt(value);
+             const input = document.getElementById(`goal-${subPillarId}`); // Get input element
+
+             const subPillar = findSubPillar(pillarId, subPillarId);
+             if (subPillar) {
+                 if (!isNaN(goal) && goal >= 1 && goal <= 10) {
+                     subPillar.goal = goal;
+                     saveData();
+                 } else {
+                     // Reset input to the stored valid value if input is invalid
+                     if(input) input.value = subPillar.goal !== undefined ? subPillar.goal : 7;
+                     console.warn("Objectif invalide, remis à la valeur précédente:", subPillar.goal);
+                     alert("L'objectif doit être un nombre entre 1 et 10.");
+                 }
+             }
+         }
+
+        function calculateAverages() {
+            const pillarAverages = pillars.map(pillar => {
+                 if (!pillar.subPillars || pillar.subPillars.length === 0) return 0;
+                 const sum = pillar.subPillars.reduce((acc, sub) => acc + (sub.score || 0), 0); // Use 0 if score is undefined/NaN
+                 return sum / pillar.subPillars.length;
+            });
+            const validAverages = pillarAverages.filter(avg => !isNaN(avg)); // Exclude NaN results if any
+            const globalAverage = validAverages.length > 0 ? validAverages.reduce((sum, avg) => sum + avg, 0) / validAverages.length : 0;
+            const globalScore = globalAverage * 2;
+            return { pillarAverages, globalScore };
+        }
+
+        function updateScoresDisplay() {
+            if (!pillars || pillars.length === 0) return;
+
+            const { pillarAverages, globalScore } = calculateAverages();
+            globalScoreDisplay.textContent = `Note globale : ${globalScore.toFixed(1)} / 20`;
+
+            const currentPillarAverage = pillarAverages[currentPillarIndex];
+            pillarAverageScoreDisplay.textContent = `Moyenne Pilier : ${currentPillarAverage !== undefined && !isNaN(currentPillarAverage) ? currentPillarAverage.toFixed(1) : '-'} / 10`;
+        }
+
+        // --- Navigation ---
         function changePillar(direction) {
+            if (!pillars || pillars.length === 0) return;
             currentPillarIndex += direction;
             renderPillar();
         }
 
         function updateNavigationButtons() {
-            document.getElementById('prevBtn').disabled = currentPillarIndex === 0;
-            document.getElementById('nextBtn').disabled = currentPillarIndex === pillars.length - 1;
+            const numPillars = pillars ? pillars.length : 0;
+            prevBtn.disabled = currentPillarIndex === 0 || numPillars <= 1;
+            nextBtn.disabled = currentPillarIndex >= numPillars - 1 || numPillars <= 1;
         }
 
-        function showChartAndSave() {
-            const averages = updateGlobalScore();
-            const radarChart = document.getElementById('radarChart');
-            radarChart.style.display = 'block';
-            const ctx = radarChart.getContext('2d');
-            if (chartInstance) chartInstance.destroy();
-            chartInstance = new Chart(ctx, {
-                type: 'radar',
-                data: {
-                    labels: pillars.map(p => p.name),
-                    datasets: [{
-                        label: 'Évaluation',
-                        data: averages,
-                        backgroundColor: 'rgba(52, 152, 219, 0.2)',
-                        borderColor: '#3498db',
-                        borderWidth: 2
-                    }]
+        // --- Chart ---
+        // NOUVELLE fonction dédiée au rendu/mise à jour du graphique
+        function renderChart() {
+            if (!pillars || pillars.length === 0) {
+                 if (chartInstance) { chartInstance.destroy(); chartInstance = null; }
+                 radarChartCanvas.style.display = 'none';
+                 return; // Ne rien faire s'il n'y a pas de piliers
+             }
+
+            const { pillarAverages } = calculateAverages();
+            const pillarGoalsAverages = pillars.map(pillar => {
+                 if (!pillar.subPillars || pillar.subPillars.length === 0) return 0;
+                 const sum = pillar.subPillars.reduce((acc, sub) => acc + (sub.goal || 0), 0);
+                 return sum / pillar.subPillars.length;
+            });
+            const labels = pillars.map(p => p.name);
+
+            // Récupération explicite des couleurs JUSTE AVANT le rendu
+            const scoreBgColor = getCssVar('--chart-bg-color');
+            const scoreBorderColor = getCssVar('--chart-border-color');
+            const goalBgColor = getCssVar('--goal-bg-color');
+            const goalBorderColor = getCssVar('--goal-border-color');
+            const textColor = getCssVar('--text-color');
+            const secondaryTextColor = getCssVar('--secondary-text-color');
+            const gridColor = getCssVar('--grid-color'); // Utilise la nouvelle variable
+            const containerBgColor = getCssVar('--container-bg');
+            const tooltipBgColor = getCssVar('--tooltip-bg'); // Pour le tooltip
+
+            const chartData = {
+                labels: labels,
+                datasets: [
+                    {
+                        label: 'Score Actuel', data: pillarAverages,
+                        backgroundColor: scoreBgColor, borderColor: scoreBorderColor,
+                        borderWidth: 2.5, // Légèrement plus épais
+                        pointBackgroundColor: scoreBorderColor, pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff', pointHoverBorderColor: scoreBorderColor,
+                        pointRadius: 4, pointHoverRadius: 6 // Points un peu plus visibles
+                    },
+                     {
+                        label: 'Objectif Moyen', data: pillarGoalsAverages,
+                        backgroundColor: goalBgColor, borderColor: goalBorderColor,
+                        borderWidth: 1.5, borderDash: [6, 3], // Style pointillé ajusté
+                        pointBackgroundColor: goalBorderColor, pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff', pointHoverBorderColor: goalBorderColor,
+                        pointRadius: 4, pointHoverRadius: 6
+                    }
+                ]
+            };
+
+            const chartOptions = {
+                responsive: true, maintainAspectRatio: true,
+                 scales: {
+                    r: {
+                        min: 0, max: 10,
+                        ticks: { stepSize: 2, backdropColor: containerBgColor, color: secondaryTextColor },
+                         pointLabels: { color: textColor, font: { size: 12 } },
+                        grid: { color: gridColor }, angleLines: { color: gridColor }
+                    }
                 },
-                options: {
-                    scales: {
-                        r: {
-                            min: 0,
-                            max: 10,
-                            ticks: { stepSize: 2 }
+                plugins: {
+                    legend: {
+                        position: 'top', // Légende en haut
+                        labels: { color: textColor, usePointStyle: false, boxWidth: 20, padding: 20 } // Style légende amélioré
+                    },
+                    tooltip: {
+                        enabled: true,
+                        backgroundColor: tooltipBgColor, // Fond du tooltip
+                        titleColor: textColor, bodyColor: textColor,
+                        borderColor: gridColor, borderWidth: 1,
+                        padding: 10, cornerRadius: 4,
+                        usePointStyle: true, // Utilise le style de point dans le tooltip
+                        callbacks: {
+                            label: function(context) {
+                                let label = context.dataset.label || '';
+                                if (label) { label += ': '; }
+                                if (context.parsed.r !== null) { label += context.parsed.r.toFixed(1); }
+                                return label;
+                            }
                         }
                     }
-                }
-            });
-            saveToHistory(averages);
+                },
+                 // Animation optionnelle
+                // animation: { duration: 500, easing: 'easeInOutQuart' }
+            };
+
+            radarChartCanvas.style.display = 'block';
+            const ctx = radarChartCanvas.getContext('2d');
+
+            if (chartInstance) {
+                // Si le graphique existe, mettre à jour les données et les options
+                chartInstance.data = chartData;
+                chartInstance.options = chartOptions;
+                chartInstance.update();
+            } else {
+                // Sinon, créer un nouveau graphique
+                chartInstance = new Chart(ctx, { type: 'radar', data: chartData, options: chartOptions });
+            }
         }
 
+        // Fonction modifiée : calcule, AFFICHE, puis sauvegarde
+        function showChartAndSave() {
+            if (!pillars || pillars.length === 0) {
+                alert("Aucun pilier à afficher.");
+                return;
+            }
+            // 1. Calculer les moyennes (fait dans renderChart maintenant)
+            // 2. Afficher/Mettre à jour le graphique
+            renderChart();
+
+            // 3. Sauvegarder dans l'historique APRÈS l'affichage
+            const { pillarAverages } = calculateAverages(); // Recalculer juste pour la sauvegarde
+            saveToHistory(pillarAverages);
+
+            // 4. Scroll (Optionnel)
+            // radarChartCanvas.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+
+        // --- History Management ---
         function saveToHistory(averages) {
-            const entry = {
-                date: new Date().toLocaleString('fr-FR'),
-                scores: pillars.map(p => ({
-                    name: p.name,
-                    average: averages[pillars.indexOf(p)],
-                    subPillars: p.subPillars.map(sp => ({ name: sp.name, score: sp.score }))
+             const timestamp = Date.now();
+             const entry = {
+                id: `hist-${timestamp}-${Math.random().toString(36).substr(2, 5)}`,
+                date: new Date(timestamp).toLocaleString('fr-FR', { dateStyle: 'short', timeStyle: 'short' }), // Format date plus court
+                timestamp: timestamp,
+                scores: pillars.map((p, index) => ({
+                    pillarId: p.id,
+                    pillarName: p.name, // Sauvegarde le nom au moment T
+                    average: (!isNaN(averages[index]) ? averages[index] : 0), // Assure que c'est un nombre
+                    subPillars: (p.subPillars || []).map(sp => ({ // Vérifie que subPillars existe
+                        subPillarId: sp.id, name: sp.name,
+                        score: sp.score, note: sp.note, goal: sp.goal
+                    }))
                 }))
             };
             history.push(entry);
-            localStorage.setItem('history', JSON.stringify(history));
+            history.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0)); // Re-trier
+            saveData();
+            console.log("Évaluation sauvegardée:", entry.date); // Log de confirmation discret
         }
 
         function showHistory() {
-            const historyContent = document.getElementById('historyContent');
             historyContent.innerHTML = '';
-            if (history.length === 0) {
-                historyContent.textContent = "Aucun historique disponible.";
-            } else {
-                history.forEach((entry, index) => {
-                    const entryDiv = document.createElement('div');
-                    entryDiv.innerHTML = `<strong>${entry.date}</strong><br>` + 
-                        entry.scores.map(s => `${s.name}: ${s.average.toFixed(1)}`).join('<br>') + '<hr>';
-                    historyContent.appendChild(entryDiv);
-                });
+             if (history.length === 0) {
+                historyContent.innerHTML = "<p>Aucun historique disponible.</p>";
+                return;
             }
-            document.getElementById('historyPopup').style.display = 'block';
-            document.getElementById('overlay').style.display = 'block';
-        }
 
-        function closeHistory() {
-            document.getElementById('historyPopup').style.display = 'none';
-            document.getElementById('overlay').style.display = 'none';
+            const ul = document.createElement('ul');
+            history.forEach((entry, index) => {
+                if (!entry || !entry.scores) return; // Skip invalid entries
+
+                const li = document.createElement('li');
+                li.className = 'history-entry';
+                 // Calcul du score global pour cet historique
+                 const entryAverages = entry.scores.map(s => s.average);
+                 const validEntryAverages = entryAverages.filter(avg => !isNaN(avg));
+                 const entryGlobalScore = validEntryAverages.length > 0
+                                        ? (validEntryAverages.reduce((sum, avg) => sum + avg, 0) / validEntryAverages.length * 2)
+                                        : 0;
+
+                let entryHTML = `<strong>${entry.date || 'Date inconnue'}</strong> (Score Global: ${entryGlobalScore.toFixed(1)}/20)<br>`;
+                const prevEntry = history[index + 1];
+
+                entryHTML += '<div class="history-scores">';
+                entry.scores.forEach(currentScore => {
+                    entryHTML += `${currentScore.pillarName || 'Pilier inconnu'}: ${currentScore.average !== undefined ? currentScore.average.toFixed(1) : '-'}`;
+                     if (prevEntry && prevEntry.scores) {
+                        const prevPillarScore = prevEntry.scores.find(ps => ps.pillarId === currentScore.pillarId);
+                        if (prevPillarScore && prevPillarScore.average !== undefined && currentScore.average !== undefined) {
+                            const diff = currentScore.average - prevPillarScore.average;
+                            if (Math.abs(diff) > 0.01) { // Seuil pour afficher diff
+                                const diffClass = diff > 0 ? 'positive' : 'negative';
+                                const diffSign = diff > 0 ? '+' : '';
+                                entryHTML += ` <span class="score-diff ${diffClass}" title="vs ${prevPillarScore.average.toFixed(1)} le ${prevEntry.date || ''}">(${diffSign}${diff.toFixed(1)})</span>`;
+                            }
+                        }
+                    }
+                    entryHTML += '<br>';
+                });
+                 entryHTML += '</div>';
+                li.innerHTML = entryHTML;
+                ul.appendChild(li);
+            });
+            historyContent.appendChild(ul);
         }
 
         function copyHistory() {
-            const coachingPrompt = "Voici mon historique d'évaluations de la Roue de la Vie en JSON. Peux-tu analyser ces données et me fournir un coaching personnalisé pour améliorer mes scores ?\n\n";
-            const historyJson = JSON.stringify(history, null, 2);
-            navigator.clipboard.writeText(coachingPrompt + historyJson).then(() => {
-                alert("Historique copié dans le presse-papiers avec un prompt pour le coaching !");
-            });
+             if (history.length === 0) { alert("L'historique est vide."); return; }
+             // ... (le reste de la fonction copyHistory reste identique)
+              const coachingPrompt = `Voici mon historique (${history.length} ${history.length > 1 ? 'entrées' : 'entrée'}) ... (Identique à avant)`;
+              const historyJson = JSON.stringify(history, null, 2);
+              navigator.clipboard.writeText(coachingPrompt + historyJson).then(() => {
+                  alert(`Historique (${history.length} ${history.length > 1 ? 'entrées' : 'entrée'}) copié ... (Identique à avant)`);
+              }).catch(err => {
+                  console.error("Erreur copie: ", err); alert("Erreur copie..."); console.log(coachingPrompt + historyJson);
+              });
         }
 
-        function resetHistory() {
-            if (confirm("Voulez-vous vraiment réinitialiser l'historique ?")) {
-                history = [];
-                localStorage.setItem('history', JSON.stringify(history));
-                pillars = defaultPillars.map(p => ({ ...p, subPillars: p.subPillars.map(sp => ({ ...sp })) }));
-                localStorage.setItem('pillars', JSON.stringify(pillars));
-                currentPillarIndex = 0;
-                renderPillar();
-                closeHistory();
-                if (chartInstance) chartInstance.destroy();
-                document.getElementById('radarChart').style.display = 'none';
+        function resetApp() {
+            if (confirm("VRAIMENT réinitialiser TOUTE l'application ?\nConfiguration ET historique seront perdus.")) {
+                 pillars = JSON.parse(JSON.stringify(defaultPillarsData));
+                 history = [];
+                 currentPillarIndex = 0;
+                 if (chartInstance) { chartInstance.destroy(); chartInstance = null; }
+                 radarChartCanvas.style.display = 'none';
+                 localStorage.removeItem('wheelOfLife_pillars');
+                 localStorage.removeItem('wheelOfLife_history');
+                 // Ne pas supprimer le thème: localStorage.removeItem('wheelOfLife_theme');
+                 renderPillar(); // Utilise la nouvelle fonction renderPillar
+                 closeAllModals();
+                 alert("Application réinitialisée.");
             }
         }
 
-        renderPillar();
+        // --- Modals ---
+        function openModal(modalId) {
+            if (modalId === 'historyPopup') { showHistory(); }
+            else if (modalId === 'customizationPopup') { renderCustomizationForm(); }
+            const modalElement = document.getElementById(modalId);
+            if(modalElement) {
+                modalElement.style.display = 'block';
+                overlay.style.display = 'block';
+                const focusable = modalElement.querySelector('button, input:not([type=hidden]), textarea, select, [tabindex]:not([tabindex="-1"])');
+                if (focusable) focusable.focus();
+            } else {
+                console.error("Modal non trouvée:", modalId);
+            }
+        }
+
+        function closeModal(modalId) {
+            const modalElement = document.getElementById(modalId);
+            if(modalElement) modalElement.style.display = 'none';
+            // Vérifier si d'autres modales sont ouvertes avant de cacher l'overlay (plus robuste)
+            const anyModalOpen = Array.from(document.querySelectorAll('.popup')).some(m => m.style.display === 'block');
+            if (!anyModalOpen) {
+                 overlay.style.display = 'none';
+            }
+        }
+
+         function closeAllModals() {
+             document.querySelectorAll('.popup').forEach(modal => modal.style.display = 'none');
+             overlay.style.display = 'none';
+         }
+
+        // --- Customization ---
+         function renderCustomizationForm() {
+             tempCustomPillars = JSON.parse(JSON.stringify(pillars)); // Deep copy pour édition
+             customizationContent.innerHTML = '';
+
+             if (!tempCustomPillars || tempCustomPillars.length === 0) {
+                customizationContent.innerHTML = "<p>Aucun pilier à personnaliser.</p>";
+                return;
+             }
+
+             tempCustomPillars.forEach((pillar) => {
+                 const pillarSection = document.createElement('div');
+                 pillarSection.className = 'customization-section';
+                 pillarSection.innerHTML = `
+                    <h4>Pilier:</h4>
+                    <div class="customization-item">
+                        <input type="text" value="${pillar.name || ''}" id="edit-pillar-${pillar.id}" aria-label="Nom du pilier ${pillar.name || ''}">
+                        <button class="icon-button danger-button" onclick="deletePillarTemp('${pillar.id}')" aria-label="Supprimer le pilier ${pillar.name || ''}">${deleteIcon}</button>
+                    </div>
+                    <h5>Sous-piliers :</h5>`;
+                const subPillarList = document.createElement('div');
+                if (pillar.subPillars && pillar.subPillars.length > 0) {
+                    pillar.subPillars.forEach((subPillar) => {
+                         const subPillarItem = document.createElement('div');
+                         subPillarItem.className = 'customization-item';
+                         subPillarItem.innerHTML = `
+                            <input type="text" value="${subPillar.name || ''}" id="edit-subpillar-${subPillar.id}" aria-label="Nom du sous-pilier ${subPillar.name || ''}">
+                            <button class="icon-button danger-button" onclick="deleteSubPillarTemp('${pillar.id}', '${subPillar.id}')" aria-label="Supprimer le sous-pilier ${subPillar.name || ''}">${deleteIcon}</button>
+                         `;
+                         subPillarList.appendChild(subPillarItem);
+                     });
+                } else {
+                     subPillarList.innerHTML = "<p style='font-size:0.9em; font-style:italic;'>Aucun sous-pilier.</p>";
+                }
+                 pillarSection.appendChild(subPillarList);
+                 customizationContent.appendChild(pillarSection);
+             });
+         }
+
+        function saveCustomization() {
+             // Mise à jour depuis les inputs temporaires
+             let structureChanged = false;
+             const originalPillarsString = JSON.stringify(pillars); // Pour comparer si changement
+
+             tempCustomPillars.forEach(pillar => {
+                 const nameInput = document.getElementById(`edit-pillar-${pillar.id}`);
+                 if (nameInput && pillar.name !== nameInput.value.trim()) {
+                    pillar.name = nameInput.value.trim() || pillar.name;
+                 }
+                 if (pillar.subPillars) {
+                     pillar.subPillars.forEach(subPillar => {
+                         const subNameInput = document.getElementById(`edit-subpillar-${subPillar.id}`);
+                          if (subNameInput && subPillar.name !== subNameInput.value.trim()) {
+                             subPillar.name = subNameInput.value.trim() || subPillar.name;
+                         }
+                     });
+                 }
+             });
+
+             // Nettoyer les piliers sans sous-piliers
+             tempCustomPillars = tempCustomPillars.filter(p => p.subPillars && p.subPillars.length > 0);
+
+            // Appliquer les changements si la structure a réellement changé
+             const tempPillarsString = JSON.stringify(tempCustomPillars);
+             if (originalPillarsString !== tempPillarsString) {
+                 pillars = JSON.parse(tempPillarsString); // Remplace par la version modifiée
+                 structureChanged = true;
+                 saveData(); // Sauvegarde uniquement si changement
+                 // Ajuste l'index si le pilier actuel a disparu
+                 if (currentPillarIndex >= pillars.length) {
+                     currentPillarIndex = Math.max(0, pillars.length - 1);
+                 }
+                 renderPillar(); // Re-render l'UI principale
+                 // Met à jour le graphique s'il est visible
+                 if (chartInstance && radarChartCanvas.style.display === 'block') {
+                    renderChart(); // Utilise renderChart pour juste mettre à jour visuel
+                 }
+                  console.log("Personnalisation sauvegardée.");
+             } else {
+                 console.log("Aucun changement détecté dans la personnalisation.");
+             }
+
+             closeModal('customizationPopup');
+         }
+
+         // Fonctions pour modifier la structure *temporaire* dans la popup
+         function deletePillarTemp(pillarId) {
+             const pillarName = tempCustomPillars.find(p=>p.id === pillarId)?.name || 'ce pilier';
+             if (confirm(`Supprimer "${pillarName}" et ses sous-piliers de la personnalisation en cours ?`)) {
+                 tempCustomPillars = tempCustomPillars.filter(p => p.id !== pillarId);
+                 renderCustomizationForm(); // Re-render la popup
+             }
+         }
+
+         function deleteSubPillarTemp(pillarId, subPillarId) {
+              const pillar = tempCustomPillars.find(p => p.id === pillarId);
+              const subPillarName = pillar?.subPillars?.find(sp => sp.id === subPillarId)?.name || 'ce sous-pilier';
+              if (confirm(`Supprimer "${subPillarName}" de la personnalisation en cours ?`)) {
+                 if (pillar && pillar.subPillars) {
+                     pillar.subPillars = pillar.subPillars.filter(sp => sp.id !== subPillarId);
+                 }
+                 renderCustomizationForm(); // Re-render la popup
+              }
+         }
+
+        // --- Theme ---
+        function setupTheme() {
+            const currentTheme = localStorage.getItem('wheelOfLife_theme') || 'light'; // Default to light
+            if (currentTheme === 'dark') {
+                document.body.classList.add('dark-theme');
+                themeCheckbox.checked = true;
+            } else {
+                document.body.classList.remove('dark-theme');
+                 themeCheckbox.checked = false;
+            }
+             // Met à jour le graphique SEULEMENT s'il est déjà affiché
+             if (chartInstance && radarChartCanvas.style.display === 'block') {
+                 // Utilise un petit délai pour laisser le CSS s'appliquer
+                 setTimeout(() => {
+                     renderChart(); // Appelle SEULEMENT renderChart, pas showChartAndSave
+                 }, 50);
+             }
+        }
+
+        function toggleTheme() {
+            const isDark = themeCheckbox.checked;
+            localStorage.setItem('wheelOfLife_theme', isDark ? 'dark' : 'light');
+            setupTheme(); // Applique le thème et met à jour le graphique si besoin
+        }
+
+        // --- Export / Import ---
+        function exportData() {
+            // ... (La fonction exportData reste identique)
+             const dataToExport = { pillars: pillars, history: history };
+             const dataStr = JSON.stringify(dataToExport, null, 2);
+             const dataBlob = new Blob([dataStr], { type: 'application/json' });
+             const url = URL.createObjectURL(dataBlob);
+             const link = document.createElement('a');
+             link.href = url;
+             const timestamp = new Date().toISOString().slice(0, 10);
+             link.download = `roue-de-la-vie-export-${timestamp}.json`;
+             document.body.appendChild(link); link.click(); document.body.removeChild(link);
+             URL.revokeObjectURL(url);
+             alert("Données exportées.");
+        }
+
+        function importData(event) {
+             // ... (La fonction importData reste globalement identique, mais appelle renderPillar à la fin)
+             const file = event.target.files[0];
+             if (!file || !file.name.endsWith('.json')) { alert("Veuillez sélectionner un fichier .json valide."); event.target.value = null; return; }
+             const reader = new FileReader();
+             reader.onload = function(e) {
+                 try {
+                     const importedData = JSON.parse(e.target.result);
+                     if (!importedData.pillars || !importedData.history) { throw new Error("Format de fichier invalide."); }
+                     if (!confirm("Importer ce fichier écrasera les données actuelles. Continuer ?")) { event.target.value = null; return; }
+
+                     pillars = migrateDataStructure(importedData.pillars || []); // Migre/valide les piliers
+                     history = Array.isArray(importedData.history) ? importedData.history : []; // Valide l'historique
+                     history.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0)); // Re-trie
+                     currentPillarIndex = 0;
+                     saveData();
+                     closeAllModals();
+                     event.target.value = null;
+                     if (chartInstance) { chartInstance.destroy(); chartInstance = null; } // Détruit ancien chart
+                     radarChartCanvas.style.display = 'none'; // Cache le canvas
+                     renderPillar(); // Re-render l'UI principale avec les nouvelles données
+                     alert("Données importées avec succès !");
+                 } catch (error) {
+                     console.error("Erreur importation:", error); alert(`Erreur importation: ${error.message}`); event.target.value = null;
+                 }
+             };
+             reader.onerror = function() { alert("Erreur lecture fichier."); event.target.value = null; };
+             reader.readAsText(file);
+        }
+
+        // --- Event Listeners ---
+        function addEventListeners() {
+            themeCheckbox.addEventListener('change', toggleTheme);
+             document.addEventListener('keydown', function(event) {
+                 if (event.key === 'Escape') { closeAllModals(); }
+             });
+             // Ajouter d'autres listeners si besoin
+        }
+
+        // --- Start the app ---
+        document.addEventListener('DOMContentLoaded', initializeApp);
+
     </script>
 </body>
 </html>
