@@ -44,8 +44,11 @@
         .theme-switch-wrapper { display: flex; align-items: center; gap: 10px; position: absolute; top: 15px; right: 15px; z-index: 5; } .theme-switch { display: inline-block; height: 24px; position: relative; width: 50px; } .theme-switch input { display:none; } .slider { background-color: #ccc; bottom: 0; cursor: pointer; left: 0; position: absolute; right: 0; top: 0; transition: .4s; border-radius: 34px; } .slider:before { background-color: #fff; bottom: 4px; content: ""; height: 16px; left: 4px; position: absolute; transition: .4s; width: 16px; border-radius: 50%; } input:checked + .slider { background-color: var(--primary-color); } input:checked + .slider:before { transform: translateX(26px); }
         #helpPopup ul { margin-top: 15px; padding-left: 20px; } #helpPopup li { margin-bottom: 8px; }
         .hidden { display: none; } .text-center { text-align: center; } .mt-1 { margin-top: 10px; } .mt-2 { margin-top: 20px; } .mb-2 { margin-bottom: 20px; } .w-100 { width: 100%; }
+        .loading-message { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: var(--container-bg); padding: 20px; border-radius: 8px; box-shadow: 0 4px 12px var(--shadow-color); z-index: 1000; }
+        .notification { position: fixed; top: 20px; right: 20px; background: var(--primary-color); color: white; padding: 10px 20px; border-radius: 5px; z-index: 1000; display: none; }
         @media (max-width: 768px) { body { padding: 10px; } .main-view { padding: 15px; } #inputView { padding-left: calc(15px - var(--pillar-border-width)); } h1 { font-size: 1.8rem; } .sub-pillar-header { flex-direction: column; align-items: stretch; gap: 8px; } .sub-pillar-controls { width: 100%; margin-top: 5px;} input[type="range"] { margin-left: 0; width: 100%; } .sub-pillar label { font-size: 1rem; } .popup-buttons { flex-direction: column; gap: 10px; } button, .button-like { width: 100%; } #historyPopup .popup-buttons { flex-direction: row; justify-content: center; flex-wrap: wrap; } #historyPopup .popup-buttons button, #historyPopup .popup-buttons .button-like { width: auto; flex-grow: 0; flex-shrink: 0; margin-bottom: 5px; } .popup { width: 90%; padding: 20px; } .theme-switch-wrapper { position: static; justify-content: center; margin: 15px 0 5px; order: -1; } .detail-group { flex-basis: calc(50% - 8px); } .detail-group:has(.note-button) { flex-basis: auto; } h3 { font-size: 1.3rem; } #notePopup textarea { min-height: 100px; } .popup-close-btn { font-size: 1.6rem; top: 8px; right: 10px; } .popup h3, .popup h4 { padding-right: 30px; } }
         @media (max-width: 480px) { .detail-group { flex-basis: 100%; } h1 { font-size: 1.6rem; } h3 { flex-direction: column; gap: 5px; } }
+        @media (prefers-color-scheme: dark) { body:not(.light-theme) { --bg-color: #2c3e50; --container-bg: #34495e; --text-color: #ecf0f1; --secondary-text-color: #bdc3c7; --primary-color: #3498db; --primary-hover-color: #5dade2; --disabled-color: #7f8c8d; --slider-track-color: #7f8c8d; --slider-thumb-color: #3498db; --chart-bg-color: rgba(52, 152, 219, 0.3); --chart-border-color: #5dade2; --goal-bg-color: rgba(241, 150, 138, 0.2); --goal-border-color: #f1948a; --danger-color: #e74c3c; --danger-hover-color: #f1948a; --shadow-color: rgba(0, 0, 0, 0.3); --focus-ring-color: #a9cce3; --grid-color: #566573; --tooltip-bg: rgba(44, 62, 80, 0.95); --pillar-color-0: #c0392b; --pillar-color-1: #d35400; --pillar-color-2: #f39c12; --pillar-color-3: #27ae60; --pillar-color-4: #2980b9; --pillar-color-5: #16a085; --pillar-color-6: #8e44ad; --pillar-color-7: #7f8c8d; } }
     </style>
 </head>
 <body>
@@ -58,16 +61,20 @@
         <span aria-hidden="true">🌙</span>
     </div>
 
+    <div id="loadingMessage" class="loading-message">Chargement...</div>
+    <div id="notification" class="notification"></div>
+
     <div id="inputView" class="main-view">
-        <img src="logo.png" alt="" class="logo" id="appLogo" onerror="this.style.display='none'; this.alt='Logo indisponible'">
+        <img src="logo.png" alt="Logo de La Roue de la Vie" class="logo" id="appLogo" onerror="this.style.display='none'; this.alt='Logo indisponible'" aria-describedby="logoDescription">
+        <p id="logoDescription" class="hidden">Logo de l'application La Roue de la Vie, représentant un cercle avec des icônes symbolisant différents aspects de la vie.</p>
         <h1>La Roue de la Vie</h1>
-        <div id="pillarNavigation" class="pillar-nav"></div>
-        <div id="globalScore">Note globale : - / 20</div>
+        <div id="pillarNavigation" class="pillar-nav" role="navigation" aria-label="Navigation entre les piliers"></div>
+        <div id="globalScore" aria-live="polite">Note globale : - / 20</div>
         <div id="pillarDisplay"></div>
-        <div id="pillarAverageScore">Moyenne Pilier : - / 10</div>
+        <div id="pillarAverageScore" aria-live="polite">Moyenne Pilier : - / 10</div>
         <div class="nav-buttons">
-            <button id="prevBtn" onclick="changePillar(-1)" aria-label="Pilier précédent">Précédent</button>
-            <button id="nextBtn" onclick="changePillar(1)" aria-label="Pilier suivant">Suivant</button>
+            <button id="prevBtn" onclick="changePillar(-1)" aria-label="Aller au pilier précédent">Précédent</button>
+            <button id="nextBtn" onclick="changePillar(1)" aria-label="Aller au pilier suivant">Suivant</button>
         </div>
         <button id="showChartBtn" onclick="showChartAndSave()" class="w-100 mt-2" aria-label="Afficher le graphique et sauvegarder l'évaluation">Afficher la Roue & Sauvegarder</button>
         <div class="mt-2 text-center" style="display: flex; gap: 10px; flex-wrap: wrap; justify-content: center;">
@@ -85,7 +92,7 @@
 
     <div id="overlay" onclick="closeAllModals()">
         <div id="historyPopup" class="popup" role="dialog" aria-labelledby="historyTitle" aria-modal="true" onclick="event.stopPropagation()">
-            <button onclick="closeModal('historyPopup')" class="popup-close-btn" aria-label="Fermer">×</button>
+            <button onclick="closeModal('historyPopup')" class="popup-close-btn" aria-label="Fermer la fenêtre d'historique">×</button>
             <h3 id="historyTitle">Historique des évaluations</h3>
             <div class="history-scroll-container text-center">
                 <button id="historyScrollToBottomBtn" class="icon-button" onclick="historyScrollToBottom()" aria-label="Aller aux boutons en bas" title="Aller aux boutons en bas" style="display: none;">
@@ -107,20 +114,20 @@
         </div>
 
         <div id="customizationPopup" class="popup" role="dialog" aria-labelledby="customizationTitle" aria-modal="true" onclick="event.stopPropagation()">
-            <button onclick="closeModal('customizationPopup')" class="popup-close-btn" aria-label="Fermer">×</button>
+            <button onclick="closeModal('customizationPopup')" class="popup-close-btn" aria-label="Fermer la fenêtre de personnalisation">×</button>
             <h3 id="customizationTitle">Personnaliser les Piliers</h3>
             <div id="customizationContent"></div>
-            <p style="font-size: 0.9em; color: var(--secondary-text-color);">Note: L'ajout de nouveaux piliers/sous-piliers n'est pas supporté...</p>
+            <p style="font-size: 0.9em; color: var(--secondary-text-color);">Note : L'ajout de nouveaux piliers/sous-piliers n'est pas supporté...</p>
             <div class="popup-buttons">
-                <button onclick="saveCustomization()" aria-label="Sauvegarder les changements">Sauvegarder & Fermer</button>
-                <button onclick="closeModal('customizationPopup')" aria-label="Annuler et fermer">Annuler</button>
+                <button onclick="saveCustomization()" aria-label="Sauvegarder les changements de personnalisation">Sauvegarder & Fermer</button>
+                <button onclick="closeModal('customizationPopup')" aria-label="Annuler et fermer la fenêtre de personnalisation">Annuler</button>
             </div>
         </div>
 
         <div id="helpPopup" class="popup" role="dialog" aria-labelledby="helpTitle" aria-modal="true" onclick="event.stopPropagation()">
-            <button onclick="closeModal('helpPopup')" class="popup-close-btn" aria-label="Fermer">×</button>
+            <button onclick="closeModal('helpPopup')" class="popup-close-btn" aria-label="Fermer la fenêtre d'aide">×</button>
             <h3 id="helpTitle">Aide - La Roue de la Vie</h3>
-            <p>La Roue de la Vie est un outil...</p>
+            <p>La Roue de la Vie est un outil d'auto-évaluation qui vous aide à visualiser l'équilibre dans différents domaines de votre vie.</p>
             <ul>
                 <li>Naviguez entre les "Piliers" avec "Précédent" / "Suivant" ou utilisez la barre de navigation rapide au-dessus des scores.</li>
                 <li>Notez chaque "Sous-Pilier" de 1 (bas) à 10 (haut) avec le curseur.</li>
@@ -134,6 +141,7 @@
                 <li>Activez le mode Premium en maintenant le logo appuyé 10 secondes.</li>
                 <li>Utilisez l'interrupteur (☀️/🌙) pour changer de thème.</li>
                 <li>Exportez vos données via "Copier pour IA".</li>
+                <li>L'application fonctionne hors ligne grâce à la sauvegarde locale.</li>
             </ul>
             <div class="popup-buttons">
                 <button onclick="closeModal('helpPopup')" aria-label="Fermer la fenêtre d'aide">Fermer</button>
@@ -141,58 +149,250 @@
         </div>
 
         <div id="notePopup" class="popup" role="dialog" aria-labelledby="notePopupTitle" aria-modal="true" onclick="event.stopPropagation()">
-            <button onclick="closeModal('notePopup')" class="popup-close-btn" aria-label="Fermer">×</button>
+            <button onclick="closeModal('notePopup')" class="popup-close-btn" aria-label="Fermer la fenêtre de note">×</button>
             <h4 id="notePopupTitle">Ajouter/Modifier une Note pour <span id="notePopupSubPillarName"></span></h4>
-            <textarea id="notePopupTextarea" placeholder="Écrivez vos réflexions, détails, contexte ici..."></textarea>
+            <textarea id="notePopupTextarea" placeholder="Écrivez vos réflexions, détails, contexte ici..." aria-label="Champ pour ajouter ou modifier une note"></textarea>
             <div class="popup-buttons">
                 <button id="saveNoteBtn" onclick="saveNoteFromPopup()" aria-label="Sauvegarder la note">Sauvegarder</button>
-                <button onclick="closeModal('notePopup')" aria-label="Annuler et fermer">Annuler</button>
+                <button onclick="closeModal('notePopup')" aria-label="Annuler et fermer la fenêtre de note">Annuler</button>
             </div>
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
     <script>
+        // Icônes SVG réutilisables
         const deleteIcon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z" /></svg>`;
         const noteIcon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18,2.9 17.35,2.9 16.96,3.29L15.12,5.12L18.87,8.87M3,17.25V21H6.75L17.81,9.93L14.06,6.18L3,17.25Z" /></svg>`;
-        const defaultPillarsData = [ { id: "sante", name: "Santé", subPillars: [ { id: "sante-phy", name: "Physique", score: 5, note: "", goal: 8 }, { id: "sante-men", name: "Mental", score: 5, note: "", goal: 8 }, { id: "sante-som", name: "Sommeil", score: 5, note: "", goal: 7 }, { id: "sante-nut", name: "Nutrition", score: 5, note: "", goal: 7 }, { id: "sante-ene", name: "Énergie", score: 5, note: "", goal: 8 } ]}, { id: "famille", name: "Famille", subPillars: [ { id: "fam-pro", name: "Proches", score: 5, note: "", goal: 8 }, { id: "fam-com", name: "Communication", score: 5, note: "", goal: 7 }, { id: "fam-tmp", name: "Temps passé", score: 5, note: "", goal: 7 }, { id: "fam-sou", name: "Soutien", score: 5, note: "", goal: 8 }, { id: "fam-har", name: "Harmonie", score: 5, note: "", goal: 8 } ]}, { id: "finances", name: "Finances", subPillars: ["Revenus", "Épargne", "Dépenses", "Investissements", "Sécurité"].map((n, i) => ({ id: `fin-${i}`, name: n, score: 5, note: "", goal: 7 })) }, { id: "carriere", name: "Carrière", subPillars: ["Satisfaction", "Progression", "Équilibre", "Compétences", "Reconnaissance"].map((n, i) => ({ id: `car-${i}`, name: n, score: 5, note: "", goal: 8 })) }, { id: "loisirs", name: "Loisirs", subPillars: ["Temps libre", "Passions", "Détente", "Créativité", "Social"].map((n, i) => ({ id: `loi-${i}`, name: n, score: 5, note: "", goal: 7 })) }, { id: "devperso", name: "Développement perso", subPillars: ["Apprentissage", "Objectifs", "Confiance", "Résilience", "Clarté"].map((n, i) => ({ id: `dev-${i}`, name: n, score: 5, note: "", goal: 9 })) }, { id: "relations", name: "Relations sociales", subPillars: ["Amis", "Réseau", "Écoute", "Partage", "Qualité"].map((n, i) => ({ id: `rel-${i}`, name: n, score: 5, note: "", goal: 7 })) }, { id: "cadrevie", name: "Cadre de vie", subPillars: ["Logement", "Environnement", "Organisation", "Confort", "Esthétique"].map((n, i) => ({ id: `cad-${i}`, name: n, score: 5, note: "", goal: 8 })) } ];
-        let pillars = []; let history = []; let currentPillarIndex = 0; let chartInstance = null; let tempCustomPillars = [];
-        const pillarColors = [ 'var(--pillar-color-0)', 'var(--pillar-color-1)', 'var(--pillar-color-2)', 'var(--pillar-color-3)', 'var(--pillar-color-4)', 'var(--pillar-color-5)', 'var(--pillar-color-6)', 'var(--pillar-color-7)' ];
-        const inputView = document.getElementById('inputView'); const chartView = document.getElementById('chartView'); const pillarDisplay = document.getElementById('pillarDisplay'); const globalScoreDisplay = document.getElementById('globalScore'); const pillarAverageScoreDisplay = document.getElementById('pillarAverageScore'); const prevBtn = document.getElementById('prevBtn'); const nextBtn = document.getElementById('nextBtn'); const radarChartCanvas = document.getElementById('radarChart'); const historyContent = document.getElementById('historyContent'); const overlay = document.getElementById('overlay'); const themeCheckbox = document.getElementById('theme-checkbox'); const customizationContent = document.getElementById('customizationContent'); const showChartBtn = document.getElementById('showChartBtn'); const notePopup = document.getElementById('notePopup'); const notePopupSubPillarName = document.getElementById('notePopupSubPillarName'); const notePopupTextarea = document.getElementById('notePopupTextarea'); const saveNoteBtn = document.getElementById('saveNoteBtn'); const historyPopup = document.getElementById('historyPopup'); const historyScrollBtn = document.getElementById('historyScrollToBottomBtn');
-        const personalizeBtn = document.getElementById('personalizeBtn'); const importBtn = document.getElementById('importBtn'); const appLogo = document.getElementById('appLogo');
-        let isPremium = false; let longPressTimer = null; const PREMIUM_PRESS_DURATION = 10000;
 
-        function getCssVar(varName) { return getComputedStyle(document.documentElement).getPropertyValue(varName).trim(); }
-        function generateId(prefix = 'item') { return `${prefix.toLowerCase().replace(/[^a-z0-9]+/g, '-')}-${Date.now().toString(36)}-${Math.random().toString(36).substr(2, 5)}`; }
+        // Données par défaut des piliers
+        const defaultPillarsData = [
+            { id: "sante", name: "Santé", subPillars: [
+                { id: "sante-phy", name: "Physique", score: 5, note: "", goal: 8 },
+                { id: "sante-men", name: "Mental", score: 5, note: "", goal: 8 },
+                { id: "sante-som", name: "Sommeil", score: 5, note: "", goal: 7 },
+                { id: "sante-nut", name: "Nutrition", score: 5, note: "", goal: 7 },
+                { id: "sante-ene", name: "Énergie", score: 5, note: "", goal: 8 }
+            ]},
+            { id: "famille", name: "Famille", subPillars: [
+                { id: "fam-pro", name: "Proches", score: 5, note: "", goal: 8 },
+                { id: "fam-com", name: "Communication", score: 5, note: "", goal: 7 },
+                { id: "fam-tmp", name: "Temps passé", score: 5, note: "", goal: 7 },
+                { id: "fam-sou", name: "Soutien", score: 5, note: "", goal: 8 },
+                { id: "fam-har", name: "Harmonie", score: 5, note: "", goal: 8 }
+            ]},
+            { id: "finances", name: "Finances", subPillars: ["Revenus", "Épargne", "Dépenses", "Investissements", "Sécurité"].map((n, i) => ({ id: `fin-${i}`, name: n, score: 5, note: "", goal: 7 })) },
+            { id: "carriere", name: "Carrière", subPillars: ["Satisfaction", "Progression", "Équilibre", "Compétences", "Reconnaissance"].map((n, i) => ({ id: `car-${i}`, name: n, score: 5, note: "", goal: 8 })) },
+            { id: "loisirs", name: "Loisirs", subPillars: ["Temps libre", "Passions", "Détente", "Créativité", "Social"].map((n, i) => ({ id: `loi-${i}`, name: n, score: 5, note: "", goal: 7 })) },
+            { id: "devperso", name: "Développement perso", subPillars: ["Apprentissage", "Objectifs", "Confiance", "Résilience", "Clarté"].map((n, i) => ({ id: `dev-${i}`, name: n, score: 5, note: "", goal: 9 })) },
+            { id: "relations", name: "Relations sociales", subPillars: ["Amis", "Réseau", "Écoute", "Partage", "Qualité"].map((n, i) => ({ id: `rel-${i}`, name: n, score: 5, note: "", goal: 7 })) },
+            { id: "cadrevie", name: "Cadre de vie", subPillars: ["Logement", "Environnement", "Organisation", "Confort", "Esthétique"].map((n, i) => ({ id: `cad-${i}`, name: n, score: 5, note: "", goal: 8 })) }
+        ];
 
+        // Variables globales
+        let pillars = [];
+        let history = [];
+        let currentPillarIndex = 0;
+        let chartInstance = null;
+        let isPremium = false;
+        let longPressTimer = null;
+        const PREMIUM_PRESS_DURATION = 10000;
+        const pillarColors = [
+            'var(--pillar-color-0)', 'var(--pillar-color-1)', 'var(--pillar-color-2)', 'var(--pillar-color-3)',
+            'var(--pillar-color-4)', 'var(--pillar-color-5)', 'var(--pillar-color-6)', 'var(--pillar-color-7)'
+        ];
+
+        // Références DOM
+        const inputView = document.getElementById('inputView');
+        const chartView = document.getElementById('chartView');
+        const pillarDisplay = document.getElementById('pillarDisplay');
+        const globalScoreDisplay = document.getElementById('globalScore');
+        const pillarAverageScoreDisplay = document.getElementById('pillarAverageScore');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const radarChartCanvas = document.getElementById('radarChart');
+        const historyContent = document.getElementById('historyContent');
+        const overlay = document.getElementById('overlay');
+        const themeCheckbox = document.getElementById('theme-checkbox');
+        const customizationContent = document.getElementById('customizationContent');
+        const showChartBtn = document.getElementById('showChartBtn');
+        const notePopup = document.getElementById('notePopup');
+        const notePopupSubPillarName = document.getElementById('notePopupSubPillarName');
+        const notePopupTextarea = document.getElementById('notePopupTextarea');
+        const saveNoteBtn = document.getElementById('saveNoteBtn');
+        const historyPopup = document.getElementById('historyPopup');
+        const historyScrollBtn = document.getElementById('historyScrollToBottomBtn');
+        const personalizeBtn = document.getElementById('personalizeBtn');
+        const importBtn = document.getElementById('importBtn');
+        const appLogo = document.getElementById('appLogo');
+        const loadingMessage = document.getElementById('loadingMessage');
+        const notification = document.getElementById('notification');
+
+        // Utilitaires
+        function getCssVar(varName) {
+            return getComputedStyle(document.documentElement).getPropertyValue(varName).trim();
+        }
+
+        function generateId(prefix = 'item') {
+            return `${prefix.toLowerCase().replace(/[^a-z0-9]+/g, '-')}-${Date.now().toString(36)}-${Math.random().toString(36).substr(2, 5)}`;
+        }
+
+        function showNotification(message, duration = 3000) {
+            notification.textContent = message;
+            notification.style.display = 'block';
+            setTimeout(() => {
+                notification.style.display = 'none';
+            }, duration);
+        }
+
+        // Fonction de débouncing pour limiter les appels fréquents
+        function debounce(func, wait) {
+            let timeout;
+            return function (...args) {
+                clearTimeout(timeout);
+                timeout = setTimeout(() => func.apply(this, args), wait);
+            };
+        }
+
+        // Initialisation de l'application
         function initializeApp() {
-            loadData();
-            setupTheme();
-            updatePremiumUI();
-            if (pillars.length > 0) { renderPillar(); showInputView(); } else { handleNoPillars(); }
-            addEventListeners();
+            try {
+                loadData();
+                setupTheme();
+                updatePremiumUI();
+                if (pillars.length > 0) {
+                    renderPillar();
+                    showInputView();
+                } else {
+                    handleNoPillars();
+                }
+                addEventListeners();
+                showNotification("Application chargée avec succès. Fonctionne hors ligne !");
+            } catch (error) {
+                console.error("Erreur lors de l'initialisation :", error);
+                showNotification("Erreur lors du chargement. Veuillez recharger la page.", 5000);
+            } finally {
+                loadingMessage.style.display = 'none';
+            }
         }
-        function handleNoPillars() { inputView.style.display = 'block'; chartView.style.display = 'none'; pillarDisplay.innerHTML = "<p class='text-center'>Aucun pilier défini...</p>"; globalScoreDisplay.textContent = `Note globale : - / 20`; pillarAverageScoreDisplay.textContent = `Moyenne Pilier : - / 10`; prevBtn.disabled = true; nextBtn.disabled = true; showChartBtn.disabled = true; inputView.style.setProperty('--pillar-border-color', 'transparent'); if (chartInstance) { chartInstance.destroy(); chartInstance = null; } }
+
+        function handleNoPillars() {
+            inputView.style.display = 'block';
+            chartView.style.display = 'none';
+            pillarDisplay.innerHTML = "<p class='text-center'>Aucun pilier défini. Veuillez recharger l'application.</p>";
+            globalScoreDisplay.textContent = `Note globale : - / 20`;
+            pillarAverageScoreDisplay.textContent = `Moyenne Pilier : - / 10`;
+            prevBtn.disabled = true;
+            nextBtn.disabled = true;
+            showChartBtn.disabled = true;
+            inputView.style.setProperty('--pillar-border-color', 'transparent');
+            if (chartInstance) {
+                chartInstance.destroy();
+                chartInstance = null;
+            }
+        }
+
         function loadData() {
-            const storedPillars = localStorage.getItem('wheelOfLife_pillars'); const storedHistory = localStorage.getItem('wheelOfLife_history');
-            try { const parsedPillars = storedPillars ? JSON.parse(storedPillars) : null; pillars = parsedPillars && Array.isArray(parsedPillars) && parsedPillars.length > 0 ? migrateDataStructure(parsedPillars) : JSON.parse(JSON.stringify(defaultPillarsData)); } catch (e) { console.error("Erreur chargement piliers", e); pillars = JSON.parse(JSON.stringify(defaultPillarsData)); }
-            try { const parsedHistory = storedHistory ? JSON.parse(storedHistory) : []; history = Array.isArray(parsedHistory) ? parsedHistory : []; history.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0)); } catch (e) { console.error("Erreur chargement historique", e); history = []; }
-            if (!Array.isArray(pillars) || pillars.length === 0) { console.warn("Piliers invalides, reset défauts."); pillars = JSON.parse(JSON.stringify(defaultPillarsData)); } else { pillars = migrateDataStructure(pillars); }
+            const storedPillars = localStorage.getItem('wheelOfLife_pillars');
+            const storedHistory = localStorage.getItem('wheelOfLife_history');
+            try {
+                const parsedPillars = storedPillars ? JSON.parse(storedPillars) : null;
+                pillars = parsedPillars && Array.isArray(parsedPillars) && parsedPillars.length > 0 ? migrateDataStructure(parsedPillars) : JSON.parse(JSON.stringify(defaultPillarsData));
+            } catch (e) {
+                console.error("Erreur lors du chargement des piliers :", e);
+                pillars = JSON.parse(JSON.stringify(defaultPillarsData));
+                localStorage.setItem('wheelOfLife_pillars', JSON.stringify(pillars));
+                showNotification("Données des piliers corrompues. Réinitialisation aux valeurs par défaut.");
+            }
+            try {
+                const parsedHistory = storedHistory ? JSON.parse(storedHistory) : [];
+                history = Array.isArray(parsedHistory) ? parsedHistory : [];
+                history.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
+            } catch (e) {
+                console.error("Erreur lors du chargement de l'historique :", e);
+                history = [];
+                localStorage.setItem('wheelOfLife_history', JSON.stringify(history));
+                showNotification("Historique corrompu. Réinitialisation.");
+            }
+            if (!Array.isArray(pillars) || pillars.length === 0) {
+                pillars = JSON.parse(JSON.stringify(defaultPillarsData));
+                localStorage.setItem('wheelOfLife_pillars', JSON.stringify(pillars));
+            }
             currentPillarIndex = 0;
-            const storedPremium = localStorage.getItem('wheelOfLife_premiumStatus'); isPremium = storedPremium === 'true';
+            const storedPremium = localStorage.getItem('wheelOfLife_premiumStatus');
+            isPremium = storedPremium === 'true';
         }
-        function migrateDataStructure(loadedPillars) { if (!Array.isArray(loadedPillars)) return []; return loadedPillars.map((p, pIdx) => { const pillarBase = p || {}; return { id: pillarBase.id || generateId(pillarBase.name || `pillar-${pIdx}`), name: pillarBase.name || `Pilier ${pIdx + 1}`, subPillars: Array.isArray(pillarBase.subPillars) ? pillarBase.subPillars.map((sp, spIdx) => { const subPillarBase = typeof sp === 'string' ? { name: sp } : (sp || {}); return { id: subPillarBase.id || generateId((pillarBase.id || `p${pIdx}`) + '-' + (subPillarBase.name || `sub-${spIdx}`)), name: subPillarBase.name || `Sous-pilier ${spIdx + 1}`, score: (subPillarBase.score !== undefined && !isNaN(parseInt(subPillarBase.score))) ? parseInt(subPillarBase.score) : 5, note: subPillarBase.note || "", goal: (subPillarBase.goal !== undefined && !isNaN(parseInt(subPillarBase.goal))) ? parseInt(subPillarBase.goal) : 7 }; }) : [] }; }).filter(p => p.name && p.id); }
-        function saveData() { try { localStorage.setItem('wheelOfLife_pillars', JSON.stringify(pillars)); localStorage.setItem('wheelOfLife_history', JSON.stringify(history)); } catch (e) { console.error("Erreur sauvegarde:", e); alert("Erreur: Impossible de sauvegarder les données."); } }
 
-        function savePremiumStatus() { localStorage.setItem('wheelOfLife_premiumStatus', isPremium); }
-        function activatePremium() { if (isPremium) return; isPremium = true; savePremiumStatus(); updatePremiumUI(); alert("Mode Premium activé ! Fonctionnalités supplémentaires débloquées."); }
-        function updatePremiumUI() { if (personalizeBtn) personalizeBtn.style.display = isPremium ? 'inline-block' : 'none'; const helpPersonalize = document.getElementById('helpPersonalizeSection'); const helpImport = document.getElementById('helpImportSection'); if (helpPersonalize) helpPersonalize.style.display = isPremium ? 'list-item' : 'none'; if (helpImport) helpImport.style.display = isPremium ? 'list-item' : 'none'; }
-        function handleLogoPressStart(event) { event.preventDefault(); clearTimeout(longPressTimer); longPressTimer = setTimeout(activatePremium, PREMIUM_PRESS_DURATION); }
-        function handleLogoPressEnd() { clearTimeout(longPressTimer); }
+        function migrateDataStructure(loadedPillars) {
+            if (!Array.isArray(loadedPillars)) return [];
+            return loadedPillars.map((p, pIdx) => {
+                const pillarBase = p || {};
+                return {
+                    id: pillarBase.id || generateId(pillarBase.name || `pillar-${pIdx}`),
+                    name: pillarBase.name || `Pilier ${pIdx + 1}`,
+                    subPillars: Array.isArray(pillarBase.subPillars) ? pillarBase.subPillars.map((sp, spIdx) => {
+                        const subPillarBase = typeof sp === 'string' ? { name: sp } : (sp || {});
+                        return {
+                            id: subPillarBase.id || generateId((pillarBase.id || `p${pIdx}`) + '-' + (subPillarBase.name || `sub-${spIdx}`)),
+                            name: subPillarBase.name || `Sous-pilier ${spIdx + 1}`,
+                            score: (subPillarBase.score !== undefined && !isNaN(parseInt(subPillarBase.score))) ? parseInt(subPillarBase.score) : 5,
+                            note: subPillarBase.note || "",
+                            goal: (subPillarBase.goal !== undefined && !isNaN(parseInt(subPillarBase.goal))) ? parseInt(subPillarBase.goal) : 7
+                        };
+                    }) : []
+                };
+            }).filter(p => p.name && p.id);
+        }
 
+        function saveData() {
+            try {
+                localStorage.setItem('wheelOfLife_pillars', JSON.stringify(pillars));
+                localStorage.setItem('wheelOfLife_history', JSON.stringify(history));
+            } catch (e) {
+                console.error("Erreur lors de la sauvegarde :", e);
+                showNotification("Erreur : Impossible de sauvegarder les données.");
+            }
+        }
+
+        function savePremiumStatus() {
+            localStorage.setItem('wheelOfLife_premiumStatus', isPremium);
+        }
+
+        function activatePremium() {
+            if (isPremium) return;
+            isPremium = true;
+            savePremiumStatus();
+            updatePremiumUI();
+            showNotification("Mode Premium activé ! Fonctionnalités supplémentaires débloquées.");
+        }
+
+        function updatePremiumUI() {
+            if (personalizeBtn) personalizeBtn.style.display = isPremium ? 'inline-block' : 'none';
+            const helpPersonalize = document.getElementById('helpPersonalizeSection');
+            const helpImport = document.getElementById('helpImportSection');
+            if (helpPersonalize) helpPersonalize.style.display = isPremium ? 'list-item' : 'none';
+            if (helpImport) helpImport.style.display = isPremium ? 'list-item' : 'none';
+        }
+
+        function handleLogoPressStart(event) {
+            event.preventDefault();
+            clearTimeout(longPressTimer);
+            longPressTimer = setTimeout(activatePremium, PREMIUM_PRESS_DURATION);
+        }
+
+        function handleLogoPressEnd() {
+            clearTimeout(longPressTimer);
+        }
+
+        // Rendu des piliers
         function renderPillar() {
-            if (!pillars || pillars.length === 0) { handleNoPillars(); return; }
-            if (currentPillarIndex < 0 || currentPillarIndex >= pillars.length) { currentPillarIndex = 0; }
+            if (!pillars || pillars.length === 0) {
+                handleNoPillars();
+                return;
+            }
+            if (currentPillarIndex < 0 || currentPillarIndex >= pillars.length) {
+                currentPillarIndex = 0;
+            }
             const pillar = pillars[currentPillarIndex];
             const pillarColor = pillarColors[currentPillarIndex % pillarColors.length];
             inputView.style.setProperty('--pillar-border-color', pillarColor);
@@ -201,13 +401,16 @@
             navContainer.innerHTML = pillars.map((p, idx) => `
                 <button class="pillar-nav-button ${idx === currentPillarIndex ? 'active' : ''}"
                         onclick="currentPillarIndex = ${idx}; renderPillar()"
-                        aria-label="Aller au pilier ${p.name}">
+                        aria-label="Aller au pilier ${p.name}"
+                        aria-current="${idx === currentPillarIndex ? 'true' : 'false'}">
                     ${p.name}
                 </button>
             `).join('');
 
             let pillarHTML = `<h3 id="pillar-title"><span>${pillar.name}</span> (${currentPillarIndex + 1}/${pillars.length})</h3>`;
-            if (!pillar.subPillars || pillar.subPillars.length === 0) { pillarHTML += "<p class='text-center'>Ce pilier n'a pas de sous-piliers.</p>"; } else {
+            if (!pillar.subPillars || pillar.subPillars.length === 0) {
+                pillarHTML += "<p class='text-center'>Ce pilier n'a pas de sous-piliers.</p>";
+            } else {
                 pillar.subPillars.forEach((subPillar) => {
                     const displayScore = (subPillar.score !== undefined && !isNaN(subPillar.score)) ? subPillar.score : 5;
                     const displayGoal = (subPillar.goal !== undefined && !isNaN(subPillar.goal)) ? subPillar.goal : 7;
@@ -222,7 +425,7 @@
                             </div>
                             <div class="sub-pillar-details">
                                 <div class="detail-group">
-                                    <label for="goal-${subPillar.id}">Objectif:</label>
+                                    <label for="goal-${subPillar.id}">Objectif :</label>
                                     <input type="number" id="goal-${subPillar.id}" min="1" max="10" value="${displayGoal}" onchange="updateGoal('${pillar.id}', '${subPillar.id}', this.value)">
                                 </div>
                                 <div class="detail-group">
@@ -237,47 +440,237 @@
             updateScoresDisplay();
             showChartBtn.disabled = false;
         }
-        function findSubPillar(pillarId, subPillarId) { const pillar = pillars.find(p => p.id === pillarId); if (!pillar || !Array.isArray(pillar.subPillars)) return null; return pillar.subPillars.find(sp => sp.id === subPillarId); }
-        function updateScore(pillarId, subPillarId, value, fromInput = false) { const score = parseInt(value); if (isNaN(score)) return; const subPillar = findSubPillar(pillarId, subPillarId); if (subPillar) { subPillar.score = score; if (fromInput) { const output = document.querySelector(`output[for='range-${subPillarId}']`); if (output) output.textContent = score; const rangeInput = document.getElementById(`range-${subPillarId}`); if (rangeInput) rangeInput.setAttribute('aria-valuenow', score); } updateScoresDisplay(); saveData(); } }
-        function updateNote(pillarId, subPillarId, value) { const subPillar = findSubPillar(pillarId, subPillarId); if (subPillar) { subPillar.note = value.trim(); saveData(); } }
-        function updateGoal(pillarId, subPillarId, value) { const goal = parseInt(value); const input = document.getElementById(`goal-${subPillarId}`); const subPillar = findSubPillar(pillarId, subPillarId); if (subPillar) { if (!isNaN(goal) && goal >= 1 && goal <= 10) { subPillar.goal = goal; saveData(); } else { if (input) input.value = subPillar.goal !== undefined ? subPillar.goal : 7; alert("L'objectif doit être entre 1 et 10."); } } }
-        function calculateAverages() { const pillarAverages = pillars.map(pillar => { if (!pillar.subPillars || pillar.subPillars.length === 0) return 0; const sum = pillar.subPillars.reduce((acc, sub) => acc + (sub.score || 0), 0); return sum / pillar.subPillars.length; }); const validAverages = pillarAverages.filter(avg => !isNaN(avg)); const globalAverage = validAverages.length > 0 ? validAverages.reduce((sum, avg) => sum + avg, 0) / validAverages.length : 0; const globalScore = globalAverage * 2; return { pillarAverages, globalScore }; }
-        function updateScoresDisplay() { if (!pillars || pillars.length === 0) return; const { pillarAverages, globalScore } = calculateAverages(); globalScoreDisplay.textContent = `Note globale : ${globalScore.toFixed(1)} / 20`; const currentPillarAverage = pillarAverages[currentPillarIndex]; pillarAverageScoreDisplay.textContent = `Moyenne Pilier : ${currentPillarAverage !== undefined && !isNaN(currentPillarAverage) ? currentPillarAverage.toFixed(1) : '-'} / 10`; }
 
-        function changePillar(direction) { if (!pillars || pillars.length === 0) return; currentPillarIndex += direction; if (currentPillarIndex < 0) { currentPillarIndex = pillars.length - 1; } else if (currentPillarIndex >= pillars.length) { currentPillarIndex = 0; } renderPillar(); window.scrollTo({ top: 0, behavior: 'smooth' }); }
-        function updateNavigationButtons() { const numPillars = pillars ? pillars.length : 0; prevBtn.disabled = numPillars <= 1; nextBtn.disabled = numPillars <= 1; }
-        function historyScrollToBottom() { if (historyPopup) { historyPopup.scrollTo({ top: historyPopup.scrollHeight, behavior: 'smooth' }); } }
-        function showInputView() { inputView.style.display = 'block'; chartView.style.display = 'none'; if (pillars.length > 0 && currentPillarIndex >= 0 && currentPillarIndex < pillars.length) { const pillarColor = pillarColors[currentPillarIndex % pillarColors.length]; inputView.style.setProperty('--pillar-border-color', pillarColor); } else { inputView.style.setProperty('--pillar-border-color', 'transparent'); } }
-        function showChartView() { inputView.style.display = 'none'; chartView.style.display = 'block'; window.scrollTo({ top: 0, behavior: 'smooth' }); const returnBtn = chartView.querySelector('button[onclick="showInputView()"]'); if (returnBtn) returnBtn.focus(); }
+        function findSubPillar(pillarId, subPillarId) {
+            const pillar = pillars.find(p => p.id === pillarId);
+            if (!pillar || !Array.isArray(pillar.subPillars)) return null;
+            return pillar.subPillars.find(sp => sp.id === subPillarId);
+        }
+
+        const debouncedUpdateScoresDisplay = debounce(updateScoresDisplay, 100);
+        const debouncedSaveData = debounce(saveData, 300);
+
+        function updateScore(pillarId, subPillarId, value, fromInput = false) {
+            const score = parseInt(value);
+            if (isNaN(score) || score < 1 || score > 10) return;
+            const subPillar = findSubPillar(pillarId, subPillarId);
+            if (subPillar) {
+                subPillar.score = score;
+                if (fromInput) {
+                    const output = document.querySelector(`output[for='range-${subPillarId}']`);
+                    if (output) output.textContent = score;
+                    const rangeInput = document.getElementById(`range-${subPillarId}`);
+                    if (rangeInput) rangeInput.setAttribute('aria-valuenow', score);
+                }
+                debouncedUpdateScoresDisplay();
+                debouncedSaveData();
+            }
+        }
+
+        function updateNote(pillarId, subPillarId, value) {
+            const subPillar = findSubPillar(pillarId, subPillarId);
+            if (subPillar) {
+                subPillar.note = value.trim();
+                debouncedSaveData();
+            }
+        }
+
+        function updateGoal(pillarId, subPillarId, value) {
+            const goal = parseInt(value);
+            const input = document.getElementById(`goal-${subPillarId}`);
+            const subPillar = findSubPillar(pillarId, subPillarId);
+            if (subPillar) {
+                if (!isNaN(goal) && goal >= 1 && goal <= 10) {
+                    subPillar.goal = goal;
+                    debouncedSaveData();
+                } else {
+                    if (input) input.value = subPillar.goal !== undefined ? subPillar.goal : 7;
+                    showNotification("L'objectif doit être entre 1 et 10.");
+                }
+            }
+        }
+
+        function calculateAverages() {
+            const pillarAverages = pillars.map(pillar => {
+                if (!pillar.subPillars || pillar.subPillars.length === 0) return 0;
+                const sum = pillar.subPillars.reduce((acc, sub) => acc + (sub.score || 0), 0);
+                return sum / pillar.subPillars.length;
+            });
+            const validAverages = pillarAverages.filter(avg => !isNaN(avg));
+            const globalAverage = validAverages.length > 0 ? validAverages.reduce((sum, avg) => sum + avg, 0) / validAverages.length : 0;
+            const globalScore = globalAverage * 2;
+            return { pillarAverages, globalScore };
+        }
+
+        function updateScoresDisplay() {
+            if (!pillars || pillars.length === 0) return;
+            const { pillarAverages, globalScore } = calculateAverages();
+            globalScoreDisplay.textContent = `Note globale : ${globalScore.toFixed(1)} / 20`;
+            const currentPillarAverage = pillarAverages[currentPillarIndex];
+            pillarAverageScoreDisplay.textContent = `Moyenne Pilier : ${currentPillarAverage !== undefined && !isNaN(currentPillarAverage) ? currentPillarAverage.toFixed(1) : '-'} / 10`;
+        }
+
+        function changePillar(direction) {
+            if (!pillars || pillars.length === 0) return;
+            currentPillarIndex += direction;
+            if (currentPillarIndex < 0) {
+                currentPillarIndex = pillars.length - 1;
+            } else if (currentPillarIndex >= pillars.length) {
+                currentPillarIndex = 0;
+            }
+            renderPillar();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function updateNavigationButtons() {
+            const numPillars = pillars ? pillars.length : 0;
+            prevBtn.disabled = numPillars <= 1;
+            nextBtn.disabled = numPillars <= 1;
+        }
+
+        function historyScrollToBottom() {
+            if (historyPopup) {
+                historyPopup.scrollTo({ top: historyPopup.scrollHeight, behavior: 'smooth' });
+            }
+        }
+
+        function showInputView() {
+            inputView.style.display = 'block';
+            chartView.style.display = 'none';
+            if (pillars.length > 0 && currentPillarIndex >= 0 && currentPillarIndex < pillars.length) {
+                const pillarColor = pillarColors[currentPillarIndex % pillarColors.length];
+                inputView.style.setProperty('--pillar-border-color', pillarColor);
+            } else {
+                inputView.style.setProperty('--pillar-border-color', 'transparent');
+            }
+        }
+
+        function showChartView() {
+            inputView.style.display = 'none';
+            chartView.style.display = 'block';
+            renderChart();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            const returnBtn = chartView.querySelector('button[onclick="showInputView()"]');
+            if (returnBtn) returnBtn.focus();
+        }
 
         function renderChart() {
-            if (!pillars || pillars.length === 0) { if (chartInstance) { chartInstance.destroy(); chartInstance = null; } return; }
+            if (!pillars || pillars.length === 0) {
+                if (chartInstance) {
+                    chartInstance.destroy();
+                    chartInstance = null;
+                }
+                return;
+            }
             const { pillarAverages } = calculateAverages();
-            const pillarGoalsAverages = pillars.map(pillar => { if (!pillar.subPillars || pillar.subPillars.length === 0) return 0; const sum = pillar.subPillars.reduce((acc, sub) => acc + (sub.goal || 0), 0); return sum / pillar.subPillars.length; });
+            const pillarGoalsAverages = pillars.map(pillar => {
+                if (!pillar.subPillars || pillar.subPillars.length === 0) return 0;
+                const sum = pillar.subPillars.reduce((acc, sub) => acc + (sub.goal || 0), 0);
+                return sum / pillar.subPillars.length;
+            });
             const labels = pillars.map(p => p.name);
-            const scoreBgColor = getCssVar('--chart-bg-color'); const scoreBorderColor = getCssVar('--chart-border-color'); const goalBgColor = getCssVar('--goal-bg-color'); const goalBorderColor = getCssVar('--goal-border-color'); const textColor = getCssVar('--text-color'); const secondaryTextColor = getCssVar('--secondary-text-color'); const gridColor = getCssVar('--grid-color'); const containerBgColor = getCssVar('--container-bg'); const tooltipBgColor = getCssVar('--tooltip-bg');
+            const scoreBgColor = getCssVar('--chart-bg-color');
+            const scoreBorderColor = getCssVar('--chart-border-color');
+            const goalBgColor = getCssVar('--goal-bg-color');
+            const goalBorderColor = getCssVar('--goal-border-color');
+            const textColor = getCssVar('--text-color');
+            const secondaryTextColor = getCssVar('--secondary-text-color');
+            const gridColor = getCssVar('--grid-color');
+            const containerBgColor = getCssVar('--container-bg');
+            const tooltipBgColor = getCssVar('--tooltip-bg');
             const chartData = {
                 labels: labels,
                 datasets: [
-                    { label: 'Score Actuel', data: pillarAverages, backgroundColor: scoreBgColor, borderColor: scoreBorderColor, borderWidth: 2.5, pointBackgroundColor: scoreBorderColor, pointBorderColor: '#fff', pointHoverBackgroundColor: '#fff', pointHoverBorderColor: scoreBorderColor, pointRadius: 4, pointHoverRadius: 6 },
-                    { label: 'Objectif Moyen', data: pillarGoalsAverages, backgroundColor: goalBgColor, borderColor: goalBorderColor, borderWidth: 1.5, borderDash: [6, 3], pointBackgroundColor: goalBorderColor, pointBorderColor: '#fff', pointHoverBackgroundColor: '#fff', pointHoverBorderColor: goalBorderColor, pointRadius: 4, pointHoverRadius: 6 }
+                    {
+                        label: 'Score Actuel',
+                        data: pillarAverages,
+                        backgroundColor: scoreBgColor,
+                        borderColor: scoreBorderColor,
+                        borderWidth: 2.5,
+                        pointBackgroundColor: scoreBorderColor,
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: scoreBorderColor,
+                        pointRadius: 4,
+                        pointHoverRadius: 6
+                    },
+                    {
+                        label: 'Objectif Moyen',
+                        data: pillarGoalsAverages,
+                        backgroundColor: goalBgColor,
+                        borderColor: goalBorderColor,
+                        borderWidth: 1.5,
+                        borderDash: [6, 3],
+                        pointBackgroundColor: goalBorderColor,
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: goalBorderColor,
+                        pointRadius: 4,
+                        pointHoverRadius: 6
+                    }
                 ]
             };
             const chartOptions = {
-                responsive: true, maintainAspectRatio: true,
-                scales: { r: { min: 0, max: 10, ticks: { stepSize: 2, backdropColor: containerBgColor, color: secondaryTextColor }, pointLabels: { color: textColor, font: { size: 12 } }, grid: { color: gridColor }, angleLines: { color: gridColor } } },
-                plugins: { legend: { position: 'top', labels: { color: textColor, usePointStyle: false, boxWidth: 20, padding: 20 } }, tooltip: { enabled: true, backgroundColor: tooltipBgColor, titleColor: textColor, bodyColor: textColor, borderColor: gridColor, borderWidth: 1, padding: 10, cornerRadius: 4, usePointStyle: true, callbacks: { label: function(context) { let label = context.dataset.label || ''; if (label) { label += ': '; } if (context.parsed.r !== null) { label += context.parsed.r.toFixed(1); } return label; } } } },
+                responsive: true,
+                maintainAspectRatio: true,
+                scales: {
+                    r: {
+                        min: 0,
+                        max: 10,
+                        ticks: { stepSize: 2, backdropColor: containerBgColor, color: secondaryTextColor },
+                        pointLabels: { color: textColor, font: { size: 12 } },
+                        grid: { color: gridColor },
+                        angleLines: { color: gridColor }
+                    }
+                },
+                plugins: {
+                    legend: { position: 'top', labels: { color: textColor, usePointStyle: false, boxWidth: 20, padding: 20 } },
+                    tooltip: {
+                        enabled: true,
+                        backgroundColor: tooltipBgColor,
+                        titleColor: textColor,
+                        bodyColor: textColor,
+                        borderColor: gridColor,
+                        borderWidth: 1,
+                        padding: 10,
+                        cornerRadius: 4,
+                        usePointStyle: true,
+                        callbacks: {
+                            label: function(context) {
+                                let label = context.dataset.label || '';
+                                if (label) label += ': ';
+                                if (context.parsed.r !== null) label += context.parsed.r.toFixed(1);
+                                return label;
+                            }
+                        }
+                    }
+                },
                 animation: { duration: 0 }
             };
             const ctx = radarChartCanvas.getContext('2d');
-            if (chartInstance) { chartInstance.data = chartData; chartInstance.options = chartOptions; chartInstance.update(); } else { chartInstance = new Chart(ctx, { type: 'radar', data: chartData, options: chartOptions }); }
+            if (chartInstance) {
+                chartInstance.data = chartData;
+                chartInstance.options = chartOptions;
+                chartInstance.update();
+            } else {
+                chartInstance = new Chart(ctx, { type: 'radar', data: chartData, options: chartOptions });
+            }
         }
-        function showChartAndSave() { if (!pillars || pillars.length === 0) { alert("Aucun pilier à afficher/sauvegarder."); return; } renderChart(); const { pillarAverages } = calculateAverages(); saveToHistory(pillarAverages); showChartView(); }
+
+        function showChartAndSave() {
+            if (!pillars || pillars.length === 0) {
+                showNotification("Aucun pilier à afficher ou sauvegarder.");
+                return;
+            }
+            const { pillarAverages } = calculateAverages();
+            saveToHistory(pillarAverages);
+            showChartView();
+            showNotification("Évaluation sauvegardée avec succès.");
+        }
 
         function saveToHistory(averages) {
             const timestamp = Date.now();
             const twentyFourHoursInMillis = 24 * 60 * 60 * 1000;
-
             const newEntry = {
                 id: `hist-${timestamp}-${Math.random().toString(36).substr(2, 5)}`,
                 date: new Date(timestamp).toLocaleString('fr-FR', { dateStyle: 'short', timeStyle: 'short' }),
@@ -295,53 +688,27 @@
                     }))
                 }))
             };
-
             history.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
             const lastEntry = history.length > 0 ? history[0] : null;
-
             if (lastEntry && (timestamp - (lastEntry.timestamp || 0)) < twentyFourHoursInMillis) {
-                console.log("Remplacement de l'entrée précédente datant de moins de 24h.");
+                console.log("Remplacement de l'entrée récente datant de moins de 24h.");
                 history[0] = newEntry;
             } else {
                 console.log("Ajout d'une nouvelle entrée à l'historique.");
                 history.push(newEntry);
                 history.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
             }
-
-            saveData();
-        }
-
-
-            // Trier l'historique pour avoir le plus récent en premier (index 0)
-            // Utilise || 0 pour gérer les entrées anciennes qui pourraient ne pas avoir de timestamp
-            history.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
-
-            // Récupérer l'entrée la plus récente (s'il y en a une)
-            const lastEntry = history.length > 0 ? history[0] : null;
-
-            // Vérifier si la dernière entrée existe et si elle date de moins de 24 heures
-            if (lastEntry && (timestamp - (lastEntry.timestamp || 0)) < twentyFourHoursInMillis) {
-                // Remplacer la dernière entrée par la nouvelle
-                console.log("Remplacement de l'entrée précédente datant de moins de 24h.");
-                history[0] = newEntry; // Écrase l'entrée la plus récente
-            } else {
-                // Ajouter la nouvelle entrée au début (ou à la fin puis retrier)
-                console.log("Ajout d'une nouvelle entrée à l'historique.");
-                history.push(newEntry); // Ajoute la nouvelle entrée
-                 // Re-trier au cas où l'ordre serait perturbé (même si push + sort initial suffirait)
-                history.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
-            }
-
-            // Optionnel : Nettoyer les entrées vraiment vieilles (ex: plus de X jours/mois) si nécessaire
-            // history = history.filter(entry => (timestamp - (entry.timestamp || 0)) < 30 * twentyFourHoursInMillis); // Exemple: garder 30 jours
-
-            // Sauvegarder l'historique mis à jour
             saveData();
         }
 
         function showHistory() {
             historyContent.innerHTML = '';
-            if (history.length === 0) { historyContent.innerHTML = "<p>Aucun historique disponible.</p>"; if (historyScrollBtn) historyScrollBtn.style.display = 'none'; document.getElementById('compareControls').style.display = 'none'; return; }
+            if (history.length === 0) {
+                historyContent.innerHTML = "<p>Aucun historique disponible.</p>";
+                if (historyScrollBtn) historyScrollBtn.style.display = 'none';
+                document.getElementById('compareControls').style.display = 'none';
+                return;
+            }
             const ul = document.createElement('ul');
             history.forEach((entry, index) => {
                 if (!entry || !entry.scores) return;
@@ -375,9 +742,24 @@
             historyContent.appendChild(ul);
             document.getElementById('compareControls').style.display = 'block';
             updateCompareControls();
-            if (historyPopup && historyScrollBtn) { setTimeout(() => { if (document.getElementById('historyPopup')) { if (historyPopup.scrollHeight > historyPopup.clientHeight) { historyScrollBtn.style.display = 'inline-block'; } else { historyScrollBtn.style.display = 'none'; } } }, 100); }
+            if (historyPopup && historyScrollBtn) {
+                setTimeout(() => {
+                    if (document.getElementById('historyPopup')) {
+                        if (historyPopup.scrollHeight > historyPopup.clientHeight) {
+                            historyScrollBtn.style.display = 'inline-block';
+                        } else {
+                            historyScrollBtn.style.display = 'none';
+                        }
+                    }
+                }, 100);
+            }
         }
-        function updateCompareControls() { const selected = document.querySelectorAll('.history-compare-checkbox:checked'); document.getElementById('compareBtn').disabled = selected.length !== 2; }
+
+        function updateCompareControls() {
+            const selected = document.querySelectorAll('.history-compare-checkbox:checked');
+            document.getElementById('compareBtn').disabled = selected.length !== 2;
+        }
+
         function compareSelectedEntries() {
             const selected = Array.from(document.querySelectorAll('.history-compare-checkbox:checked')).map(cb => parseInt(cb.dataset.index));
             if (selected.length !== 2) return;
@@ -386,6 +768,7 @@
             showChartView();
             renderComparisonChart(entries);
         }
+
         function renderComparisonChart(entries) {
             const labels = pillars.map(p => p.name);
             const datasets = entries.map((entry, idx) => {
@@ -410,54 +793,326 @@
                 type: 'radar',
                 data: { labels, datasets },
                 options: {
-                    responsive: true, maintainAspectRatio: true,
-                    scales: { r: { min: 0, max: 10, ticks: { stepSize: 2, backdropColor: getCssVar('--container-bg'), color: getCssVar('--secondary-text-color') }, pointLabels: { color: getCssVar('--text-color'), font: { size: 12 } }, grid: { color: getCssVar('--grid-color') }, angleLines: { color: getCssVar('--grid-color') } } },
-                    plugins: { legend: { position: 'top', labels: { color: getCssVar('--text-color'), usePointStyle: false, boxWidth: 20, padding: 20 } }, tooltip: { enabled: true, backgroundColor: getCssVar('--tooltip-bg'), titleColor: getCssVar('--text-color'), bodyColor: getCssVar('--text-color'), borderColor: getCssVar('--grid-color'), borderWidth: 1, padding: 10, cornerRadius: 4, usePointStyle: true } },
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    scales: {
+                        r: {
+                            min: 0,
+                            max: 10,
+                            ticks: { stepSize: 2, backdropColor: getCssVar('--container-bg'), color: getCssVar('--secondary-text-color') },
+                            pointLabels: { color: getCssVar('--text-color'), font: { size: 12 } },
+                            grid: { color: getCssVar('--grid-color') },
+                            angleLines: { color: getCssVar('--grid-color') }
+                        }
+                    },
+                    plugins: {
+                        legend: { position: 'top', labels: { color: getCssVar('--text-color'), usePointStyle: false, boxWidth: 20, padding: 20 } },
+                        tooltip: {
+                            enabled: true,
+                            backgroundColor: getCssVar('--tooltip-bg'),
+                            titleColor: getCssVar('--text-color'),
+                            bodyColor: getCssVar('--text-color'),
+                            borderColor: getCssVar('--grid-color'),
+                            borderWidth: 1,
+                            padding: 10,
+                            cornerRadius: 4,
+                            usePointStyle: true
+                        }
+                    },
                     animation: { duration: 0 }
                 }
             });
         }
-        function copyHistory() { if (history.length === 0) { alert("L'historique est vide."); return; } const historyJson = JSON.stringify(history, null, 2); const coachingPrompt = `\nPrompt pour l'IA de Coaching :\n\n"Je vous fournis ci-dessous mon historique d'évaluations de la Roue de la Vie sous forme de données JSON, représentant mes scores dans différentes catégories de vie à plusieurs dates. Je vous demande d'analyser ces données de manière approfondie afin de me fournir un coaching personnalisé visant à améliorer mes scores. Voici les étapes que je souhaite que vous suiviez :\n\nAnalyse des données : Examinez les scores historiques pour identifier les tendances, les domaines où mes performances ont progressé, stagné ou régressé, ainsi que les écarts significatifs entre les catégories. Fournissez une synthèse claire et structurée de ces observations, en soulignant les points forts et les zones nécessitant une attention particulière.\nÉvaluation des évolutions possibles : Sur la base de cette analyse, proposez des hypothèses sur les facteurs qui pourraient expliquer mes scores (par exemple, des événements personnels, des priorités changeantes ou des obstacles récurrents). Identifiez les domaines où une amélioration est réaliste et prioritaire, en tenant compte de leur interdépendance potentielle (par exemple, comment un meilleur équilibre travail-vie personnelle pourrait influencer ma satisfaction globale).\nPlan de coaching personnalisé : Élaborez un plan d’action spécifique, structuré en étapes concrètes, pour m’aider à progresser dans les catégories ciblées. Pour chaque étape, incluez :\nUn objectif mesurable (par exemple, augmenter mon score dans une catégorie de X à Y d’ici une période donnée).\nDes stratégies ou actions précises à mettre en œuvre (par exemple, techniques de gestion du temps, exercices de réflexion, ou changements d’habitudes).\nDes indicateurs pour évaluer mes progrès (par exemple, auto-évaluation régulière ou résultats observables).\nApproche prospective : Intégrez une dimension prospective en suggérant comment ces améliorations pourraient évoluer à long terme et impacter positivement d’autres aspects de ma vie. Proposez également des méthodes pour maintenir ma motivation et surmonter d’éventuels obstacles.\nTon et style : Répondez dans un style formel, avec des phrases claires, bien structurées et précises, en évitant tout langage familier. Restez respectueux, professionnel et concis, tout en fournissant des explications détaillées et pertinentes, comme si vous vous adressiez à un collègue.\nVoici mes données JSON pour analyse :...\n\n--- DONNÉES JSON DE L'HISTORIQUE ---\n`; const textToCopy = coachingPrompt + historyJson; navigator.clipboard.writeText(textToCopy).then(() => { alert(`Prompt de coaching et historique copiés ! Collez-le dans votre IA favorite.`); }).catch(err => { console.error("Erreur copie:", err); alert("Erreur copie auto. Voir console (F12) pour copier manuellement."); console.log(textToCopy); }); }
-        function resetApp() { if (confirm("VRAIMENT réinitialiser TOUTE l'application ?\nConfiguration, historique ET statut premium seront perdus.")) { pillars = JSON.parse(JSON.stringify(defaultPillarsData)); history = []; currentPillarIndex = 0; isPremium = false; savePremiumStatus(); if (chartInstance) { chartInstance.destroy(); chartInstance = null; } localStorage.removeItem('wheelOfLife_pillars'); localStorage.removeItem('wheelOfLife_history'); closeModal('historyPopup'); updatePremiumUI(); showInputView(); alert("Application réinitialisée."); } }
+
+        function copyHistory() {
+            if (history.length === 0) {
+                showNotification("L'historique est vide.");
+                return;
+            }
+            const historyJson = JSON.stringify(history
+, null, 2);
+            const prompt = `Voici mon historique de la Roue de la Vie en JSON. Pouvez-vous m'aider à analyser mes progrès, identifier mes points faibles, et me donner des conseils pour m'améliorer ? Données : ${historyJson}`;
+            navigator.clipboard.writeText(prompt).then(() => {
+                showNotification("Historique et prompt copiés dans le presse-papiers !");
+            }).catch(err => {
+                console.error("Erreur lors de la copie :", err);
+                showNotification("Erreur lors de la copie. Veuillez réessayer.");
+            });
+        }
+
+        function exportData() {
+            const data = {
+                pillars: pillars,
+                history: history,
+                premiumStatus: isPremium
+            };
+            const dataStr = JSON.stringify(data, null, 2);
+            const blob = new Blob([dataStr], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `wheel_of_life_export_${new Date().toISOString().replace(/[:.]/g, '-')}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+            showNotification("Données exportées avec succès.");
+        }
+
+        function importData(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            if (!file.name.endsWith('.json')) {
+                showNotification("Veuillez sélectionner un fichier JSON.");
+                return;
+            }
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const importedData = JSON.parse(e.target.result);
+                    if (!importedData || typeof importedData !== 'object') throw new Error("Données invalides.");
+                    if (importedData.pillars && Array.isArray(importedData.pillars)) {
+                        pillars = migrateDataStructure(importedData.pillars);
+                    }
+                    if (importedData.history && Array.isArray(importedData.history)) {
+                        history = importedData.history;
+                        history.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
+                    }
+                    if (importedData.premiumStatus !== undefined) {
+                        isPremium = !!importedData.premiumStatus;
+                        savePremiumStatus();
+                        updatePremiumUI();
+                    }
+                    saveData();
+                    currentPillarIndex = 0;
+                    renderPillar();
+                    showHistory();
+                    showNotification("Données importées avec succès.");
+                } catch (err) {
+                    console.error("Erreur lors de l'importation :", err);
+                    showNotification("Erreur lors de l'importation. Fichier invalide.");
+                }
+            };
+            reader.onerror = function() {
+                showNotification("Erreur lors de la lecture du fichier.");
+            };
+            reader.readAsText(file);
+        }
+
+        function resetApp() {
+            if (!confirm("Êtes-vous sûr de vouloir réinitialiser toutes les données ? Cette action est irréversible.")) return;
+            pillars = JSON.parse(JSON.stringify(defaultPillarsData));
+            history = [];
+            isPremium = false;
+            savePremiumStatus();
+            saveData();
+            currentPillarIndex = 0;
+            updatePremiumUI();
+            renderPillar();
+            showHistory();
+            showNotification("Application réinitialisée avec succès.");
+        }
 
         function openModal(modalId) {
-            const modalElement = document.getElementById(modalId);
-            const overlayElement = document.getElementById('overlay');
-            if (modalElement && overlayElement) {
-                if (modalId === 'historyPopup') { if (historyScrollBtn) historyScrollBtn.style.display = 'none'; showHistory(); if (importBtn) importBtn.style.display = isPremium ? 'inline-block' : 'none'; } else if (modalId === 'customizationPopup') { renderCustomizationForm(); }
-                overlayElement.style.display = 'flex';
-                overlayElement.querySelectorAll('.popup').forEach(p => p.style.display = 'none');
-                modalElement.style.display = 'block';
-                setTimeout(() => { if (modalElement) modalElement.scrollTop = 0; }, 0);
-                const focusable = modalElement.querySelector('button:not(.popup-close-btn), input:not([type=hidden]), textarea, select, [tabindex]:not([tabindex="-1"])');
-                const closeButton = modalElement.querySelector('.popup-buttons button:last-of-type');
-                const xButton = modalElement.querySelector('.popup-close-btn');
-                if (xButton) xButton.focus(); else if (focusable) focusable.focus(); else if (closeButton) closeButton.focus();
+            closeAllModals();
+            const modal = document.getElementById(modalId);
+            if (!modal) return;
+            modal.style.display = 'block';
+            overlay.style.display = 'flex';
+            if (modalId === 'historyPopup') {
+                showHistory();
+            } else if (modalId === 'customizationPopup') {
+                renderCustomizationForm();
+            }
+            modal.setAttribute('aria-hidden', 'false');
+            const firstFocusable = modal.querySelector('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+            if (firstFocusable) firstFocusable.focus();
+        }
+
+        function closeModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (!modal) return;
+            modal.style.display = 'none';
+            overlay.style.display = 'none';
+            modal.setAttribute('aria-hidden', 'true');
+            const lastFocused = document.activeElement.closest('#inputView, #chartView') ? document.activeElement : null;
+            if (lastFocused) lastFocused.focus();
+            else if (inputView.style.display === 'block') {
+                document.getElementById('prevBtn').focus();
+            } else {
+                document.querySelector('#chartView button').focus();
             }
         }
-        function closeModal(modalId) { const modalElement = document.getElementById(modalId); const overlayElement = document.getElementById('overlay'); if (modalElement) modalElement.style.display = 'none'; if (modalId === 'notePopup') { saveNoteBtn.removeAttribute('data-pillar-id'); saveNoteBtn.removeAttribute('data-subpillar-id'); } let anyModalVisible = false; if (overlayElement) { const popupsInsideOverlay = overlayElement.querySelectorAll('.popup'); anyModalVisible = Array.from(popupsInsideOverlay).some(p => p.style.display === 'block'); } if (!anyModalVisible && overlayElement) overlayElement.style.display = 'none'; }
-        function closeAllModals() { document.querySelectorAll('.popup').forEach(modal => modal.style.display = 'none'); const overlayElement = document.getElementById('overlay'); if (overlayElement) overlayElement.style.display = 'none'; saveNoteBtn.removeAttribute('data-pillar-id'); saveNoteBtn.removeAttribute('data-subpillar-id'); }
 
-        function openNotePopup(pillarId, subPillarId) { const subPillar = findSubPillar(pillarId, subPillarId); if (!subPillar) { alert("Erreur note."); return; } notePopupSubPillarName.textContent = subPillar.name; notePopupTextarea.value = subPillar.note || ""; saveNoteBtn.setAttribute('data-pillar-id', pillarId); saveNoteBtn.setAttribute('data-subpillar-id', subPillarId); openModal('notePopup'); notePopupTextarea.focus(); }
-        function saveNoteFromPopup() { const pillarId = saveNoteBtn.getAttribute('data-pillar-id'); const subPillarId = saveNoteBtn.getAttribute('data-subpillar-id'); const newNote = notePopupTextarea.value; if (pillarId && subPillarId) { updateNote(pillarId, subPillarId, newNote); closeModal('notePopup'); } else { alert("Erreur sauvegarde note."); } }
+        function closeAllModals() {
+            document.querySelectorAll('.popup').forEach(modal => {
+                modal.style.display = 'none';
+                modal.setAttribute('aria-hidden', 'true');
+            });
+            overlay.style.display = 'none';
+        }
 
-        function renderCustomizationForm() { tempCustomPillars = JSON.parse(JSON.stringify(pillars)); customizationContent.innerHTML = ''; if (!tempCustomPillars || tempCustomPillars.length === 0) { customizationContent.innerHTML = "<p>Aucun pilier à personnaliser.</p>"; return; } tempCustomPillars.forEach((pillar) => { const pillarSection = document.createElement('div'); pillarSection.className = 'customization-section'; pillarSection.innerHTML = `<h4>Pilier:</h4> <div class="customization-item"> <input type="text" value="${pillar.name || ''}" id="edit-pillar-${pillar.id}" aria-label="Nom du pilier ${pillar.name || ''}"> <button class="icon-button danger-button" onclick="deletePillarTemp('${pillar.id}')" aria-label="Supprimer le pilier ${pillar.name || ''}">${deleteIcon}</button> </div> <h5>Sous-piliers :</h5>`; const subPillarList = document.createElement('div'); if (pillar.subPillars && pillar.subPillars.length > 0) { pillar.subPillars.forEach((subPillar) => { const subPillarItem = document.createElement('div'); subPillarItem.className = 'customization-item'; subPillarItem.innerHTML = `<input type="text" value="${subPillar.name || ''}" id="edit-subpillar-${subPillar.id}" aria-label="Nom du sous-pilier ${subPillar.name || ''}"> <button class="icon-button danger-button" onclick="deleteSubPillarTemp('${pillar.id}', '${subPillar.id}')" aria-label="Supprimer le sous-pilier ${subPillar.name || ''}">${deleteIcon}</button>`; subPillarList.appendChild(subPillarItem); }); } else { subPillarList.innerHTML = "<p style='font-size:0.9em; font-style:italic;'>Aucun sous-pilier.</p>"; } pillarSection.appendChild(subPillarList); customizationContent.appendChild(pillarSection); }); }
-        function saveCustomization() { let structureChanged = false; const originalPillarsString = JSON.stringify(pillars); tempCustomPillars.forEach(pillar => { const nameInput = document.getElementById(`edit-pillar-${pillar.id}`); if (nameInput && pillar.name !== nameInput.value.trim() && nameInput.value.trim() !== "") { pillar.name = nameInput.value.trim(); } if (pillar.subPillars) { pillar.subPillars.forEach(subPillar => { const subNameInput = document.getElementById(`edit-subpillar-${subPillar.id}`); if (subNameInput && subPillar.name !== subNameInput.value.trim() && subNameInput.value.trim() !== "") { subPillar.name = subNameInput.value.trim(); } }); pillar.subPillars = pillar.subPillars.filter(sp => sp.name && sp.name.trim() !== ""); } }); tempCustomPillars = tempCustomPillars.filter(p => p.name && p.name.trim() !== "" && p.subPillars && p.subPillars.length > 0); const tempPillarsString = JSON.stringify(tempCustomPillars); if (originalPillarsString !== tempPillarsString) { pillars = JSON.parse(tempPillarsString); structureChanged = true; if (currentPillarIndex >= pillars.length) { currentPillarIndex = Math.max(0, pillars.length - 1); } saveData(); if (pillars.length === 0) { handleNoPillars(); } else { renderPillar(); } if (chartView.style.display === 'block') { if (pillars.length > 0) { renderChart(); } else { showInputView(); } } } closeModal('customizationPopup'); }
-        function deletePillarTemp(pillarId) { const pillarName = tempCustomPillars.find(p => p.id === pillarId)?.name || 'ce pilier'; if (confirm(`Supprimer "${pillarName}" et ses sous-piliers (temporairement) ?`)) { tempCustomPillars = tempCustomPillars.filter(p => p.id !== pillarId); renderCustomizationForm(); } }
-        function deleteSubPillarTemp(pillarId, subPillarId) { const pillar = tempCustomPillars.find(p => p.id === pillarId); const subPillarName = pillar?.subPillars?.find(sp => sp.id === subPillarId)?.name || 'ce sous-pilier'; if (confirm(`Supprimer "${subPillarName}" (temporairement) ?`)) { if (pillar && pillar.subPillars) { pillar.subPillars = pillar.subPillars.filter(sp => sp.id !== subPillarId); } renderCustomizationForm(); } }
+        function openNotePopup(pillarId, subPillarId) {
+            const subPillar = findSubPillar(pillarId, subPillarId);
+            if (!subPillar) return;
+            notePopupSubPillarName.textContent = subPillar.name;
+            notePopupTextarea.value = subPillar.note || '';
+            saveNoteBtn.dataset.pillarId = pillarId;
+            saveNoteBtn.dataset.subPillarId = subPillarId;
+            openModal('notePopup');
+        }
 
-        function setupTheme() { const currentTheme = localStorage.getItem('wheelOfLife_theme') || 'light'; if (currentTheme === 'dark') { document.body.classList.add('dark-theme'); themeCheckbox.checked = true; } else { document.body.classList.remove('dark-theme'); themeCheckbox.checked = false; } if (chartInstance && chartView.style.display === 'block') { setTimeout(() => { renderChart(); }, 50); } }
-        function toggleTheme() { const isDark = themeCheckbox.checked; localStorage.setItem('wheelOfLife_theme', isDark ? 'dark' : 'light'); setupTheme(); }
+        function saveNoteFromPopup() {
+            const pillarId = saveNoteBtn.dataset.pillarId;
+            const subPillarId = saveNoteBtn.dataset.subPillarId;
+            if (!pillarId || !subPillarId) return;
+            updateNote(pillarId, subPillarId, notePopupTextarea.value);
+            closeModal('notePopup');
+            showNotification("Note sauvegardée avec succès.");
+        }
 
-        function exportData() { const dataToExport = { pillars: pillars, history: history }; const dataStr = JSON.stringify(dataToExport, null, 2); const dataBlob = new Blob([dataStr], { type: 'application/json' }); const url = URL.createObjectURL(dataBlob); const link = document.createElement('a'); link.href = url; const timestamp = new Date().toISOString().slice(0, 19).replace('T', '_').replace(/:/g, '-'); link.download = `roue-de-la-vie-export-${timestamp}.json`; document.body.appendChild(link); link.click(); document.body.removeChild(link); URL.revokeObjectURL(url); alert("Données exportées."); }
-        function importData(event) { const file = event.target.files[0]; if (!file || !file.name.endsWith('.json')) { alert("Sélectionner un fichier .json valide."); event.target.value = null; return; } const reader = new FileReader(); reader.onload = function(e) { try { const importedData = JSON.parse(e.target.result); if (!importedData || !importedData.hasOwnProperty('pillars')) { throw new Error("Format invalide. Clé 'pillars' manquante."); } if (!confirm("Importer écrasera les données actuelles (config & historique). Continuer ?")) { event.target.value = null; return; } pillars = migrateDataStructure(importedData.pillars || []); history = Array.isArray(importedData.history) ? importedData.history : []; history.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0)); if (!Array.isArray(pillars) || pillars.length === 0) { alert("Attention: Fichier sans piliers valides. Reset aux défauts."); pillars = JSON.parse(JSON.stringify(defaultPillarsData)); } currentPillarIndex = 0; saveData(); closeAllModals(); event.target.value = null; if (chartInstance) { chartInstance.destroy(); chartInstance = null; } showInputView(); alert("Données importées avec succès !"); } catch (error) { console.error("Erreur importation:", error); alert(`Erreur importation: ${error.message}`); event.target.value = null; } }; reader.onerror = function() { alert("Erreur lecture fichier."); event.target.value = null; }; reader.readAsText(file); }
+        function renderCustomizationForm() {
+            customizationContent.innerHTML = '';
+            pillars.forEach((pillar, pillarIndex) => {
+                const section = document.createElement('div');
+                section.className = 'customization-section';
+                section.innerHTML = `<h4>${pillar.name}</h4>`;
+                const pillarItem = document.createElement('div');
+                pillarItem.className = 'customization-item';
+                pillarItem.innerHTML = `
+                    <input type="text" value="${pillar.name}" data-pillar-index="${pillarIndex}" class="custom-pillar-name" aria-label="Nom du pilier ${pillar.name}">
+                    <button class="icon-button danger-button" onclick="deletePillar(${pillarIndex})" aria-label="Supprimer le pilier ${pillar.name}">${deleteIcon}</button>
+                `;
+                section.appendChild(pillarItem);
+                pillar.subPillars.forEach((subPillar, subIndex) => {
+                    const subItem = document.createElement('div');
+                    subItem.className = 'customization-item';
+                    subItem.innerHTML = `
+                        <input type="text" value="${subPillar.name}" data-pillar-index="${pillarIndex}" data-sub-index="${subIndex}" class="custom-subpillar-name" aria-label="Nom du sous-pilier ${subPillar.name}">
+                        <button class="icon-button danger-button" onclick="deleteSubPillar(${pillarIndex}, ${subIndex})" aria-label="Supprimer le sous-pilier ${subPillar.name}">${deleteIcon}</button>
+                    `;
+                    section.appendChild(subItem);
+                });
+                customizationContent.appendChild(section);
+            });
+        }
+
+        function saveCustomization() {
+            const pillarInputs = document.querySelectorAll('.custom-pillar-name');
+            const subPillarInputs = document.querySelectorAll('.custom-subpillar-name');
+            pillarInputs.forEach(input => {
+                const index = parseInt(input.dataset.pillarIndex);
+                const newName = input.value.trim();
+                if (newName && index >= 0 && index < pillars.length) {
+                    pillars[index].name = newName;
+                }
+            });
+            subPillarInputs.forEach(input => {
+                const pillarIndex = parseInt(input.dataset.pillarIndex);
+                const subIndex = parseInt(input.dataset.subIndex);
+                const newName = input.value.trim();
+                if (newName && pillarIndex >= 0 && pillarIndex < pillars.length && subIndex >= 0 && subIndex < pillars[pillarIndex].subPillars.length) {
+                    pillars[pillarIndex].subPillars[subIndex].name = newName;
+                }
+            });
+            saveData();
+            renderPillar();
+            closeModal('customizationPopup');
+            showNotification("Personnalisation sauvegardée avec succès.");
+        }
+
+        function deletePillar(pillarIndex) {
+            if (pillars.length <= 1) {
+                showNotification("Vous devez conserver au moins un pilier.");
+                return;
+            }
+            if (!confirm(`Voulez-vous vraiment supprimer le pilier "${pillars[pillarIndex].name}" ?`)) return;
+            pillars.splice(pillarIndex, 1);
+            history = history.map(entry => {
+                if (!entry.scores) return entry;
+                entry.scores.splice(pillarIndex, 1);
+                return entry;
+            });
+            if (currentPillarIndex >= pillars.length) {
+                currentPillarIndex = pillars.length - 1;
+            }
+            saveData();
+            renderPillar();
+            renderCustomizationForm();
+            showNotification("Pilier supprimé avec succès.");
+        }
+
+        function deleteSubPillar(pillarIndex, subIndex) {
+            if (pillars[pillarIndex].subPillars.length <= 1) {
+                showNotification("Vous devez conserver au moins un sous-pilier par pilier.");
+                return;
+            }
+            if (!confirm(`Voulez-vous vraiment supprimer le sous-pilier "${pillars[pillarIndex].subPillars[subIndex].name}" ?`)) return;
+            pillars[pillarIndex].subPillars.splice(subIndex, 1);
+            history = history.map(entry => {
+                if (!entry.scores || !entry.scores[pillarIndex]) return entry;
+                entry.scores[pillarIndex].subPillars.splice(subIndex, 1);
+                return entry;
+            });
+            saveData();
+            renderPillar();
+            renderCustomizationForm();
+            showNotification("Sous-pilier supprimé avec succès.");
+        }
+
+        function setupTheme() {
+            const savedTheme = localStorage.getItem('wheelOfLife_theme');
+            if (savedTheme === 'dark') {
+                document.body.classList.add('dark-theme');
+                themeCheckbox.checked = true;
+            } else if (savedTheme === 'light') {
+                document.body.classList.add('light-theme');
+                themeCheckbox.checked = false;
+            } else {
+                if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                    document.body.classList.add('dark-theme');
+                    themeCheckbox.checked = true;
+                }
+            }
+            themeCheckbox.addEventListener('change', toggleTheme);
+        }
+
+        function toggleTheme() {
+            if (themeCheckbox.checked) {
+                document.body.classList.remove('light-theme');
+                document.body.classList.add('dark-theme');
+                localStorage.setItem('wheelOfLife_theme', 'dark');
+            } else {
+                document.body.classList.remove('dark-theme');
+                document.body.classList.add('light-theme');
+                localStorage.setItem('wheelOfLife_theme', 'light');
+            }
+            if (chartInstance) renderChart();
+        }
 
         function addEventListeners() {
-            themeCheckbox.addEventListener('change', toggleTheme);
-            document.addEventListener('keydown', function(event) { if (event.key === 'Escape') { if (notePopup.style.display === 'block') { closeModal('notePopup'); } else { closeAllModals(); } } });
-            if (appLogo) { appLogo.addEventListener('mousedown', handleLogoPressStart); appLogo.addEventListener('mouseup', handleLogoPressEnd); appLogo.addEventListener('mouseleave', handleLogoPressEnd); appLogo.addEventListener('touchstart', handleLogoPressStart, { passive: false }); appLogo.addEventListener('touchend', handleLogoPressEnd); appLogo.addEventListener('touchcancel', handleLogoPressEnd); }
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') closeAllModals();
+            });
+            if (appLogo) {
+                appLogo.addEventListener('mousedown', handleLogoPressStart);
+                appLogo.addEventListener('touchstart', handleLogoPressStart);
+                appLogo.addEventListener('mouseup', handleLogoPressEnd);
+                appLogo.addEventListener('touchend', handleLogoPressEnd);
+                appLogo.addEventListener('mouseleave', handleLogoPressEnd);
+                appLogo.addEventListener('touchcancel', handleLogoPressEnd);
+            }
+            const navButtons = document.querySelectorAll('#pillarNavigation button');
+            navButtons.forEach(button => {
+                button.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        button.click();
+                    }
+                });
+            });
         }
-        document.addEventListener('DOMContentLoaded', initializeApp);
+
+        // Lancer l'application
+        initializeApp();
     </script>
 </body>
 </html>
