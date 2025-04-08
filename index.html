@@ -296,6 +296,22 @@
                 }))
             };
 
+            history.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
+            const lastEntry = history.length > 0 ? history[0] : null;
+
+            if (lastEntry && (timestamp - (lastEntry.timestamp || 0)) < twentyFourHoursInMillis) {
+                console.log("Remplacement de l'entrée précédente datant de moins de 24h.");
+                history[0] = newEntry;
+            } else {
+                console.log("Ajout d'une nouvelle entrée à l'historique.");
+                history.push(newEntry);
+                history.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
+            }
+
+            saveData();
+        }
+
+
             // Trier l'historique pour avoir le plus récent en premier (index 0)
             // Utilise || 0 pour gérer les entrées anciennes qui pourraient ne pas avoir de timestamp
             history.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
