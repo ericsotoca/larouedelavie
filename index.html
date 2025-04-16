@@ -144,19 +144,78 @@
         #noDashboardItems { text-align: center; color: var(--secondary-text-color); margin-top: 30px; }
 
 
-        /* --- Buttons --- */
-        .nav-buttons { display: flex; justify-content: space-between; margin-top: 30px; gap: 15px; }
-        button, .button-like { background-color: var(--primary-color); color: white; padding: 12px 25px; border: none; border-radius: 8px; cursor: pointer; font-size: 1rem; text-align: center; transition: background-color 0.3s, transform 0.1s; text-decoration: none; display: inline-block; }
-        button:disabled { background-color: var(--disabled-color); cursor: not-allowed; transform: none; }
-        button:hover:not(:disabled), .button-like:hover { background-color: var(--primary-hover-color); transform: translateY(-2px); }
-        button:active:not(:disabled), .button-like:active { transform: translateY(0); }
-        button:focus-visible, .button-like:focus-visible { outline: 3px solid var(--focus-ring-color); outline-offset: 2px; }
-        .danger-button { background-color: var(--danger-color); }
-        .danger-button:hover:not(:disabled) { background-color: var(--danger-hover-color); }
-        .icon-button { background: none; border: none; padding: 2px; cursor: pointer; color: var(--secondary-text-color); }
-        .icon-button:hover { color: var(--primary-color); }
-        .icon-button svg { width: 16px; height: 16px; vertical-align: middle; }
-        .danger-button.icon-button:hover { color: var(--danger-color); }
+		/* --- Buttons --- */
+		.nav-buttons {
+			display: flex;
+			justify-content: space-between;
+			margin-top: 30px;
+			gap: 15px;
+		}
+
+		button, .button-like {
+			background-color: var(--primary-color);
+			color: white;
+			padding: 12px 25px;
+			border: none;
+			border-radius: 8px;
+			cursor: pointer;
+			font-size: 1rem;
+			text-align: center;
+			transition: background-color 0.3s, transform 0.1s;
+			text-decoration: none;
+			display: inline-block;
+		}
+
+		button:disabled, .button-like:disabled {
+			background-color: var(--disabled-color);
+			cursor: not-allowed;
+			transform: none;
+		}
+
+		button:hover:not(:disabled), .button-like:hover {
+			background-color: var(--primary-hover-color);
+			transform: translateY(-2px);
+		}
+
+		button:active:not(:disabled), .button-like:active {
+			transform: translateY(0);
+		}
+
+		button:focus-visible, .button-like:focus-visible {
+			outline: 3px solid var(--focus-ring-color);
+			outline-offset: 2px;
+		}
+
+		.danger-button {
+			background-color: var(--danger-color);
+		}
+
+		.danger-button:hover:not(:disabled) {
+			background-color: var(--danger-hover-color);
+		}
+
+		.icon-button {
+			background: none;
+			border: none;
+			padding: 2px;
+			cursor: pointer;
+			color: var(--secondary-text-color);
+		}
+
+		.icon-button:hover {
+			color: var(--primary-color);
+		}
+
+		.icon-button svg {
+			width: 16px;
+			height: 16px;
+			vertical-align: middle;
+		}
+
+		.danger-button.icon-button:hover {
+			color: var(--danger-color);
+		}
+
 
         /* --- Chart --- */
         #radarChart { max-width: 100%; margin-top: 10px; background-color: var(--container-bg); border-radius: 8px; display: block; }
@@ -328,26 +387,30 @@
 <!-- DEBUT PARTIE 2/3 (CORRIGÉE) -->
 
 	<!-- Welcome View -->
-	<div id="welcomeView" class="main-view" style="display: none;"> <!-- Caché par défaut -->
-        <img src="logo.png" alt="La Roue de la Vie Interactive" class="logo" id="appLogo">
+	<div id="welcomeView" class="main-view" style="display: none;">
+		<img src="logo.png" alt="La Roue de la Vie Interactive" class="logo" id="appLogo">
 		<h2>Bienvenue sur la Roue de la Vie Interactive !</h2>
 		<p style="text-align: center; font-size: 1.1em; color: var(--secondary-text-color); margin-bottom: 25px;">
 			Visualisez votre équilibre, définissez vos objectifs et suivez vos progrès.
 		</p>
-        <p>Cet outil vous aide à évaluer votre satisfaction dans différents domaines de vie, à identifier où vous souhaitez progresser et à suivre les actions que vous entreprenez.</p>
-        <h5>Comment ça marche ?</h5>
-        <ol>
-            <li>Évaluez chaque domaine de 1 à 10 ("Évaluer / Modifier").</li>
-            <li>Définissez un objectif pour chaque domaine.</li>
-            <li>Utilisez l'IA (optionnel) pour obtenir des suggestions ("Copier pour Objectifs IA" puis "Importer Suggs. IA").</li>
-            <li>Sélectionnez les suggestions qui vous conviennent lors de la Revue.</li>
-            <li>Suivez vos rituels quotidiens sur votre "Tableau de Bord".</li>
-        </ol>
+		<p>Cet outil vous aide à évaluer votre satisfaction dans différents domaines de vie, à identifier où vous souhaitez progresser et à suivre les actions que vous entreprenez.</p>
+		<h5>Comment ça marche ?</h5>
+		<ol>
+			<li>Évaluez chaque domaine de 1 à 10 ("Évaluer / Modifier").</li>
+			<li>Définissez un objectif pour chaque domaine.</li>
+			<li>Utilisez l'IA (optionnel) pour obtenir des suggestions ("Copier pour Objectifs IA" puis "Importer Suggs. IA").</li>
+			<li>Sélectionnez les suggestions qui vous conviennent lors de la Revue.</li>
+			<li>Suivez vos rituels quotidiens sur votre "Tableau de Bord".</li>
+		</ol>
 		<p style="margin-top: 25px; font-style: italic; color: var(--secondary-text-color);">Vos données sont stockées uniquement dans votre navigateur.</p>
 		<div class="text-center mt-2">
+			<button onclick="openProfilePage()" class="button-like" style="padding: 15px 30px; font-size: 1.1em;">Mon profil</button>
 			<button onclick="startAppFlow()" class="button-like" style="padding: 15px 30px; font-size: 1.1em;">Commencer</button>
 		</div>
 	</div>
+
+
+
 
     <!-- Theme Switch -->
     <div class="theme-switch-wrapper">
@@ -364,6 +427,7 @@
     <div id="notification" class="notification"></div>
 
     <!-- Dashboard View -->
+    <!-- Dashboard View -->
     <div id="dashboardView" class="main-view" style="display: none;">
         <h2>Tableau de Bord - Actions en Cours</h2>
         <div id="dashboardContent">
@@ -376,6 +440,10 @@
             <button onclick="resetDailyRituals()" aria-label="Réinitialiser le suivi des rituels quotidiens">Réinitialiser Rituels du Jour</button>
             <button onclick="showInputView(0)" aria-label="Accéder à l'évaluation complète">Évaluer / Modifier</button>
             <button onclick="showChartView()" aria-label="Voir le graphique et l'historique">Graphique & Historique</button>
+            
+            <!-- == BOUTON "MON PROFIL" AJOUTÉ ICI == -->
+            <button onclick="openProfilePage()" aria-label="Accéder à la page de profil">Mon Profil</button> 
+            <!-- ==================================== -->
         </div>
     </div>
 
@@ -703,6 +771,9 @@
              inputView.style.setProperty('--pillar-border-color', 'transparent');
              if (chartInstance) { chartInstance.destroy(); chartInstance = null; }
         }
+		function openProfilePage() {
+			window.location.href = 'profile.html';
+		}
 
         function loadData() {
             const storedPillars = localStorage.getItem('wheelOfLife_pillars');
@@ -995,7 +1066,77 @@
         function renderActionKeys() { actionKeysContent.innerHTML='';const actions=[];history.forEach(e=>{e?.scores?.forEach(ps=>{ps?.subPillars?.forEach(sp=>{if(sp.isAction&&sp.note)actions.push({date:e.date,pillarName:ps.pillarName,subPillarName:sp.name,note:sp.note})})})});if(actions.length===0){actionKeysContent.innerHTML='<p>Aucune action clé.</p><p style="font-size:0.9em;">Utilisez l\'icône <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" style="width:0.9em;height:0.9em;vertical-align:-0.1em;"><path d="M20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18,2.9 17.35,2.9 16.96,3.29L15.12,5.12L18.87,8.87M3,17.25V21H6.75L17.81,9.93L14.06,6.18L3,17.25Z"/></svg> puis cochez la case.</p>';return}const ul=document.createElement('ul');actions.forEach(a=>{const li=document.createElement('li');li.className='action-key-entry';li.innerHTML=`<strong>${a.pillarName} > ${a.subPillarName}</strong><span style="font-size:0.8em;color:var(--secondary-text-color);margin-left:5px;">(${a.date})</span><div class="action-key-note">${a.note}</div>`;ul.appendChild(li)});actionKeysContent.appendChild(ul)}
 
         // --- Import / Export / Reset ---
-        function copyDataForAIGoals() { if(!pillars?.length){showNotification("Aucune donnée.");return}let subPillarsBelowGoal=[];pillars.forEach(p=>{p.subPillars?.forEach(sp=>{const s=sp.score??NaN,g=sp.goal??NaN;if(!isNaN(s)&&!isNaN(g)&&s<g)subPillarsBelowGoal.push({pillarId:p.id,subPillarId:sp.id,pillarName:p.name||'?',subPillarName:sp.name||'?',score:s,goal:g,note:sp.note||''})})});if(subPillarsBelowGoal.length===0){showNotification("Objectifs atteints !");return}const dataForPrompt=subPillarsBelowGoal;const formatInstruction=`\n\n--- FORMAT RÉPONSE JSON ATTENDU ---\nIMPORTANT: Répondez EXCLUSIVEMENT en JSON valide (tableau d'objets).\nChaque objet doit avoir EXACTEMENT les clés:\n- "pillarId": (String) ID du pilier fourni.\n- "subPillarId": (String) ID du sous-pilier fourni.\n- "aiGoals": (Array of Strings) Vos objectifs SMART suggérés.\n- "aiRituals": (Array of Strings) Vos rituels/habitudes concrets suggérés.\n\nExemple:\n\`\`\`json\n[\n  {\n    "pillarId": "id_pilier",\n    "subPillarId": "id_sous_pilier",\n    "aiGoals": ["Objectif 1..."],\n    "aiRituals": ["Rituel 1..."]\n  }\n]\n\`\`\`\nNE RETOURNEZ QUE LE JSON.`;const aiPrompt=`Bonjour! Voici les domaines où mon score actuel est inférieur à mon objectif. 'pillarId' et 'subPillarId' sont des identifiants uniques.\n\nDonnées:\n\`\`\`json\n${JSON.stringify(dataForPrompt,null,2)}\n\`\`\`\n\nPour CHACUN de ces sous-piliers, merci de:\n1. Définir 1-3 objectifs SMART.\n2. Suggérer 2-4 rituels/habitudes concrets.\n\n${formatInstruction}`;try{navigator.clipboard.writeText(aiPrompt).then(()=>{showNotification("Données & prompt copiés! Collez dans IA puis importez réponse JSON.",6000)}).catch(err=>{console.error("Erreur copie:",err);showNotification("Erreur copie.",4000)})}catch(err){console.error("Erreur copie:",err);showNotification("Erreur copie.",4000)}}
+        function copyDataForAIGoals() {
+            if (!pillars?.length) {
+                showNotification("Aucune donnée de pilier disponible.");
+                return;
+            }
+
+            let subPillarsBelowGoal = [];
+            pillars.forEach(p => {
+                p.subPillars?.forEach(sp => {
+                    const s = sp.score ?? NaN, g = sp.goal ?? NaN;
+                    if (!isNaN(s) && !isNaN(g) && s < g) {
+                        subPillarsBelowGoal.push({
+                            pillarId: p.id,
+                            subPillarId: sp.id,
+                            pillarName: p.name || '?',
+                            subPillarName: sp.name || '?',
+                            score: s,
+                            goal: g,
+                            note: sp.note || '' // Inclure la note peut aussi aider l'IA
+                        });
+                    }
+                });
+            });
+
+            if (subPillarsBelowGoal.length === 0) {
+                showNotification("Félicitations ! Aucun objectif à améliorer pour le moment.");
+                return;
+            }
+
+            // === NOUVEAU : Récupérer les données du profil ===
+            const userProfileText = localStorage.getItem('userProfile') || ''; // Récupère le texte du profil, ou une chaîne vide s'il n'existe pas
+            const profileSection = userProfileText
+                ? `\n\nVoici mon profil pour vous donner plus de contexte :\n"${userProfileText}"\n`
+                : '\n\n(Aucune information de profil fournie.)\n'; // Section à inclure dans le prompt
+            // ===============================================
+
+            const dataForPrompt = subPillarsBelowGoal;
+
+            // Format JSON attendu par l'utilisateur (ne change pas)
+            const formatInstruction = `\n\n--- FORMAT RÉPONSE JSON ATTENDU ---\nIMPORTANT: Répondez EXCLUSIVEMENT en JSON valide (tableau d'objets).\nChaque objet doit avoir EXACTEMENT les clés:\n- "pillarId": (String) ID du pilier fourni.\n- "subPillarId": (String) ID du sous-pilier fourni.\n- "aiGoals": (Array of Strings) Vos objectifs SMART suggérés.\n- "aiRituals": (Array of Strings) Vos rituels/habitudes concrets suggérés.\n\nExemple:\n\`\`\`json\n[\n  {\n    "pillarId": "id_pilier",\n    "subPillarId": "id_sous_pilier",\n    "aiGoals": ["Objectif 1..."],\n    "aiRituals": ["Rituel 1..."]\n  }\n]\n\`\`\`\nNE RETOURNEZ QUE LE JSON.`;
+
+            // === MODIFIÉ : Construction du prompt avec le profil ===
+            const aiPrompt = `Bonjour ! J'utilise l'outil "Roue de la Vie Interactive".${profileSection}
+Voici les domaines où mon score actuel est inférieur à mon objectif. 'pillarId' et 'subPillarId' sont des identifiants uniques pour l'application.
+
+Données des sous-piliers concernés:
+\`\`\`json
+${JSON.stringify(dataForPrompt, null, 2)}
+\`\`\`
+
+En tenant compte de mon profil (si fourni) et des données ci-dessus, pour CHACUN de ces sous-piliers, merci de :
+1. Définir 1 à 3 objectifs SMART et personnalisés.
+2. Suggérer 2 à 4 rituels/habitudes concrets et personnalisés pour m'aider à atteindre ces objectifs.
+
+${formatInstruction}`;
+            // ======================================================
+
+            try {
+                navigator.clipboard.writeText(aiPrompt).then(() => {
+                    showNotification("Données (avec profil) & prompt copiés ! Collez dans votre IA puis importez la réponse JSON.", 6000);
+                }).catch(err => {
+                    console.error("Erreur copie clipboard:", err);
+                    showNotification("Erreur lors de la copie dans le presse-papiers.", 4000);
+                    // Fallback possible: afficher le prompt dans un popup si la copie échoue
+                });
+            } catch (err) {
+                console.error("Erreur API Clipboard:", err);
+                showNotification("L'API de copie n'est pas supportée ou une erreur est survenue.", 4000);
+            }
+        }
+        // ... reste des fonctions (importAIGeneratedData, etc.) ...
         		
 		// MODIFIED: Importer suggestions IA ET les sauvegarder directement
 		function importAIGeneratedData() {
@@ -1046,8 +1187,7 @@
 			} catch (error) { console.error("Erreur import IA:", error); showNotification(`Erreur d'import: ${error.message}.`, 6000); }
 		}
 				
-		 // MODIFIED: Lire depuis `pillars` basé sur les IDs fournis
- // MODIFIED: Lire depuis `pillars` basé sur les IDs fournis
+
 		 function renderReviewSuggestionsModal(subPillarIdsToReview) {
 			 reviewSuggestionsContent.innerHTML = ''; // Clear
 			 if (!subPillarIdsToReview || subPillarIdsToReview.length === 0) {
