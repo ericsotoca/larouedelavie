@@ -1,0 +1,362 @@
+[
+  {
+    "pillarId": "sante",
+    "subPillarId": "sante-nut",
+    "aiGoals": [
+      "Adopter un régime alimentaire équilibré avec 5 portions de fruits et légumes par jour d'ici 2 mois.",
+      "Réduire la consommation de sucres ajoutés à moins de 25g par jour dans les 6 semaines.",
+      "Planifier et préparer 4 repas sains par semaine pendant 3 mois."
+    ],
+    "aiRituals": [
+      "Préparer une liste de courses hebdomadaire axée sur des aliments frais et non transformés.",
+      "Boire un verre d'eau avant chaque repas pour favoriser la satiété.",
+      "Consacrer 30 minutes chaque dimanche à la préparation de repas sains pour la semaine.",
+      "Tenir un journal alimentaire quotidien pour suivre les apports nutritionnels."
+    ]
+  },
+  {
+    "pillarId": "sante",
+    "subPillarId": "sante-ene",
+    "aiGoals": [
+      "Améliorer la qualité du sommeil en visant 7 à 8 heures par nuit d'ici 1 mois.",
+      "Intégrer 3 séances d'exercice modéré de 30 minutes par semaine pendant 2 mois.",
+      "Réduire la consommation de caféine après 14h dans les 4 prochaines semaines."
+    ],
+    "aiRituals": [
+      "Établir une routine de coucher fixe avec 30 minutes sans écran avant le sommeil.",
+      "Pratiquer 10 minutes de méditation ou de respiration profonde chaque matin.",
+      "Planifier une marche rapide de 15 minutes après le déjeuner 3 fois par semaine.",
+      "Boire une tisane relaxante chaque soir pour favoriser le repos."
+    ]
+  },
+  {
+    "pillarId": "famille",
+    "subPillarId": "fam-pro",
+    "aiGoals": [
+      "Organiser une sortie mensuelle avec des proches d'ici la fin du trimestre.",
+      "Contacter un membre de la famille éloigné une fois par semaine pendant 2 mois.",
+      "Planifier un dîner familial hebdomadaire pendant 3 mois."
+    ],
+    "aiRituals": [
+      "Envoyer un message ou appeler un proche chaque vendredi pour prendre des nouvelles.",
+      "Dédier 30 minutes chaque dimanche à planifier une activité familiale.",
+      "Créer un groupe de discussion familial pour partager des moments réguliers.",
+      "Partager un repas sans distractions technologiques au moins une fois par semaine."
+    ]
+  },
+  {
+    "pillarId": "famille",
+    "subPillarId": "fam-com",
+    "aiGoals": [
+      "Pratiquer l'écoute active avec un membre de la famille 10 minutes par jour pendant 1 mois.",
+      "Organiser une réunion familiale hebdomadaire pour discuter des besoins de chacun d'ici 6 semaines.",
+      "Réduire les interruptions pendant les conversations familiales dans les 2 mois."
+    ],
+    "aiRituals": [
+      "Consacrer 15 minutes chaque soir à une discussion sans téléphone.",
+      "Utiliser une question ouverte quotidienne pour encourager le dialogue familial.",
+      "Planifier un moment hebdomadaire pour résoudre les malentendus calmement.",
+      "Noter une réflexion positive sur la communication familiale chaque jour."
+    ]
+  },
+  {
+    "pillarId": "famille",
+    "subPillarId": "fam-tmp",
+    "aiGoals": [
+      "Passer 1 heure de temps de qualité avec la famille 3 fois par semaine d'ici 2 mois.",
+      "Planifier une activité familiale partagée chaque week-end pendant 3 mois.",
+      "Réduire le temps sur les écrans de 20% pour libérer du temps familial dans 6 semaines."
+    ],
+    "aiRituals": [
+      "Instaurer une soirée jeux de société chaque vendredi soir.",
+      "Planifier une promenade familiale chaque dimanche après-midi.",
+      "Éteindre les écrans 1 heure avant le dîner pour favoriser les interactions.",
+      "Créer un calendrier partagé pour les moments familiaux chaque semaine."
+    ]
+  },
+  {
+    "pillarId": "famille",
+    "subPillarId": "fam-sou",
+    "aiGoals": [
+      "Offrir une aide concrète à un membre de la famille 2 fois par semaine pendant 2 mois.",
+      "Identifier et répondre à un besoin spécifique d’un proche d'ici 1 mois.",
+      "Participer à une activité de soutien familial chaque semaine pendant 3 mois."
+    ],
+    "aiRituals": [
+      "Demander chaque lundi comment soutenir un membre de la famille.",
+      "Planifier une tâche collaborative avec un proche chaque week-end.",
+      "Noter une action de soutien réalisée chaque jour dans un journal.",
+      "Organiser un appel ou une visite hebdomadaire pour renforcer les liens."
+    ]
+  },
+  {
+    "pillarId": "famille",
+    "subPillarId": "fam-har",
+    "aiGoals": [
+      "Résoudre un conflit familial par le dialogue dans les 4 prochaines semaines.",
+      "Instaurer une routine hebdomadaire de gratitude familiale d'ici 2 mois.",
+      "Améliorer l'ambiance familiale en réduisant les tensions 3 fois par semaine pendant 3 mois."
+    ],
+    "aiRituals": [
+      "Partager une gratitude familiale lors du dîner chaque dimanche.",
+      "Pratiquer 5 minutes de méditation en famille chaque semaine.",
+      "Organiser une discussion ouverte sur les ressentis chaque samedi.",
+      "Créer un rituel de compliments sincères quotidiens entre membres."
+    ]
+  },
+  {
+    "pillarId": "finances",
+    "subPillarId": "fin-0",
+    "aiGoals": [
+      "Augmenter les revenus de 10% en explorant une opportunité secondaire d'ici 6 mois.",
+      "Négocier une augmentation ou un nouveau projet professionnel dans les 3 mois.",
+      "Créer un plan de revenus diversifiés avec 2 sources d'ici la fin de l'année."
+    ],
+    "aiRituals": [
+      "Consacrer 1 heure chaque semaine à la recherche d'opportunités de revenus.",
+      "Mettre à jour son CV ou profil professionnel chaque mois.",
+      "Suivre un cours en ligne sur les compétences financières chaque trimestre.",
+      "Réseauter avec un professionnel chaque semaine pour explorer des opportunités."
+    ]
+  },
+  {
+    "pillarId": "finances",
+    "subPillarId": "fin-1",
+    "aiGoals": [
+      "Épargner 10% de chaque revenu mensuel dans les 6 prochains mois.",
+      "Ouvrir un compte d'épargne dédié avec un dépôt initial d'ici 1 mois.",
+      "Atteindre un fonds d'urgence de 3 mois de dépenses d'ici 1 an."
+    ],
+    "aiRituals": [
+      "Configurer un virement automatique vers l'épargne chaque mois.",
+      "Réviser le budget hebdomadaire pour identifier les économies possibles.",
+      "Lire un article sur la gestion financière chaque semaine.",
+      "Suivre ses progrès d'épargne dans un tableau chaque mois."
+    ]
+  },
+  {
+    "pillarId": "finances",
+    "subPillarId": "fin-2",
+    "aiGoals": [
+      "Réduire les dépenses non essentielles de 15% d'ici 3 mois.",
+      "Créer un budget mensuel détaillé et le respecter pendant 6 mois.",
+      "Éliminer une dépense superflue récurrente dans les 2 mois."
+    ],
+    "aiRituals": [
+      "Tenir un journal des dépenses quotidiennes pour repérer les fuites.",
+      "Planifier les achats importants une semaine à l'avance.",
+      "Réviser les abonnements mensuels chaque trimestre pour les optimiser.",
+      "Utiliser une application de suivi budgétaire chaque semaine."
+    ]
+  },
+  {
+    "pillarId": "finances",
+    "subPillarId": "fin-3",
+    "aiGoals": [
+      "Investir 5% des revenus dans un fonds diversifié d'ici 6 mois.",
+      "Suivre une formation sur les investissements de base d'ici 3 mois.",
+      "Consulter un conseiller financier pour un plan d'investissement dans 2 mois."
+    ],
+    "aiRituals": [
+      "Lire un livre ou un article sur l'investissement chaque mois.",
+      "Suivre les performances d’un portefeuille fictif chaque semaine.",
+      "Allouer 30 minutes hebdomadaires à l'étude des options d'investissement.",
+      "Participer à un webinaire sur la finance personnelle chaque trimestre."
+    ]
+  },
+  {
+    "pillarId": "finances",
+    "subPillarId": "fin-4",
+    "aiGoals": [
+      "Souscrire une assurance adaptée pour couvrir les risques majeurs d'ici 3 mois.",
+      "Créer un plan de sécurité financière avec un fonds d'urgence d'ici 6 mois.",
+      "Réduire les dettes à taux élevé de 20% dans les 9 mois."
+    ],
+    "aiRituals": [
+      "Réviser les contrats d'assurance chaque semestre pour optimiser la couverture.",
+      "Épargner 50€ par mois pour un fonds d'urgence.",
+      "Planifier un remboursement anticipé des dettes chaque trimestre.",
+      "Consulter un article sur la sécurité financière chaque semaine."
+    ]
+  },
+  {
+    "pillarId": "carriere",
+    "subPillarId": "car-4",
+    "aiGoals": [
+      "Obtenir une reconnaissance formelle (promotion, récompense) d'ici 6 mois.",
+      "Présenter un projet innovant à l'équipe dans les 3 mois.",
+      "Améliorer ses compétences en leadership via une formation d'ici 4 mois."
+    ],
+    "aiRituals": [
+      "Documenter ses réalisations professionnelles chaque semaine.",
+      "Planifier une réunion avec un supérieur pour discuter des progrès chaque mois.",
+      "Participer à un groupe de discussion professionnel chaque trimestre.",
+      "Pratiquer une compétence clé (présentation, négociation) 30 minutes par semaine."
+    ]
+  },
+  {
+    "pillarId": "loisirs",
+    "subPillarId": "loi-4",
+    "aiGoals": [
+      "Rejoindre un club ou un groupe social d'ici 2 mois.",
+      "Organiser une sortie entre amis une fois par mois pendant 6 mois.",
+      "Participer à 3 événements sociaux locaux d'ici la fin de l'année."
+    ],
+    "aiRituals": [
+      "Planifier une activité sociale chaque samedi soir.",
+      "Contacter un ami pour une rencontre chaque semaine.",
+      "S’inscrire à une newsletter d’événements locaux chaque mois.",
+      "Dédier 1 heure par semaine à une activité sociale (café, sport, etc.)."
+    ]
+  },
+  {
+    "pillarId": "devperso",
+    "subPillarId": "dev-2",
+    "aiGoals": [
+      "Participer à un atelier de confiance en soi d'ici 3 mois.",
+      "Pratiquer une affirmation positive quotidienne pendant 2 mois.",
+      "Prendre une décision importante sans hésitation d'ici 1 mois."
+    ],
+    "aiRituals": [
+      "Écrire une affirmation positive chaque matin.",
+      "Pratiquer une posture de confiance (power pose) 2 minutes par jour.",
+      "Lire un chapitre d’un livre sur la confiance chaque semaine.",
+      "Noter une petite victoire personnelle chaque soir."
+    ]
+  },
+  {
+    "pillarId": "devperso",
+    "subPillarId": "dev-3",
+    "aiGoals": [
+      "Compléter un défi personnel (ex. méditation 30 jours) d'ici 2 mois.",
+      "Identifier et surmonter une peur spécifique d'ici 3 mois.",
+      "Pratiquer une technique de gestion du stress 3 fois par semaine pendant 2 mois."
+    ],
+    "aiRituals": [
+      "Pratiquer 5 minutes de méditation guidée chaque matin.",
+      "Écrire une réflexion sur une difficulté surmontée chaque semaine.",
+      "Utiliser une application de gestion du stress chaque jour.",
+      "Planifier une activité relaxante chaque dimanche."
+    ]
+  },
+  {
+    "pillarId": "devperso",
+    "subPillarId": "dev-4",
+    "aiGoals": [
+      "Définir 3 objectifs de vie clairs d'ici 2 mois.",
+      "Compléter un journal de réflexion personnelle chaque semaine pendant 3 mois.",
+      "Participer à un coaching de clarté mentale d'ici 4 mois."
+    ],
+    "aiRituals": [
+      "Écrire 10 minutes dans un journal chaque soir.",
+      "Revoir ses priorités de vie chaque dimanche.",
+      "Pratiquer une visualisation de ses objectifs chaque matin.",
+      "Lire un livre sur la prise de décision chaque mois."
+    ]
+  },
+  {
+    "pillarId": "relations",
+    "subPillarId": "rel-0",
+    "aiGoals": [
+      "Renouer avec un ami perdu de vue d'ici 1 mois.",
+      "Organiser un événement avec des amis une fois par mois pendant 6 mois.",
+      "Passer 2 heures de qualité avec un ami chaque semaine d'ici 3 mois."
+    ],
+    "aiRituals": [
+      "Envoyer un message à un ami chaque lundi pour planifier une rencontre.",
+      "Planifier une sortie amicale chaque week-end.",
+      "Noter une interaction positive avec un ami chaque jour.",
+      "Participer à un hobby partagé avec un ami chaque mois."
+    ]
+  },
+  {
+    "pillarId": "relations",
+    "subPillarId": "rel-1",
+    "aiGoals": [
+      "Participer à 2 événements de réseautage professionnel d'ici 3 mois.",
+      "Élargir son réseau en contactant 3 nouvelles personnes par mois pendant 6 mois.",
+      "Créer un profil LinkedIn optimisé d'ici 1 mois."
+    ],
+    "aiRituals": [
+      "Envoyer une invitation LinkedIn personnalisée chaque semaine.",
+      "Participer à une discussion de groupe professionnel chaque mois.",
+      "Lire un article sur le réseautage chaque semaine.",
+      "Planifier un café virtuel avec un contact chaque mois."
+    ]
+  },
+  {
+    "pillarId": "relations",
+    "subPillarId": "rel-4",
+    "aiGoals": [
+      "Approfondir une relation existante par des discussions significatives d'ici 2 mois.",
+      "Organiser 2 activités de groupe pour renforcer les liens d'ici 3 mois.",
+      "Pratiquer l'écoute active avec 3 contacts sociaux d'ici 1 mois."
+    ],
+    "aiRituals": [
+      "Planifier une conversation profonde avec un proche chaque semaine.",
+      "Noter une qualité appréciée chez un ami chaque jour.",
+      "Organiser une activité de groupe chaque mois.",
+      "Pratiquer 5 minutes d’écoute active quotidienne avec un contact."
+    ]
+  },
+  {
+    "pillarId": "cadrevie",
+    "subPillarId": "cad-0",
+    "aiGoals": [
+      "Améliorer un aspect du logement (ex. rangement) d'ici 2 mois.",
+      "Investir dans un élément de confort domestique d'ici 3 mois.",
+      "Créer un espace dédié au repos dans le logement d'ici 1 mois."
+    ],
+    "aiRituals": [
+      "Ranger une zone du logement 15 minutes chaque jour.",
+      "Planifier un achat pour le logement chaque mois.",
+      "Inspecter l’état du logement chaque semaine pour des améliorations.",
+      "Créer une ambiance relaxante (bougies, musique) chaque soir."
+    ]
+  },
+  {
+    "pillarId": "cadrevie",
+    "subPillarId": "cad-2",
+    "aiGoals": [
+      "Mettre en place un système de rangement efficace d'ici 1 mois.",
+      "Réduire le désordre de 50% dans une pièce d'ici 6 semaines.",
+      "Planifier les tâches ménagères hebdomadaires pendant 3 mois."
+    ],
+    "aiRituals": [
+      "Dédier 10 minutes chaque soir au rangement.",
+      "Utiliser une application de gestion des tâches chaque semaine.",
+      "Planifier le ménage chaque dimanche matin.",
+      "Désencombrer une zone du logement chaque week-end."
+    ]
+  },
+  {
+    "pillarId": "cadrevie",
+    "subPillarId": "cad-3",
+    "aiGoals": [
+      "Améliorer le confort d’une pièce avec un nouvel aménagement d'ici 2 mois.",
+      "Investir dans un objet de confort (ex. chaise ergonomique) d'ici 3 mois.",
+      "Maintenir une température ambiante optimale pendant 1 mois."
+    ],
+    "aiRituals": [
+      "Ajuster l’éclairage ou la température chaque soir pour plus de confort.",
+      "Rechercher des idées d’aménagement chaque semaine.",
+      "Nettoyer les espaces de repos chaque week-end.",
+      "Planifier un achat lié au confort chaque mois."
+    ]
+  },
+  {
+    "pillarId": "cadrevie",
+    "subPillarId": "cad-4",
+    "aiGoals": [
+      "Redécorer une pièce pour améliorer son esthétique d'ici 3 mois.",
+      "Ajouter un élément décoratif personnel d'ici 1 mois.",
+      "Maintenir un espace visuellement harmonieux pendant 2 mois."
+    ],
+    "aiRituals": [
+      "Rechercher des inspirations décoratives chaque semaine.",
+      "Nettoyer et organiser les espaces décoratifs chaque week-end.",
+      "Ajouter une petite touche esthétique (plante, tableau) chaque mois.",
+      "Prendre 10 minutes chaque jour pour maintenir l’ordre visuel."
+    ]
+  }
+]
